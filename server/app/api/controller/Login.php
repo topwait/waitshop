@@ -50,8 +50,11 @@ class Login extends Api
 
     /**
      * 注册
+     *
+     * @author windy
+     * @return Json
      */
-    public function register()
+    public function register(): Json
     {
         (new RequestValidate())->isPost();
         (new LoginValidate())->goCheck('register');

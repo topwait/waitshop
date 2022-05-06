@@ -6,7 +6,6 @@
 			navHeight: ""
 		},
 		onLaunch: function(options) {
-			console.log("来了吗")
 			uni.hideTabBar({
 				animation: false
 			})
