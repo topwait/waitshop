@@ -36,6 +36,6 @@ class Util
      */
     public function loadLock()
     {
-        return file_exists(APP_ROOT . './install.lock');
+        return file_exists(APP_ROOT . '/install.lock');
     }
 }
