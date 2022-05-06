@@ -20,8 +20,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">配送方式：</label>
                         <div class="layui-input-inline">
-                            <input type="checkbox" name="delivery_method[]" value="1" title="快递配送" {if ($detail.delivery_method ?? 1)==1}checked{/if}>
-                            <input type="checkbox" name="delivery_method[]" value="2" title="上门自提" {if ($detail.delivery_method ?? 1)==2}checked{/if}>
+                            <input type="checkbox" name="delivery_method[]" value="1" title="快递配送" {if in_array($detail.delivery_method, 1)}checked{/if}>
+                            <input type="checkbox" name="delivery_method[]" value="2" title="上门自提" {if in_array($detail.delivery_method, 2)}checked{/if}>
                             <div class="layui-form-mid layui-word-aux">注：配送方式至少选择一个,在下单时会出现选择配送方式</div>
                         </div>
                     </div>
