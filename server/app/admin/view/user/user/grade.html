@@ -1,0 +1,50 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    ::-webkit-scrollbar { display: none; scrollbar-width: none; -ms-overflow-style: none; }
+    .layui-form-item dl.layui-anim.layui-anim-upbit { max-height: 185px; }
+    .layui-form-item .layui-form-label { padding: 9px 0; }
+    .layui-form-item .layui-input-block { margin-left: 90px; }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <div class="layui-form-item">
+            <label for="grade" class="layui-form-label">会员等级：</label>
+            <div class="layui-input-block">
+                <select id="grade" name="grade" lay-verify="required">
+                    {if !$detail.grade_id}
+                        <option value="" selected>无等级</option>
+                    {else}
+                        <option value="">无等级</option>
+                    {/if}
+                    {volist name="grade" id="vo"}
+                        {if $detail.grade_id === $vo.id}
+                            <option value="{$vo.id}" selected>{$vo.name}</option>
+                        {else}
+                            <option value="{$vo.id}">{$vo.name}</option>
+                        {/if}
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="remark" class="layui-form-label">备注信息：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" value="{$detail.id}">
+                <textarea id="remark" name="remark" placeholder="请输入备注信息" class="layui-textarea" lay-verType="tips" lay-verify="require"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}

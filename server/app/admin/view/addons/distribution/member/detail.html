@@ -1,0 +1,143 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-item { margin-bottom: 0; }
+    .layui-form-item .layui-form-label { width: 95px; padding: 9px 0; }
+    .layui-form-item .layui-input-inline { width: 140px; }
+    .avatar { width: 60px; height: 60px; margin: 0 auto; }
+    .avatar .image { width: 100%; height: 100%; }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form container">
+    <!-- 用户头像 -->
+    <div class="avatar">
+        <img class="image" src="{$detail.user.avatar ?: '__STATIC__/images/default_avatar.png'}" alt="头像">
+    </div>
+
+    <!-- 基础信息 -->
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>基础信息</legend>
+        <div class="layui-field-box">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名称：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.user.nickname}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">会员编号：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.user.id}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">手机号码：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.user.mobile}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户等级：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.user.grade.name ?: '未知'}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">钱包余额：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid" style="color:red;">￥{$detail.user.money}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">剩余积分：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid" style="color:green;">{$detail.user.integral}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">我的推荐人：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid" style="color:red;">
+                            {$detail.upperUser.distribution_code ?: '无'}
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">我的邀请请码：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid" style="color:green;">{$detail.user.distribution_code}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- 分销信息 -->
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>分销信息</legend>
+        <div class="layui-field-box" style="padding-left: 25px;">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">分销订单数：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">是</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">分销订单金额：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">N98Z26</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">分销总佣金：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">￥0</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">待到账佣金：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">￥0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">可提现佣金：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">0</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">已提现佣金：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">0</div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </fieldset>
+</form>
+{/block}

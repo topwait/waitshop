@@ -1,0 +1,73 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <div class="layui-card-body wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="table-image">
+                <img src="{{d.image}}" alt="img" style="width:40px; height:40px;">
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('addons.Lottery/lists')}"
+            ,toolbar: false
+            ,cols: [[
+                {field:"id", title:"ID", width:50, align:"center"},
+                {field:"sort", title:"排序", width:60, align:"center"},
+                {field:"image", title:"奖品图标", width:90, align:"center", templet:"#table-image"},
+                {field:"name", title:"奖品名称", width:120},
+                {field:"type", title:"类型", width:90, align:"center"},
+                {field:"reward", title:"奖励内容", width:90, align:"center"},
+                {field:"number", title:"奖品数量", width:90, align:"center"},
+                {field:"probability", title:"中奖概率", width:90, align:"center"},
+                {field:"tips", title:"中奖提示", width:200},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:100, align:"center"},
+            ]]
+        });
+
+        // 绑定事件
+        wait.BindEvents({
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑奖品",
+                    url: "{:url('addons.Lottery/edit')}?id=" + obj.data.id,
+                    area: ["500px", "550px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('addons.Lottery/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists");
+                                    layer.close(index);
+                                }  else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+{/block}

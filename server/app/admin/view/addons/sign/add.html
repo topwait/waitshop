@@ -1,0 +1,39 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 连续签到 -->
+        <div class="layui-form-item">
+            <label for="days" class="layui-form-label"><span class="asterisk">*</span>连续签到：</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" id="days" name="days" class="layui-input" autocomplete="off" lay-verify="required|number"
+                       onkeyup="value=value.replace(/[^\d]/g,'')">
+            </div>
+        </div>
+        <!-- 赠送积分 -->
+        <div class="layui-form-item">
+            <label for="give_integral" class="layui-form-label"><span class="asterisk">*</span>赠送积分：</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" id="give_integral" name="give_integral" autocomplete="off" class="layui-input" lay-verify="required|number"
+                       onkeyup="value=value.replace(/[^\d]/g,'')">
+            </div>
+        </div>
+        <!-- 赠成长值 -->
+        <div class="layui-form-item">
+            <label for="give_growth" class="layui-form-label"><span class="asterisk">*</span>赠成长值：</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" id="give_growth" name="give_growth" lay-verify="required|number" autocomplete="off" class="layui-input"
+                       onkeyup="value=value.replace(/[^\d]/g,'')">
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}

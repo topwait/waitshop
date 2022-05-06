@@ -1,0 +1,427 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content" style="padding:0;">
+        <div class="layui-tab layui-tab-card" style="margin:0;">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本信息</li>
+                <li>价格库存</li>
+                <li>其他设置</li>
+            </ul>
+            <div class="layui-tab-content">
+                <!-- 1、基本信息 -->
+                <div class="layui-tab-item layui-show">
+                    <!-- 商品名称 -->
+                    <div class="layui-form-item">
+                        <label for="name" class="layui-form-label"><span class="asterisk">*</span>商品名称：</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="id" value="{$detail.base.id}">
+                            <input type="text" id="name" name="name" value="{$detail.base.name}" placeholder="最多只允许输入64个字符"
+                                   switch-tab="0" lay-verType="tips" lay-verify="must" verify-msg="请填写商品名称"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <!-- 商品分类 -->
+                    <div class="layui-form-item" style="height:38px;">
+                        <div class="layui-form-item category" switch-tab="0" lay-verType="tips" lay-verify="category"></div>
+                    </div>
+                    <!-- 商品品牌 -->
+                    <div class="layui-form-item">
+                        <label for="brand_id" class="layui-form-label">商品品牌：</label>
+                        <div class="layui-input-inline">
+                            <select id="brand_id" name="brand_id">
+                                <option value="">请选择品牌</option>
+                                {volist name="brand" id="vo"}
+                                    {if $vo.id == $detail.base.brand_id}
+                                        <option value="{$vo.id}" selected>{$vo.name}</option>
+                                    {else}
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                    {/if}
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- 供货商家 -->
+                    <div class="layui-form-item">
+                        <label for="supplier_id" class="layui-form-label">供货商家：</label>
+                        <div class="layui-input-inline">
+                            <select id="supplier_id" name="supplier_id">
+                                <option value="">请选择供应商</option>
+                                {volist name="supplier" id="vo"}
+                                    {if $vo.id == $detail.base.supplier_id}
+                                        <option value="{$vo.id}" selected>{$vo.name}</option>
+                                    {else}
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                    {/if}
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <!-- 商品编码 -->
+                    <div class="layui-form-item">
+                        <label for="code" class="layui-form-label">商品编码：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="code" name="code" value="{$detail.base.code}" switch-tab="0"
+                                   lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <!-- 商品简介 -->
+                    <div class="layui-form-item">
+                        <label for="intro" class="layui-form-label">商品简介：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="intro" name="intro" value="{$detail.base.intro}" switch-tab="0"
+                                   lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <!-- 商品主图 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="line-height: 84px;"><span class="asterisk">*</span>商品主图：</label>
+                        <div class="layui-input-block" switch-tab="0" lay-verType="tips" lay-verify="image">
+                            <div class="wait-upload-drag" switch-tab="0" lay-verType="tips" lay-verify="image">
+                                {if $detail.base.image and $detail.base.image != ""}
+                                    <div class="thumbnail">
+                                        <img src="{$detail.base.image}" alt="商品主图">
+                                        <input type="hidden" name="image" value="{$detail.base.image}">
+                                        <i class="del-upload-btn">x</i>
+                                    </div>
+                                {/if}
+                                <img class="add-upload-elem img" src="__STATIC__/images/ic_up_photo.png" alt="img"
+                                     {if $detail.base.image!==""}style="display:none;"{/if}>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 商品视频 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="line-height: 84px;">商品视频：</label>
+                        <div class="layui-input-block">
+                            <div class="wait-upload-drag" switch-tab="0" lay-verType="tips">
+                                {if $detail.base.video and $detail.base.video != ""}
+                                    <div class="thumbnail">
+                                        <video width="100" height="100" src="{$detail.base.video}" controls></video>
+                                        <input type="hidden" name="video" value="{$detail.base.video}">
+                                        <i class="del-upload-btn">x</i>
+                                    </div>
+                                {/if}
+                                <img class="add-upload-elem video" src="__STATIC__/images/ic_up_video.png" alt="video"
+                                     {if $detail.base.video!==""}style="display:none;"{/if}>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 商品轮播 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="line-height: 84px;"><span class="asterisk">*</span>商品轮播：</label>
+                        <div class="layui-input-block" switch-tab="0" lay-verType="tips" lay-verify="banner">
+                            <div class="wait-upload-drag">
+                                {volist name="$detail.base.banner" id="vo"}
+                                    <div class="thumbnail">
+                                        <img src="{$vo}" alt="轮播图">
+                                        <input type="hidden" name="banner[]" value="{$vo}">
+                                        <i class="del-upload-btn">x</i>
+                                    </div>
+                                {/volist}
+                                <img class="add-upload-elem banner" src="__STATIC__/images/ic_up_photo.png" alt="banner"
+                                     {if $detail.base.banner && count($detail.base.banner) >= 5}style="display:none;"{/if} >
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 商品详情 -->
+                    <div class="layui-form-item">
+                        <label for="textarea" class="layui-form-label" style="line-height: 450px;">商品详情：</label>
+                        <div class="layui-input-block" style="width:850px;">
+                            <textarea id="textarea" name="content">{$detail.base.content|raw}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- 2、价格库存 -->
+                <div class="layui-tab-item">
+                    <!-- 商品规格 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span class="asterisk">*</span>商品规格：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" title="统一规格" id="spec_type_one" name="spec_type" lay-filter="spec-type" value="1" {if $detail.base.spec_type===1}checked{/if}>
+                            <input type="radio" title="多规格" id="spec_type_tow" name="spec_type" lay-filter="spec-type" value="2" {if $detail.base.spec_type===2}checked{/if}>
+                        </div>
+                    </div>
+                    <!-- 单规格区域 -->
+                    <div id="single-spec-region" {if $detail.base.spec_type===2}style="display:none;"{/if}></div>
+                    <!-- 多规格区域 -->
+                    <div id="batch-spec-region" {if $detail.base.spec_type===1}style="display:none;"{/if}></div>
+                </div>
+                <!-- 3、其他设置 -->
+                <div class="layui-tab-item">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label for="sales_volume" class="layui-form-label">预设销量：</label>
+                            <div class="layui-input-inline">
+                                <input type="number" id="sales_volume" name="sales_volume" value="{$detail.base.sales_volume}"
+                                       switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写预设销量"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品排序：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="sort" name="sort" value="{$detail.base.sort}"
+                                       switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写排序号"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">库存预警：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="stock_warn" name="stock_warn" value="{$detail.base.stock_warn}"
+                                       switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写库存预警数"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label for="freight_id" class="layui-form-label"><span class="asterisk">*</span>运费模板：</label>
+                            <div class="layui-input-inline">
+                                <select id="freight_id" name="freight_id" lay-verify="must|negative">
+                                    <option value="">请选择运费模板</option>
+                                    <option value="0" {if $detail.base.freight_id==0}selected{/if}>全国包邮</option>
+                                    {volist name="freight" id="vo"}
+                                        <option value="{$vo.id}" {if $detail.base.freight_id==$vo.id}selected{/if}>{$vo.name}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span class="asterisk">*</span>商品状态：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="is_show" value="1" title="立即上架" {if $detail.base.is_show==1}checked{/if}>
+                            <input type="radio" name="is_show" value="0" title="加入仓库" {if $detail.base.is_show==0}checked{/if}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span class="asterisk">*</span>积分抵扣：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="is_integral" value="1" title="允许积分抵扣" {if $detail.base.is_integral==1}checked{/if}>
+                            <input type="radio" name="is_integral" value="0" title="不允许积分抵扣" {if $detail.base.is_integral==0}checked{/if}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">商品标签：</label>
+                        <div class="layui-input-inline">
+                            <input type="checkbox" name="is_new" value="1" lay-skin="primary" title="新品推荐" {if $detail.base.is_new==1}checked{/if}>
+                            <input type="checkbox" name="is_best" value="1" lay-skin="primary" title="好物优选" {if $detail.base.is_best==1}checked{/if}>
+                            <input type="checkbox" name="is_like" value="1" lay-skin="primary" title="猜你喜欢" {if $detail.base.is_like==1}checked{/if}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/js/tinymce/tinymce.min.js"></script>
+<script src="__STATIC__/js/tinymce/jquery.tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: '#textarea',
+        language: 'zh_CN',
+        menubar: false,
+        height: "800",
+        convert_urls: false,
+        plugins: `code  preview fullpage searchreplace autolink
+            directionality visualblocks visualchars fullscreen image link media template
+            codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists
+            wordcount imagetools textpattern help emoticons table searchreplace fullscreen autosave
+            autolink insertdatetime pagebreak paste images media preview print visualblocks wordcount codesample`,
+        toolbar: [
+            `code
+                    | bold italic underline strikethrough forecolor backcolor subscript superscript
+                    | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent
+                    | emoticons charmap wordcount | fullscreen`,
+            `formatselect
+                    | fontselect | fontsizeselect | table hr blockquote codesample link | images media
+                    | anchor removeformat print | searchreplace`
+        ],
+        batch_upload_callback: function(callback) {
+            wait.imageUpload({
+                that: $(this),
+                field: "image",
+                limit: 20
+            }).then((res) => {
+                callback(res);
+            });
+        }
+    });
+</script>
+
+<script>
+    layui.config({
+        base: "__STATIC__/js/"
+    }).extend({
+        goodsSku: "goodsSku/goodsSku",
+        interact: "interact/interact"
+    }).use(["form", "element", "goodsSku", "interact"], function () {
+        let $ = layui.$;
+        let form = layui.form;
+        let goodsSku = layui.goodsSku;
+        let interact = layui.interact;
+
+        /** =========================【分类模块start】========================= **/
+        let category = {$category|raw};
+        interact.render({
+            elem : '.category',
+            data: category,
+            name: "category",
+            title: "<span class='asterisk'>*</span>商品分类：",
+            hint: ['第一级','第二级','第三级'],
+            selected : [
+                parseInt("{$detail.base.first_category_id}"),
+                parseInt("{$detail.base.second_category_id}"),
+                parseInt("{$detail.base.third_category_id}")]
+        });
+
+        /** =========================【图片模块start】========================= **/
+        // 添加上传图片
+        wait.delUploadFile();
+        $(document).on("click", ".add-upload-elem.img", function () {
+            wait.imageUpload({
+                that: $(this),
+                field: "image",
+                limit: 1
+            });
+        });
+
+        // 添加上传轮播图
+        $(document).on("click", ".add-upload-elem.banner", function () {
+            wait.imageUpload({
+                that: $(this),
+                field: "banner[]",
+                limit: 5
+            });
+        });
+
+        // 添加上传视频
+        $(document).on("click", ".add-upload-elem.video", function () {
+            wait.videoUpload({
+                that: $(this),
+                field: "video",
+                limit: 1
+            });
+        });
+
+        /** =========================【规格模块start】========================= **/
+        // 切换规格状态
+        form.on("radio(spec-type)", function (data) {
+            if (data.value === "2") {
+                $("#batch-spec-region").show();
+                $("#single-spec-region").hide();
+                goodsSku.initBatchSpec("#batch-spec-region");
+            } else {
+                $("#batch-spec-region").hide();
+                $("#single-spec-region").show();
+                goodsSku.initSingleSpec("#single-spec-region");
+            }
+        });
+
+        // 添加单规格图片
+        $(document).on("click", ".one-spec-img-add", function () {
+            let that = $(this);
+            wait.imageUpload({
+                that: $(this),
+                field: "one_spec_image",
+                delBtn: "goods-spec-img-del-x",
+                verify: false,
+                limit: 1
+            }).then((res) => {
+                that.prev().remove();
+                goodsSku.setTableData("one_spec_image", "0000", res[0]);
+            });
+        });
+
+        // 添加多规格图片
+        $(document).on("click", ".multi-spec-img-add", function () {
+            let that = $(this);
+            wait.imageUpload({
+                that: $(this),
+                field: "spec_image[]",
+                delBtn: "goods-spec-img-del-x",
+                verify: false,
+                limit: 1
+            }).then((res) => {
+                that.prev().remove();
+                let key = that.parent().parent().parent().attr("spec-value-temp-ids");
+                goodsSku.setTableData("spec_image[]", key, res[0]);
+            });
+        });
+
+        // 绑定删除规格图片事件
+        $(document).on("click", ".goods-spec-img-del-x", function () {
+            let key = $(this).parent().parent().parent().parent().attr('spec-value-temp-ids');
+            if (key || key !== undefined) {
+                goodsSku.setTableData("spec_image[]", key, "");
+                $(this).parent().parent().prepend('<div class="thumbnail"><input type="hidden" name="spec_image[]"></div>');
+                $(this).parent().parent().find("img").show();
+                $(this).parent().remove();
+            } else {
+                goodsSku.setTableData("one_spec_image", "0000", "");
+                $(this).parent().parent().prepend('<div class="thumbnail"><input type="hidden" name="one_spec_image"></div>');
+                $(this).parent().parent().find("img").show();
+                $(this).parent().remove();
+            }
+        });
+
+        // 渲染规格数据
+        let goodsInfo = {$detail|json_encode|raw};
+        if(goodsInfo["base"]["spec_type"] === 1){
+            goodsSku.initSingleSpec("#single-spec-region");
+            $('input[name="one_sku_id"]').val(goodsInfo["sku"][0]['id']);
+            $('input[name="one_sell_price"]').val(goodsInfo["sku"][0]['sell_price']);
+            $('input[name="one_cost_price"]').val(goodsInfo["sku"][0]['cost_price']);
+            $('input[name="one_market_price"]').val(goodsInfo["sku"][0]['market_price']);
+            $('input[name="one_stock"]').val(goodsInfo["sku"][0]['stock']);
+            $('input[name="one_volume"]').val(goodsInfo["sku"][0]['volume']);
+            $('input[name="one_weight"]').val(goodsInfo["sku"][0]['weight']);
+            $('input[name="one_bar_code"]').val(goodsInfo["sku"][0]['bar_code']);
+        } else {
+            goodsSku.initBatchSpec("#batch-spec-region");
+            goodsInfo["spec"].forEach(function (item, index) {
+                goodsSku.addSpecProject(item["id"], item["name"]);
+                let specs = [];
+                item["values"].forEach(function (itemValue) {
+                    specs.push(itemValue['value']);
+                });
+                goodsSku.addSpecValues($(".addSpecValue").eq(index), item["values"]);
+            });
+            setTimeout(function () {
+                goodsInfo["sku"].forEach(function (item) {
+                    $("#more-spec-lists-table tbody tr").each(function() {
+                        let spec_value_str = $(this).find('input[name="spec_value_str[]"]').val();
+                        if(spec_value_str === item["spec_value_str"]){
+                            let spec_value_temp_ids = $(this).attr("spec-value-temp-ids");
+                            goodsSku.setTableData("sku_id[]", spec_value_temp_ids, item["id"]);
+                            goodsSku.setTableData("spec_image[]", spec_value_temp_ids, item["image"]);
+                            goodsSku.setTableData("sell_price[]", spec_value_temp_ids, item["sell_price"]);
+                            goodsSku.setTableData("cost_price[]", spec_value_temp_ids, item["cost_price"]);
+                            goodsSku.setTableData("market_price[]", spec_value_temp_ids, item["market_price"]);
+                            goodsSku.setTableData("stock[]", spec_value_temp_ids, item["stock"]);
+                            goodsSku.setTableData("volume[]", spec_value_temp_ids, item["volume"]);
+                            goodsSku.setTableData("weight[]", spec_value_temp_ids, item["weight"]);
+                            goodsSku.setTableData("bar_code[]", spec_value_temp_ids, item["bar_code"]);
+                            return false;
+                        }
+                    });
+                });
+                goodsSku.setTableValue();
+            }, 2000);
+        }
+    });
+</script>
+{/block}

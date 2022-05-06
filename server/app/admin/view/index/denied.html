@@ -1,0 +1,30 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .container {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        overflow: hidden;
+    }
+    .denied { text-align: center; }
+    .denied i { font-size: 200px; color: #999; }
+    .denied p { font-size: 14px; color: #999; margin-top: 20px; }
+</style>
+{/block}
+
+{block name="body"}
+<div class="container">
+    <div class="denied">
+        <i class="layui-icon layui-icon-password"></i>
+        <p>很抱歉，您没有权限浏览该页面！</p>
+    </div>
+</div>
+{/block}

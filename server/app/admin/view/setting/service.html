@@ -1,0 +1,105 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <div class="layui-card-header">客服配置</div>
+        <div class="layui-card-body">
+            <div class="layui-form-item">
+                <label for="qq" class="layui-form-label">客服QQ:</label>
+                <div class="layui-input-block">
+                    <div class="layui-col-md4">
+                        <input type="text" id="qq" name="qq" value="{$detail.qq ?? ''}" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="wx" class="layui-form-label">客服微信:</label>
+                <div class="layui-input-block">
+                    <div class="layui-col-md4">
+                        <input type="text" id="wx" name="wx" value="{$detail.wx ?? ''}" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="phone" class="layui-form-label">客服电话:</label>
+                <div class="layui-input-block">
+                    <div class="layui-col-md4">
+                        <input type="text" id="phone" name="phone" value="{$detail.phone ?? ''}" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="business_hours" class="layui-form-label">营业时间:</label>
+                <div class="layui-input-block">
+                    <div class="layui-col-md4">
+                        <input type="text" id="business_hours" name="business_hours" value="{$detail.business_hours ?? ''}" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="image" class="layui-form-label">客服图片:</label>
+                <div class="layui-input-block">
+                    <div class="layui-col-md4">
+                        <div class="wait-upload-drag" lay-verType="tips" lay-verify="image">
+                            {if $detail.image}
+                                <div class="thumbnail">
+                                    <img src="{$detail.image}" alt="img">
+                                    <input type="hidden" id="image" name="image" value="{$detail.image}">
+                                    <i class="del-upload-btn">x</i>
+                                </div>
+                            {/if}
+                            <img class="add-upload-elem" src="__STATIC__/images/ic_up_photo.png" alt="img" {if $detail.image!==""}style="display:none;"{/if}>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">建议：宽100px*宽100px</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">保存设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function () {
+        let form = layui.form;
+
+        // 提交表单
+        form.on("submit(addForm)", function(data){
+            layer.confirm("确定保存当前配置吗?", function(index) {
+                wait.ajax({
+                    url: "{:url('setting.Service/set')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1000});
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1000});
+                    }
+                });
+                layer.close(index);
+            });
+        });
+
+        // 上传图片
+        wait.delUploadFile();
+        $(document).on("click", ".add-upload-elem", function () {
+            wait.imageUpload({
+                that: $(this),
+                filed: "image",
+                limit: 1
+            });
+        });
+
+    });
+</script>
+{/block}

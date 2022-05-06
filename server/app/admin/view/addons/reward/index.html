@@ -1,0 +1,127 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-label {width: 90px;}
+</style>
+{/block}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-col-md12 layui-form">
+        <!-- 注册奖励 -->
+        <div class="layui-card">
+            <div class="layui-card-header">注册奖励</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <label for="register_reward_integral" class="layui-form-label"><span class="asterisk">*</span>注册赠送积分:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="number" min="0" id="register_reward_integral" name="register_reward_integral"
+                                   value="{$detail.register_reward_integral}" class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">填0表示不赠送积分</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="register_reward_growth" class="layui-form-label"><span class="asterisk">*</span>注册赠成长值:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="number" min="0" id="register_reward_growth" name="register_reward_growth"
+                                   value="{$detail.register_reward_growth}" class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">填0表示不赠成长值</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 下单奖励 -->
+        <div class="layui-card">
+            <div class="layui-card-header">下单奖励</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <label for="order_reward_integral" class="layui-form-label"><span class="asterisk">*</span>下单赠送积分:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="number" min="0" id="order_reward_integral" name="order_reward_integral"
+                                   value="{$detail.order_reward_integral}" class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">每日下单任意商品额外1次赠送积分，与其它赠送不冲突</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="order_reward_growth" class="layui-form-label"><span class="asterisk">*</span>注册赠成长值:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="number" min="0" id="order_reward_growth" name="order_reward_growth"
+                                   value="{$detail.order_reward_growth}" class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">每日下单任意商品额外赠1次成长值，与其它赠送不冲突</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 邀请奖励 -->
+        <div class="layui-card">
+            <div class="layui-card-header">邀请奖励</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <label for="invited_reward_integral" class="layui-form-label"><span class="asterisk">*</span>邀请赠送积分:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="number" min="0" id="invited_reward_integral" name="invited_reward_integral"
+                                   value="{$detail.invited_reward_integral}"  class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">每邀请一位新用户注册奖励积分数量</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="invited_reward_earnings" class="layui-form-label"><span class="asterisk">*</span>邀请赠送佣金:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="number" min="0" id="invited_reward_earnings" name="invited_reward_earnings"
+                                   value="{$detail.invited_reward_earnings}" class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">每邀请一位新用户注册奖励佣金数量</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 保存按钮 -->
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">保存设置</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function() {
+        let form = layui.form;
+
+        form.on("submit(addForm)", function(data){
+            wait.ajax({
+                url: "{:url('addons.Reward/set')}",
+                type: "POST",
+                data: data.field
+            }).then((res) => {
+                if (res.code === 0) {
+                    layer.msg(res.msg, {icon: 1, time: 1000});
+                } else {
+                    layer.msg(res.msg, {icon: 2, time: 1000});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

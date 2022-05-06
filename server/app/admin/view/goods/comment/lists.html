@@ -1,0 +1,290 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 头部栏-->
+        <div class="layui-card-header" style="border: none;">
+            <div class="layui-tab layui-tab-brief" lay-filter="wait-tab-filter">
+                <ul class="layui-tab-title">
+                    <li data-id="0" class="layui-this">全部评论</li>
+                    <li data-id="1">待回复({$statistics.reply ?? 0})</li>
+                    <li data-id="2">已隐藏({$statistics.hidden ?? 0})</li>
+                    <li data-id="3">回收站({$statistics.recovery ?? 0})</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 表格栏-->
+        <div class="layui-card-body wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm layui-btn-danger layEvent" lay-event="delete">删除选中</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-warm layEvent" lay-event="hidden">隐藏选中</button>
+                </div>
+            </script>
+            <script type="text/html" id="table-userInfo">
+                <img src="{{d.user.avatar}}" alt="头像" style="height:80px; width:80px; margin-right:10px;">
+                <div class="layui-input-inline" style="width:145px;">
+                    <p>昵称：{{d.user.nickname || '未知'}}</p>
+                    <p>电话：{{d.user.mobile || '未知'}}</p>
+                    <p>性别：{{d.user.sex || '未知' }}</p>
+                </div>
+            </script>
+            <script type="text/html" id="table-goodsInfo">
+                <div style="margin-bottom:5px; padding:5px 0; border:1px dashed #ccc;">
+                    <img src="{{d.orderGoods.image}}" alt="商品图" style="height:50px; width:50px; margin:0 10px;">
+                    <div class="layui-input-inline" style="width:194px;">
+                        <p title="{{d.orderGoods.name}}" style="line-height:18px; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; ">
+                            {{d.orderGoods.name}}
+                        </p>
+                        <p style="font-size:12px;">
+                            <span>规格：{{d.orderGoods.spec_value_str}}</span>
+                            <span style="padding-left:6px;color:#009688;">￥{{d.orderGoods.actual_price}}</span>
+                            <span style="padding-left:6px;color:red;">x{{d.orderGoods.count}}</span>
+                        </p>
+                    </div>
+                </div>
+            </script>
+            <script type="text/html" id="table-levelInfo">
+               <div>
+                   <span>商品评分：</span>
+                   {{#  layui.each(d.goods_comment.checked, function(index, item){ }}
+                       <i class="layui-icon layui-icon-star-fill" style="color:#EA5057;"></i>
+                   {{#  }); }}
+                   {{#  layui.each(d.goods_comment.normal, function(index, item){ }}
+                       <i class="layui-icon layui-icon-star-fill" style="color:#CCCCCC;"></i>
+                   {{#  }); }}
+               </div>
+               <div>
+                   <span>服务评分：</span>
+                   {{#  layui.each(d.service_comment.checked, function(index, item){ }}
+                       <i class="layui-icon layui-icon-star-fill" style="color:#EA5057;"></i>
+                   {{#  }); }}
+                   {{#  layui.each(d.service_comment.normal, function(index, item){ }}
+                       <i class="layui-icon layui-icon-star-fill" style="color:#CCCCCC;"></i>
+                   {{#  }); }}
+               </div>
+               <div>
+                   <span>物流评分：</span>
+                   {{#  layui.each(d.express_comment.checked, function(index, item){ }}
+                       <i class="layui-icon layui-icon-star-fill" style="color:#EA5057;"></i>
+                   {{#  }); }}
+                   {{#  layui.each(d.express_comment.normal, function(index, item){ }}
+                       <i class="layui-icon layui-icon-star-fill" style="color:#CCCCCC;"></i>
+                   {{#  }); }}
+               </div>
+            </script>
+            <script type="text/html" id="table-detailed">
+                 <div>
+                     <span style="font-weight:bold;">用户评论：</span>
+                     <p style="font-size:12px; padding-left:15px;">{{d.content || '未评论'}}</p>
+                 </div>
+                 <div>
+                     <span style="font-weight:bold;">商家回复：</span>
+                     <p style="font-size:12px; padding-left:15px;color:#EA5057;">{{d.reply || '未回复'}}</p>
+                 </div>
+            </script>
+            <script type="text/html" id="table-image">
+                {{#  layui.each(d.image, function(index, item){ }}
+                    <img src="{{item}}" alt="{{index}}" style="width:50px; height:50px;margin-bottom:5px;">
+                {{#  }); }}
+            </script>
+            <script type="text/html" id="table-show">
+                {{#  if(d.is_show === 1){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 显示</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 屏蔽</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="reply">回复</button>
+                {{#  if(d.is_delete === 0){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>{{#  } }}
+                {{#  if(d.is_delete === 1){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="recovery">恢复</button>{{#  } }}
+                {{#  if(d.is_show === 0 && d.is_delete !== 1){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="show">显示</button>{{#  } }}
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table", "element"], function() {
+        let table = layui.table;
+        let element = layui.element;
+
+        // 渲染表格
+        wait.table({
+            id: "wait-table-lists",
+            elem: "#wait-table-lists"
+            ,url: "{:url('goods.Comment/lists')}?type=0"
+            ,cols: [[
+                {type:"checkbox", fixed:"left"},
+                {field:"id", title:"ID", align:"center", width:60},
+                {field:"userInfo", title:"会员信息", width:270, templet:"#table-userInfo"},
+                {field:"goodsInfo", title:"商品信息", width:300, templet:"#table-goodsInfo"},
+                {field:"level", title:"评论等级", width:200, templet:"#table-levelInfo"},
+                {field:"detailed", title:"评论内容", width:200, templet:"#table-detailed"},
+                {field:"images", title:"评论图片", width:200, align:"center", templet:"#table-image"},
+                {field:"show", title:"状态", width:100, align:"center", templet:"#table-show"},
+                {field:"create_time", title:"评论时间", width:150, align:"center", templet:"#table-time"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:120, align:"center"},
+            ]]
+        });
+
+        // 逻辑事件
+        let active = wait.BindEvents({
+            reply: function (obj) {
+                wait.popup({
+                    title: "回复评论",
+                    url: "{:url('goods.Comment/reply')}?id="+obj.data.id,
+                    area: ["500px", "400px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('goods.Comment/reply')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1500});
+                                    table.reload("wait-table-lists");
+                                    active.statistics();
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1500});
+                                }
+                            });
+                        });
+
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定移入回收站吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('goods.Comment/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1500});
+                            table.reload("wait-table-lists");
+                            active.statistics();
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1500});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            delete: function() {
+                let ids = [];
+                let checkStatus = table.checkStatus("wait-table-lists");
+                $(checkStatus.data).each(function (i, o) { ids.push(o.id); });
+                if (ids.length <= 0) return layer.msg("请勾选要删除的行", {icon: 2, time: 1000});
+                layer.confirm("确定要删除选中的数据吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('goods.Comment/del')}",
+                        type: "POST",
+                        data: {id: ids}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1500});
+                            table.reload("wait-table-lists");
+                            active.statistics();
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1500});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            hidden: function () {
+                let ids = [];
+                let checkStatus = table.checkStatus("wait-table-lists");
+                $(checkStatus.data).each(function (i, o) { ids.push(o.id); });
+                if (ids.length <= 0) return layer.msg("请勾选要隐藏的行", {icon: 2, time: 1000});
+                layer.confirm("确定要隐藏选中的数据吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('goods.Comment/hide')}",
+                        type: "POST",
+                        data: {id: ids}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1500});
+                            table.reload("wait-table-lists");
+                            active.statistics();
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1500});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            show: function (obj) {
+                layer.confirm("确定要恢复显示吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('goods.Comment/show')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1500});
+                            table.reload("wait-table-lists");
+                            active.statistics();
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1500});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            recovery: function (obj) {
+                layer.confirm("确定要恢复该评论数据吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('goods.Comment/recovery')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1500});
+                            table.reload("wait-table-lists");
+                            active.statistics();
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1500});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            statistics: function () {
+                wait.ajax({
+                    url: "{:url('goods.Comment/statistics')}",
+                    type: "GET",
+                    data: {}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        $(".layui-tab-title li[data-id=1]").html(`待回复(${res.data['reply']})`);
+                        $(".layui-tab-title li[data-id=2]").html(`已隐藏(${res.data['hidden']})`);
+                        $(".layui-tab-title li[data-id=3]").html(`回收站(${res.data['recovery']})`);
+                    }
+                });
+            }
+        });
+
+        // 切换选项卡
+        element.on("tab(wait-tab-filter)", function(){
+            let type = this.getAttribute("data-id");
+            table.reload("wait-table-lists", {
+                where: {type: type},
+                page: { curr: 1 }
+            });
+        });
+
+    });
+</script>
+{/block}

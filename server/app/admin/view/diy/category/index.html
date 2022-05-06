@@ -1,0 +1,104 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-label { padding: 9px 10px; width: 65px; }
+    .layui-input-block { margin-left: 80px; }
+    .layui-card-body::after { content: ""; display: block; visibility: hidden; clear: both; }
+    .diy-phone { float: left; width: 320px; height: 600px; margin-right: 25px; background: #F8F8F8;}
+    .diy-phone img { width: 100%; height: 100%;}
+    .diy-editor { float: left; position: relative; z-index: 200; width: 415px; height: auto; text-align: left; padding: 20px 10px; border: 1px solid #ddd; border-radius: 5px; background: #fdfdfd; }
+    .diy-editor:after { position: absolute; top: 25px; left: -9px; z-index: 100; content: ""; display: block; width: 15px; height: 15px; background: #fdfdfd; transform: rotate(135deg); border-right: 1px solid #ddd; border-bottom: 1px solid #ddd; }
+    .diy-editor .skin { display: inline-block; width: 100px; height: 30px; line-height: 30px; text-align: center; font-size: 14px; color: rgba(0,0,0,.6); margin: 2px 5px 0 0; border: 1px solid #e6e9f0; }
+    .diy-editor .skin.active { border: 1px solid #009688; }
+    .diy-editor .tpl-skin-type { display: none; }
+</style>
+{/block}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="diy-phone">
+                <img src="__STATIC__/images/category/{$detail.skin}.png">
+            </div>
+            <div class="diy-editor">
+                <div class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">模板选择：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="type" value="10" title="一级分类" lay-filter="type" {if $detail.type=="10"}checked{/if}>
+                            <input type="radio" name="type" value="20" title="二级分类" lay-filter="type" {if $detail.type=="20"}checked{/if}>
+                            <input type="radio" name="type" value="30" title="三级分类" lay-filter="type" {if $detail.type=="30"}checked{/if}>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">样式选择：</label>
+                        <div class="layui-input-block">
+                            <div class="tpl-skin-type 10" {if $detail.type=="10"}style="display:block;"{/if}>
+                                <span class="skin {if $detail.skin=='destiny'}active{/if}" lay-data="destiny" lay-url="__STATIC__/images/category/destiny.png">商品模式</span>
+                                <span class="skin {if $detail.skin=='simple'}active{/if}" lay-data="simple" lay-url="__STATIC__/images/category/simple.png">无图模式</span>
+                                <span class="skin {if $detail.skin=='ideal'}active{/if}" lay-data="ideal" lay-url="__STATIC__/images/category/ideal.png">简约模式</span>
+                            </div>
+                            <div class="tpl-skin-type 20" {if $detail.type=="20"}style="display:block;"{/if}>
+                                <span class="skin {if $detail.skin=='dream'}active{/if}" lay-data="dream" lay-url="__STATIC__/images/category/dream.png">简约模式</span>
+                                <span class="skin {if $detail.skin=='clown'}active{/if}" lay-data="clown" lay-url="__STATIC__/images/category/clown.png">无图模式</span>
+                            </div>
+                            <div class="tpl-skin-type 30" {if $detail.type=="30"}style="display:block;"{/if}>
+                                <span class="skin {if $detail.skin=='fantasy'}active{/if}" lay-data="fantasy" lay-url="__STATIC__/images/category/fantasy.png">简约模式</span>
+                                <span class="skin {if $detail.skin=='easy'}active{/if}" lay-data="easy" lay-url="__STATIC__/images/category/easy.png">无图模式</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-bottom: 0; margin-top: 30px; text-align: center;">
+                        <button class="layui-btn layui-btn-sm" lay-submit lay-filter="addForm">保存风格</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function() {
+        let form = layui.form;
+
+        // 提交表单
+        form.on("submit(addForm)", function(data){
+            data.field["skin"] = $(".skin.active").attr("lay-data");
+            layer.confirm("确定要保存吗？", function(index) {
+                wait.ajax({
+                    url: "{:url('diy.Category/set')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1000});
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1000});
+                    }
+                });
+                layer.close(index);
+            });
+        });
+
+        // 切换风格
+        form.on("radio(type)", function (data) {
+            let value = data.value;
+            let elem = ".tpl-skin-type";
+            $(elem).hide();
+            $(elem+"."+value).show();
+            $(elem+"."+value+" .skin").eq(0).trigger("click")
+        });
+
+        // 切换皮肤
+        $(document).on("click", ".skin", function () {
+            $(".skin").removeClass("active");
+            $(this).addClass("active");
+            $(".diy-phone img").attr("src", $(this).attr("lay-url"));
+        });
+    });
+</script>
+{/block}

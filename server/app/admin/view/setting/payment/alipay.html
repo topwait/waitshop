@@ -1,0 +1,80 @@
+{extend name="public/layout" /}
+
+
+{block name="style"}
+<style>
+    .layui-form-item .layui-form-label { width: 130px; }
+    .layui-form-item .layui-input-block { margin-left: 160px; }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 支付名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>支付名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" value="{$detail.name ?? ''}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 合作者身份Pid -->
+        <div class="layui-form-item">
+            <label for="pid" class="layui-form-label"><span class="asterisk">*</span>合作者身份Pid：</label>
+            <div class="layui-input-block">
+                <input type="text" id="pid" name="pid" value="{$detail.pid ?? ''}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 安全校验码Key -->
+        <div class="layui-form-item">
+            <label for="key" class="layui-form-label"><span class="asterisk">*</span>安全校验码Key ：</label>
+            <div class="layui-input-block">
+                <input type="text" id="key" name="key" value="{$detail.key ?? ''}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 支付宝应用APPid -->
+        <div class="layui-form-item">
+            <label for="app_id" class="layui-form-label"><span class="asterisk">*</span>支付宝应用APPid：</label>
+            <div class="layui-input-block">
+                <input type="text" id="app_id" name="app_id" value="{$detail.app_id ?? ''}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 排序号 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label"><span class="asterisk">*</span>排序号：</label>
+            <div class="layui-input-block" style="max-width: 150px;">
+                <input type="number" id="sort" name="sort" value="{$detail.sort ?? 0}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 状态 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_enable" value="1" title="正常" {if isset($detail.is_enable) && $detail.is_enable==1}checked{/if}>
+                <input type="radio" name="is_enable" value="0" title="禁用" {if isset($detail.is_enable) && $detail.is_enable==0}checked{/if}>
+            </div>
+        </div>
+        <!-- 支付宝公钥 -->
+        <div class="layui-form-item">
+            <label for="public_key" class="layui-form-label">支付宝公钥：</label>
+            <div class="layui-input-block">
+                <textarea id="public_key" name="public_key" class="layui-textarea">{$detail.params.public_key ?? ''}</textarea>
+            </div>
+        </div>
+        <!-- 支付宝私钥 -->
+        <div class="layui-form-item">
+            <label for="private_key" class="layui-form-label">支付宝私钥：</label>
+            <div class="layui-input-block">
+                <textarea id="private_key" name="private_key" class="layui-textarea">{$detail.params.private_key ?? ''}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}

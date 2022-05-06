@@ -1,0 +1,109 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .userInfo {width: 260px; background: #f2f2f2; padding: 6px; border-radius: 2px;}
+    .userInfo .avatar {height:80px; width:80px; margin-right:10px;}
+    .userInfo .layui-inline {width:145px; margin-bottom:0; color:#333;}
+    .userInfo .layui-inline p {line-height:26px;}
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 选择用户 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>选择用户：</label>
+            <div class="layui-input-block" style="line-height: 36px;">
+                <button type="button" class="layui-btn layui-btn-xs selectUser">选择用户</button>
+                <div class="userInfo" style="display: none;"></div>
+            </div>
+        </div>
+        <!-- 所属门店 -->
+        <div class="layui-form-item">
+            <label for="shop" class="layui-form-label"><span class="asterisk">*</span>所属门店：</label>
+            <div class="layui-input-block">
+                <select id="shop" name="store_id" lay-verType="tips" lay-verify="required|number">
+                    <option value=""></option>
+                    {volist name="storeList" id="vo"}
+                        <option value="{$vo.id}">{$vo.name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <!-- 店员姓名  -->
+        <div class="layui-form-item">
+            <label for="nickname" class="layui-form-label"><span class="asterisk">*</span>店员姓名 ：</label>
+            <div class="layui-input-block">
+                <input type="text" id="nickname" name="nickname" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 店员电话 -->
+        <div class="layui-form-item">
+            <label for="mobile" class="layui-form-label"><span class="asterisk">*</span>店员电话：</label>
+            <div class="layui-input-block">
+                <input type="text" id="mobile" name="mobile" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 状态 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>状态：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="启用" checked>
+                <input type="radio" name="status" value="0" title="禁用">
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    /**
+     * 选择用户
+     */
+    $(document).on("click", ".selectUser", function () {
+        parent.layer.open({
+            type: 2
+            ,title: "选择用户"
+            ,area: ["850px", "520px"]
+            ,offset: "auto"
+            ,anim: 1
+            ,closeBtn: 1
+            ,shade: 0.3
+            ,btn: ["确定", "取消"]
+            ,content: "/admin/data/user?type=radio"
+            ,yes: function (indexWin, layeroWin) {
+                let iframeWin = parent.window[layeroWin.find("iframe")[0]["name"]];
+                let data = iframeWin.layui.table.checkStatus("wait-table-lists").data || [];
+                if (data.length <= 0) {
+                    layer.msg("请选择一个用户");
+                    return false;
+                }
+                const elem = $(".userInfo");
+                elem.show();
+                elem.html("");
+                elem.html(`
+                    <input type="hidden" name="user_id" value="${data[0].id}">
+                    <img class="avatar" src="${data[0].avatar}" alt="头像">
+                    <div class="layui-inline">
+                        <p>昵称：${data[0].nickname}</p>
+                        <p>编号：${data[0].sn || '无'}</p>
+                        <p>电话：${data[0].mobile || '无'}</p>
+                    </div>`);
+                parent.layer.close(indexWin);
+            }
+        })
+    })
+</script>
+{/block}

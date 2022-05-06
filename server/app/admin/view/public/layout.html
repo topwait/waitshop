@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" style="display:none;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="TinyAnts">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{block name="title"}TinyShop{/block}</title>
+    <link rel="stylesheet" href="__STATIC__/js/layui/css/layui.css">
+    <link rel="stylesheet" href="__STATIC__/css/iconfont.css">
+    <link rel="stylesheet" href="__STATIC__/css/app.css">
+    {block name="style"}{/block}
+</head>
+<body>
+    {block name="body"}{/block}
+    <script src="__STATIC__/js/layui/layui.js"></script>
+    <script src="__STATIC__/js/jquery.min.js"></script>
+    <script src="__STATIC__/js/tools.js"></script>
+    {block name="js"}{/block}
+    <script>
+        $(function () {
+            setTimeout(function () {
+                $("html").removeAttr("style");
+            }, 100);
+        });
+    </script>
+</body>
+</html>

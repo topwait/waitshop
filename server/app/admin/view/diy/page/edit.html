@@ -1,0 +1,1706 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div id="diyView">
+        <!-- 1、工具模块 -->
+        <div class="diy-menu">
+            <div class="navs">
+                <div class="title">基础组件</div>
+                <div class="components">
+                    <nav @click="onAddItem('search')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-search"></i></p>
+                        <p>搜索框</p>
+                    </nav>
+                    <nav @click="onAddItem('banner')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-carousel"></i></p>
+                        <p>轮播图</p>
+                    </nav>
+                    <nav @click="onAddItem('image')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-picture-fine"></i></p>
+                        <p>图片组</p>
+                    </nav>
+                    <nav @click="onAddItem('navBar')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-release"></i></p>
+                        <p>导航组</p>
+                    </nav>
+                    <nav @click="onAddItem('notice')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-speaker"></i></p>
+                        <p>公告组</p>
+                    </nav>
+                    <nav @click="onAddItem('window')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-speaker"></i></p>
+                        <p>图片橱窗</p>
+                    </nav>
+                </div>
+                <div class="title">营销组件</div>
+                <div class="components">
+                    <nav @click="onAddItem('goods')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-gift"></i></p>
+                        <p>商品组</p>
+                    </nav>
+                    <nav @click="onAddItem('teamGoods')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-diamond"></i></p>
+                        <p>拼团商品</p>
+                    </nav>
+                    <nav @click="onAddItem('seckillGoods')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-fire"></i></p>
+                        <p>秒杀商品</p>
+                    </nav>
+                    <nav @click="onAddItem('coupon')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-water"></i></p>
+                        <p>优惠券组</p>
+                    </nav>
+                </div>
+                <div class="title">辅助组件</div>
+                <div class="components">
+                    <nav @click="onAddItem('blank')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-templeate-1"></i></p>
+                        <p>辅助空白</p>
+                    </nav>
+                    <nav @click="onAddItem('guide')">
+                        <p class="item-icon"><i class="layui-icon layui-icon-subtraction"></i></p>
+                        <p>辅助线</p>
+                    </nav>
+                </div>
+            </div>
+            <div class="action">
+                <button @click.stop="onSubmit" type="button" class="layui-btn layui-btn-sm">
+                    保存页面
+                </button>
+            </div>
+        </div>
+
+        <!-- 2、DIY容器 -->
+        <div class="diy-phone" v-cloak>
+            <!-- 【手机导航栏】 -->
+            <div class="phone-navBar optional" @click.stop="onEditer('page')"
+                 :class="{selected: 'page' === selectedIndex}"
+                 :style="{background: diyData.page.config.titleBackgroundColor + ' url(__STATIC__/images/diy/phone-top-' + diyData.page.config.titleTextColor + '.png) no-repeat center / contain'}">
+                <h4 :style="{color: diyData.page.config.titleTextColor}">{{ diyData.page.config.title }}</h4>
+            </div>
+            <!-- 【手机屏幕区】 -->
+            <div class="phone-main" v-cloak>
+                <draggable class="dragArea" @update="onDragItemEnd" :list="diyData.items" :options="{animation: 120, filter: '.drag__nomove' }">
+                    <template v-for="(item, index) in diyData.items">
+                        <!-- diy元素: 搜索栏 -->
+                        <template v-if="item.type === 'search'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected:index === selectedIndex}">
+                                    <div class="diy-search" :style="{background: item.config.background}">
+                                        <div class="inner"
+                                             :class="item.config.searchStyle"
+                                             :style="{background: item.config.inputBgColor}"
+                                        >
+                                            <div class="search-input" :style="{textAlign: item.config.textAlign}">
+                                                <i class="layui-icon layui-icon-search"></i>
+                                                <span :style="{color: item.config.textColor}">{{item.config.placeholder}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 图片轮播 -->
+                        <template v-else-if="item.type === 'banner'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected:index === selectedIndex}">
+                                    <div class="diy-banner" :class="item.config.type">
+                                        <img v-if="item.config.type === 'card' && item.config.backdrop" :src="item.config.backdrop" style="height:162px;">
+                                        <img v-if="item.config.type === 'card' && !item.config.backdrop" :src="item.config.backdrop" style="height:162px; visibility:hidden;">
+                                        <div class="banner-images" :class="item.config.type">
+                                            <img v-if="index <= 1" v-for="(banner, index) in item.data" :src="banner.imgUrl" >
+                                            <div class="dots center" :class="item.config.mode" v-show="item.config.mode!=='none'">
+                                                <span v-for="() in item.data"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 图片组 -->
+                        <template v-else-if="item.type === 'image'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected:index === selectedIndex}">
+                                    <div class="diy-image" :style="{
+                                        marginTop: item.config.marginTop+'px',
+                                        marginLeft: item.config.marginLeft+'px',
+                                        marginRight: item.config.marginLeft+'px',
+                                        padding: item.config.paddingTop+'px ' + item.config.paddingLeft+'px',
+                                        background: item.config.background
+                                    }">
+                                        <div class="item-image" v-for="imageSingle in item.data"
+                                             :style="{padding: item.config.paddingTop+'px ' +item.config.paddingLeft+'px'}">
+                                            <img :src="imageSingle.imgUrl" alt="img">
+                                        </div>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 导航组 -->
+                        <template v-else-if="item.type === 'navBar'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected:index === selectedIndex}">
+                                    <div class="diy-navBar"
+                                         :style="{
+                                            background: item.config.background,
+                                            marginLeft: item.config.marginLeft+'px',
+                                            marginRight: item.config.marginLeft+'px',
+                                            marginTop: item.config.marginTop+'px',
+                                            borderRadius: item.config.borderRadius+'px'
+                                         }"
+                                    >
+                                        <ul :class="item.config.rowsNum==='4' ? 'line-row-4' : (item.config.rowsNum ==='3' ? 'line-row-3': 'line-row-5')"
+                                            :style="{background: item.config.background, borderRadius: item.config.borderRadius+'px'}"
+                                        >
+                                            <li class="" v-for="(navBar) in item.data">
+                                                <div class="item-image"><img :src="navBar.imgUrl" alt="img"></div>
+                                                <p class="item-text am-text-truncate" :style="{color:navBar.color}">{{navBar.text}}</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 公告组 -->
+                        <template v-else-if="item.type === 'notice'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected:index === selectedIndex}">
+                                    <div class="diy-notice"
+                                         :style="{
+                                            marginLeft: item.config.marginAlign+'px',
+                                            marginRight: item.config.marginAlign+'px',
+                                            marginTop: item.config.marginTop+'px',
+                                            borderRadius: item.config.borderRadius+'px',
+                                            background: item.config.background
+                                         }">
+                                        <div class="notice__icon"><img alt="icon" :src="item.config.icon"></div>
+                                        <div class="notice__split"></div>
+                                        <div class="notice__text over-line-1"><span :style="{color: item.config.textColor}">这里是第一条自定义公告的标题</span></div>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 图片橱窗 -->
+                        <template v-else-if="item.type === 'window'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected:index === selectedIndex}">
+                                    <div class="diy-window" :style="{
+                                            background: item.config.background,
+                                            marginTop: item.config.marginTop+'px',
+                                            marginLeft: item.config.marginLeft+'px',
+                                            marginRight: item.config.marginLeft+'px',
+                                            padding: item.config.padding+'px',
+                                            borderRadius: item.config.borderRadius+'px'
+                                        }"
+                                    >
+                                        <ul v-if="item.config.layout > -1" :class="'pileup layout-' + item.config.layout">
+                                            <li v-for="window in item.data">
+                                                <div class="item-image" :style="{padding: item.config.interval+'px'}">
+                                                    <img :src="window.imgUrl"  alt="img">
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="display" v-else>
+                                            <div class="display-left" :style="{paddingRight: item.config.interval+'px'}">
+                                                <img :src="item.data[0].imgUrl" alt="img">
+                                            </div>
+                                            <div class="display-right">
+                                                <div v-if="item.data.length >= 2" class="display-right1" :style="{paddingBottom: item.config.interval+'px'}">
+                                                    <img :src="item.data[1].imgUrl" alt="img">
+                                                </div>
+                                                <div class="display-right2">
+                                                    <div v-if="item.data.length >= 3" class="left" :style="{paddingRight: item.config.interval+'px'}">
+                                                        <img :src="item.data[2].imgUrl" alt="img">
+                                                    </div>
+                                                    <div v-if="item.data.length >= 4" class="right">
+                                                        <img :src="item.data[3].imgUrl" alt="img">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 商品组 -->
+                        <template v-else-if="item.type === 'goods'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected: index === selectedIndex}">
+                                    <div class="diy-goods" :style="{
+                                        background: item.config.background,
+                                        marginLeft: item.config.marginLeft+'px',
+                                        marginRight: item.config.marginLeft+'px',
+                                        marginTop: item.config.marginTop+'px'
+                                    }">
+                                        <ul class="goods-list" :class="['display__' + item.config.display, 'column__' + item.config.column]">
+                                            <li class="goods-item" v-for="(goods, index) in (item.config.source === 'choice' ? item.data : 4)" :style="{borderRadius: item.config.borderRadius+'px'}">
+                                                <!-- 单列商品 -->
+                                                <template v-if="item.config.column === '1'">
+                                                    <div class="goods-item_left" :style="{
+                                                            width: !item.config.show.sellingPoint || !item.config.show.goodsTags ? '95px' : '120px',
+                                                            height: !item.config.show.sellingPoint || !item.config.show.goodsTags  ? '95px' : '120px'
+                                                        }">
+                                                        <img :src="goods.image ? goods.image : '/static/images/diy/goods/0'+(index+1)+'.png'" alt="img"
+                                                            :style="{borderTopLeftRadius: item.config.borderRadius+'px',
+							                                         borderBottomLeftRadius: item.config.borderRadius+'px'}">
+                                                    </div>
+                                                    <div class="goods-item_right">
+                                                        <!-- 商品名称 -->
+                                                        <div class="desc_title" v-if="item.config.show.goodsName">
+                                                            {{ goods.name ? goods.name : '洁柔抽纸软抽纸巾3层20包无香抽纸卫生纸面巾纸家用实惠装餐巾纸'}}
+                                                        </div>
+                                                        <div class="desc_sales" v-if="item.config.show.goodsSales">
+                                                            <span>已有{{goods.sales_volume ? goods.sales_volume : '70868'}}人购买</span>
+                                                        </div>
+                                                        <div class="desc_footer">
+                                                            <span v-if="item.config.show.goodsPrice" class="sale_price">
+                                                                ¥{{goods.min_price ? goods.min_price : '99.00'}}
+                                                            </span>
+                                                            <span v-if="item.config.show.linePrice" class="market_price">
+                                                                ¥{{goods.market_price ? goods.market_price : '139.00'}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </template>
+
+                                                <!-- 两列三列 -->
+                                                <template v-else>
+                                                    <div class="goods_image" :style="{
+                                                        borderTopLeftRadius: item.config.borderRadius+'px',
+                                                        borderTopRightRadius: item.config.borderRadius+'px'}">
+                                                        <img :src="goods.image ? goods.image : '/static/images/diy/goods/0'+(index+1)+'.png'" alt="img">
+                                                    </div>
+                                                    <div class="goods-item_desc">
+                                                        <p v-if="item.config.show.goodsName" class="goods_name">
+                                                            {{ goods.name ? goods.name : '洁柔抽纸软抽纸巾3层20包无香抽纸卫生纸面巾纸家用实惠装餐巾纸'}}
+                                                        </p>
+                                                        <p class="detail-price">
+                                                            <span v-if="item.config.show.goodsPrice"
+                                                                class="sale_price">¥{{goods.min_price ? goods.min_price : '99.00'}}</span>
+                                                            <span v-if="item.config.show.linePrice"
+                                                                  class="market_price"> ¥{{goods.market_price ? goods.market_price : '139.00'}}</span>
+                                                            <span v-if="item.config.show.goodsSales"
+                                                                  class="sales_volume">{{goods.sales_volume ? goods.sales_volume : '70868'}}人付款</span>
+                                                        </p>
+                                                    </div>
+                                                </template>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 优惠券组 -->
+                        <template v-else-if="item.type === 'coupon'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected: index === selectedIndex}">
+                                    <div class="diy-coupon"
+                                         :style="{
+                                            background: item.config.background,
+                                            padding: item.config.paddingTop + 'px '+' 10px',
+                                            marginLeft: item.config.marginLeft+'px',
+                                            marginRight: item.config.marginLeft+'px',
+                                            marginTop: item.config.marginTop+'px',
+                                            borderRadius: item.config.borderRadius+'px'
+                                        }"
+                                    >
+                                        <div class="coupon-item" :style="{background: item.config.normalColor}">
+                                            <div class="left">
+                                                <div class="num">
+                                                    <span class="unit">￥</span>
+                                                    <span class="price">10</span>
+                                                </div>
+                                                <div class="text">满100元可用</div>
+                                            </div>
+                                            <div class="right">立<br/>即<br/>领<br/>取</div>
+                                        </div>
+                                        <div class="coupon-item" :style="{background: item.config.receiveColor}">
+                                            <div class="left">
+                                                <div class="num">
+                                                    <span class="unit">￥</span>
+                                                    <span class="price">10</span>
+                                                </div>
+                                                <div class="text">满100元可用</div>
+                                            </div>
+                                            <div class="right">已<br/>领<br/>取</div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 拼团组 -->
+                        <template v-else-if="item.type === 'teamGoods'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected: index === selectedIndex}">
+                                    <div class="diy-teamGoods" :style="{
+                                        marginLeft: item.config.marginLeft+'px',
+                                        marginRight: item.config.marginLeft+'px',
+                                        marginTop: item.config.marginTop+'px',
+                                        borderRadius: item.config.borderRadius+'px',
+                                        background: item.config.background}">
+                                        <div class="title-wrapper">
+                                            <div class="title">
+                                                <img class="icon" :src="item.config.icon" alt="icon">
+                                                <span>拼团活动</span>
+                                            </div>
+                                            <div class="more">更多</div>
+                                        </div>
+                                        <div class="list-wrapper" v-if="item.config.source === 'auto'">
+                                            <div class="item" v-for="(goods, index) in 3" :key="index">
+                                                <div class="img-box">
+                                                    <img :src="'/static/images/diy/goods/0'+(index+1)+'.png'" alt="img">
+                                                    <div class="join" v-if="item.config.show.teamJoin">200人参团</div>
+                                                </div>
+                                                <div class="title">此处是拼团商品</div>
+                                                <div class="info" v-if="item.config.show.teamPrice || item.config.show.teamGoBtn">
+                                                    <div class="price" v-if="item.config.show.teamPrice">
+                                                        <span style="font-size:12px;">￥</span>168.0
+                                                    </div>
+                                                    <div class="go-team-btn" v-if="item.config.show.teamGoBtn">去拼团</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-wrapper" v-if="item.config.source === 'choice'">
+                                            <div class="item" v-for="(goods, index) in item.data" :key="index">
+                                                <div class="img-box">
+                                                    <img :src="goods.image" alt="img">
+                                                    <div class="join" v-if="item.config.show.teamJoin">{{goods.total_join_number}}人参团</div>
+                                                </div>
+                                                <div class="title">{{goods.name}}</div>
+                                                <div class="info" v-if="item.config.show.teamPrice || item.config.show.teamGoBtn">
+                                                    <div class="price" v-if="item.config.show.teamPrice">
+                                                        <span style="font-size:12px;">￥</span>{{goods.min_team_price}}
+                                                    </div>
+                                                    <div class="go-team-btn" v-if="item.config.show.teamGoBtn">去拼团</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 秒杀组 -->
+                        <template v-else-if="item.type === 'seckillGoods'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected: index === selectedIndex}">
+                                    <div class="diy-seckillGoods" :style="{
+                                        marginLeft: item.config.marginLeft+'px',
+                                        marginRight: item.config.marginLeft+'px',
+                                        marginTop: item.config.marginTop+'px',
+                                        borderRadius: item.config.borderRadius+'px',
+                                        background: item.config.background}">
+                                        <div class="title-wrapper">
+                                            <div class="title">
+                                                <img class="icon" :src="item.config.icon" alt="icon">
+                                                <span>限时秒杀</span>
+                                                <div class="time">
+                                                    <span class="time-group">00</span>
+                                                    <span class="item-colon">:</span>
+                                                    <span class="time-group">00</span>
+                                                    <span class="item-colon">:</span>
+                                                    <span class="time-group">00</span>
+                                                </div>
+                                            </div>
+                                            <div class="more">更多</div>
+                                        </div>
+                                        <div class="list-wrapper" v-if="item.config.source === 'auto'">
+                                            <div class="item" v-for="(goods, index) in 3" :key="index">
+                                                <div class="img-box">
+                                                    <img :src="'/static/images/diy/goods/0'+(index+1)+'.png'" alt="img">
+                                                    <div class="join" v-if="item.config.show.teamJoin">200人参团</div>
+                                                </div>
+                                                <div class="title">此处是秒杀商品</div>
+                                                <div class="info" v-if="item.config.show.seckillPrice">
+                                                    <div class="sell-price" v-if="item.config.show.seckillPrice">
+                                                        <span style="font-size:12px;">￥</span>168.0
+                                                    </div>
+                                                    <div class="line-price" v-if="item.config.show.linePrice">
+                                                        <span style="font-size:12px;">￥</span>268.0
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-wrapper" v-if="item.config.source === 'choice'">
+                                            <div class="item" v-for="(goods, index) in item.data" :key="index">
+                                                <div class="img-box">
+                                                    <img :src="goods.image" alt="img">
+                                                </div>
+                                                <div class="title">{{goods.name}}</div>
+                                                <div class="info" v-if="item.config.show.seckillPrice">
+                                                    <div class="price" v-if="item.config.show.seckillPrice">
+                                                        <span style="font-size:12px;">￥</span>{{goods.min_seckill_price}}
+                                                    </div>
+                                                    <div class="line-price" v-if="item.config.show.linePrice">
+                                                        <span style="font-size:12px;">￥</span>268.0
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 辅助空白 -->
+                        <template v-else-if="item.type === 'blank'">
+                            <div @click.stop="onEditer(index)">
+                                <div class="drag optional" :class="{selected:index === selectedIndex}">
+                                    <div class="diy-blank" :style="{
+                                        height: item.config.height +'px',
+                                        background:item.config.background}">
+                                    </div>
+                                    <div class="btn-edit-del">
+                                        <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- diy元素: 辅助线 -->
+                        <template v-else-if="item.type === 'guide'">
+                            <div @click.stop="onEditer(index)"
+                                 class="drag optional" :class="{selected: index === selectedIndex}">
+                                <div class="diy-guide" :style="{
+                                        padding: item.config.paddingTop +'px '+'0',
+                                        margin: '0 ' + item.config.marginLeft+'px',
+                                        background: item.config.background
+                                    }">
+                                    <p class="line" :style="{
+                                        borderTopWidth: item.config.lineHeight +'px',
+                                        borderTopColor: item.config.lineColor,
+                                        borderTopStyle: item.config.lineStyle}"></p>
+                                </div>
+                                <div class="btn-edit-del">
+                                    <div class="btn-del" @click.stop="onDeleteItem(index)">删除</div>
+                                </div>
+                            </div>
+                        </template>
+
+                    </template>
+                </draggable>
+            </div>
+        </div>
+
+        <!-- 3、编辑容器 -->
+        <div class="diy-editor" ref="diy-editor" :style="{ visibility: selectedIndex !== -1 ? 'visible' : 'hidden' }" v-cloak>
+            <!-- 导航栏模块 -->
+            <div id="tpl_editor_page" v-if="selectedIndex === 'page'">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">页面名称 </label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" type="text" v-model="diyData.page.config.name">
+                            <div class="layui-form-mid layui-word-aux">页面名称仅用于后台查找</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">页面标题 </label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" type="text" v-model="diyData.page.config.title">
+                            <div class="layui-form-mid layui-word-aux">小程序端顶部显示的标题</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分享标题 </label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" type="text" v-model="diyData.page.config.shareTitle">
+                            <div class="layui-form-mid layui-word-aux">小程序端转发时显示的标题</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">标题栏文字 </label>
+                        <div class="layui-input-block">
+                            <label class="radio-inline">
+                                <input type="radio" name="color" value="black" v-model="diyData.page.config.titleTextColor"> 黑色
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="color" value="white" v-model="diyData.page.config.titleTextColor"> 白色
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">标题栏背景 </label>
+                        <div class="layui-input-block">
+                            <input  type="color" v-model="diyData.page.config.titleBackgroundColor">
+                            <button type="button" class="btn-resetColor"
+                                    @click.stop="onEditorResetColor(diyData.page.config, 'titleBackgroundColor', '#FFFFFF')">
+                                重置
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- 其它模块 -->
+            <template v-if="diyData.items.length && curItem">
+                <!-- 编辑器: 搜索栏 -->
+                <div id="tpl_editor_search" v-if="curItem.type === 'search'">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">提示文字 </label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text" v-model="curItem.config.placeholder">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文字颜色 </label>
+                            <div class="layui-input-block">
+                                <input class="" type="color" v-model="curItem.config.textColor">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'textColor', '#999999')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input class="" type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#FFFFFF')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">输入框背景 </label>
+                            <div class="layui-input-block">
+                                <input class="" type="color" v-model="curItem.config.inputBgColor">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'inputBgColor', '#F4F4F4')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">搜索框样式 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" value="square" v-model="curItem.config.searchStyle"> 方形
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="radius" v-model="curItem.config.searchStyle"> 圆角
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="round" v-model="curItem.config.searchStyle"> 圆弧
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文字对齐 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" value="left" v-model="curItem.config.textAlign"> 居左
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="center" v-model="curItem.config.textAlign"> 居中
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="right" v-model="curItem.config.textAlign"> 居右
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 编辑器: 轮播图 -->
+                <div id="tpl_editor_banner" v-if="curItem.type === 'banner'">
+                    <div class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">指示点形状 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" name="mode" value="round" v-model="curItem.config.mode"> 圆形
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="mode" value="dot" v-model="curItem.config.mode"> 圆点
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="mode" value="rect" v-model="curItem.config.mode"> 长方
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="mode" value="none" v-model="curItem.config.mode"> 隐藏
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">风格类型 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" value="default" v-model="curItem.config.type"> 平铺风格
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="card" v-model="curItem.config.type"> 卡片风格
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">3D视觉图 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" value="1" v-model="curItem.config.effect3d"> 开启
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="0" v-model="curItem.config.effect3d"> 关闭
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"> 切换时间 </label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="number" v-model="curItem.config.interval">
+                                <div class="layui-form-mid layui-word-aux">轮播图自动切换的间隔时间，单位：毫秒</div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" v-if="curItem.config.type === 'card'">
+                            <label class="layui-form-label"> 背景图片 </label>
+                            <div class="layui-input-block" style="display:flex;">
+                                <input type="text" class="layui-input" placeholder="请选择图片" v-model='curItem.config.backdrop'>
+                                <button type="button" class="btn-default btn-outline"
+                                        @click="onEditorSelectImage(curItem.config, 'backdrop')">选择链接</button>
+                            </div>
+                        </div>
+                        <div class="layui-plate-item">
+                            <draggable :list="curItem.data" :options="{ animation: 120, filter: 'input', preventOnFilter: false }">
+                                <div class="item" v-for="(banner, index) in curItem.data">
+                                    <i class="item-delete" @click="onEditorDeleteData(index, selectedIndex)"></i>
+                                    <div class="item-image">
+                                        <img :src="banner.imgUrl" @click="onEditorSelectImage(banner, 'imgUrl')">
+                                    </div>
+                                    <div class="item-form">
+                                        <div class="item-input-group">
+                                            <input type="text" class="layui-input" placeholder="请选择图片" v-model='banner.imgUrl'>
+                                            <button type="button" class="btn-default btn-outline" @click="onEditorSelectImage(banner, 'imgUrl')">选择图片</button>
+                                        </div>
+                                        <div class="item-input-group">
+                                            <input type="text" class="layui-input" placeholder="请输入链接地址" value="" v-model='banner.linkUrl'>
+                                            <button type="button" class="btn-default btn-outline">选择链接</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </draggable>
+                        </div>
+                        <div class="btn-default" @click="onEditorAddData">添加一个</div>
+                    </div>
+                </div>
+
+                <!-- 编辑器: 图片组 -->
+                <div id="tpl_editor_image" v-if="curItem.type === 'image'">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">顶部外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginTop" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginTop }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">左右外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginLeft" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginLeft }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上下内边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.paddingTop" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.paddingTop }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">左右内边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.paddingLeft" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.paddingLeft }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input class="" type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor am-btn am-btn-xs"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#FFFFFF')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-plate-item">
+                            <draggable :list="curItem.data" :options="{ animation: 120, filter: 'input', preventOnFilter: false }">
+                                <div class="item drag" v-for="(imageSingle, index) in curItem.data">
+                                    <i class="item-delete" @click="onEditorDeleteData(index,selectedIndex)"></i>
+                                    <div class="item-form">
+                                        <div class="item-input-group">
+                                            <div class="item-image">
+                                                <img :src="imageSingle.imgUrl" alt=""
+                                                     @click="onEditorSelectImage(imageSingle, 'imgUrl')">
+                                            </div>
+                                            <div class="item-form">
+                                                <div class="item-input-group">
+                                                    <input type="text" class="layui-input" placeholder="请选择图片" v-model='imageSingle.imgUrl'>
+                                                    <button type="button" class="btn-default btn-outline" @click="onEditorSelectImage(imageSingle, 'imgUrl')">选择图片</button>
+                                                </div>
+                                                <div class="item-input-group">
+                                                    <input type="text"  class="layui-input" placeholder="请输入链接地址" value="" v-model='imageSingle.linkUrl'>
+                                                    <button type="button" class="btn-default btn-outline">选择链接</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </draggable>
+                        </div>
+                        <div class="btn-default" @click="onEditorAddData">添加一个</div>
+                    </form>
+                </div>
+
+                <!-- 编辑器: 导航组 -->
+                <div id="tpl_editor_navBar" v-if="curItem.type === 'navBar'">
+                    <div class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input class="" type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#FFFFFF')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">每行数量 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" value="3" v-model="curItem.config.rowsNum"> 3个
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="4" v-model="curItem.config.rowsNum"> 4个
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="5" v-model="curItem.config.rowsNum"> 5个
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">圆角风格 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.borderRadius" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.borderRadius }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">左右外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginLeft" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginLeft }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">顶部外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginTop" min="0" max="300">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginTop }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-plate-item">
+                            <draggable :list="curItem.data" :options="{ animation: 120, filter: 'input', preventOnFilter: false }">
+                                <div class="item drag" v-for="(navBar, index) in curItem.data">
+                                    <i class="item-delete" @click="onEditorDeleteData(index, selectedIndex)"></i>
+                                    <div class="item-image" style="border:none;background:none;width:50px;height:50px;margin-top:32px;">
+                                        <img :src="navBar.imgUrl"
+                                             @click="onEditorSelectImage(navBar, 'imgUrl')"
+                                             style="width:100%;height:100%;"
+                                        >
+                                    </div>
+                                    <div class="item-form">
+                                        <div class="item-input-group">
+                                            <input type="color" v-model="navBar.color">
+                                            <button type="button" class="btn-resetColor"
+                                                    @click.stop="onEditorResetColor(navBar, 'color', '#666666')">
+                                                重置
+                                            </button>
+                                        </div>
+                                        <div class="item-input-group">
+                                            <input type="text" class="layui-input" placeholder="请填写导航文本" v-model="navBar.text">
+                                        </div>
+                                        <div class="item-input-group">
+                                            <input type="text" class="layui-input" placeholder="请填写链接地址" v-model="navBar.linkUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                            </draggable>
+                        </div>
+                        <div class="btn-default" @click="onEditorAddData">添加一个</div>
+                    </div>
+                </div>
+
+                <!--编辑器: 公告组-->
+                <div id="tpl_editor_notice" v-if="curItem.type === 'notice'">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">顶部外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginTop" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginTop }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">左右外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginAlign" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginAlign }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">圆角风格 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.borderRadius" min="0" max="20">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.borderRadius }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input class="" type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#ffffff')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">文字颜色 </label>
+                            <div class="layui-input-block">
+                                <input class="" type="color"
+                                       v-model="curItem.config.textColor">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'textColor', '#000000')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-plate-item">
+                            <div class="item">
+                                <div class="item-image" style="border:none;background:none;width:64px;height:100%;margin-top:10px;">
+                                    <img :src="curItem.config.icon"
+                                         @click="onEditorSelectImage(curItem.config, 'icon')"
+                                         style="width:100%;height:100%;"
+                                    >
+                                </div>
+                                <div class="item-form">
+                                    <div class="layui-form-mid layui-word-aux">建议图标尺寸：128 × 24</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-plate-item">
+                            <draggable :list="curItem.data" :options="{ animation: 120, filter: 'input', preventOnFilter: false }">
+                                <div class="item drag" v-for="(noticeItem, index) in curItem.data">
+                                    <i class="item-delete" @click="onEditorDeleteData(index, selectedIndex)"></i>
+                                    <div class="item-form">
+                                        <div class="item-input-group">
+                                            <input type="text" class="layui-input" placeholder="请填写公告地址" v-model="noticeItem.title">
+                                        </div>
+                                        <div class="item-input-group">
+                                            <input type="text" class="layui-input" placeholder="请填写链接地址" v-model="noticeItem.linkUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                            </draggable>
+                        </div>
+                        <div class="btn-default" @click="onEditorAddData">添加一个</div>
+                    </form>
+                </div>
+
+                <!--编辑器: 图片橱窗-->
+                <div id="tpl_editor_window" v-if="curItem.type === 'window'">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">顶部外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginTop" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginTop }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">左右外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginLeft" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginLeft }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">整体内边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.padding" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.padding }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">图片间隙 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.interval" min="0" max="10">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.interval }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">圆角风格 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.borderRadius" min="0" max="20">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.borderRadius }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#ffffff')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">布局方式 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" value="2"
+                                           v-model="curItem.config.layout"> 堆积两列
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="3"
+                                           v-model="curItem.config.layout"> 堆积三列
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="4"
+                                           v-model="curItem.config.layout"> 堆积四列
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="-1"
+                                           v-model="curItem.config.layout"> 橱窗样式
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-plate-item">
+                            <draggable :list="curItem.data" :options="{ animation: 120, filter: 'input', preventOnFilter: false }">
+                                <div class="item drag" v-for="(item, index) in curItem.data">
+                                    <i class="item-delete" @click="onEditorDeleteData(index,selectedIndex)"></i>
+                                    <div class="item-image" style="border:none;background:none;width:50px;height:50px;">
+                                        <img :src="item.imgUrl"
+                                             @click="onEditorSelectImage(item, 'imgUrl')"
+                                             style="width:100%;height:100%;" alt="img"
+                                        >
+                                    </div>
+                                    <div class="item-form">
+                                        <div class="item-input-group">
+                                            <input type="text" class="layui-input" placeholder="请填写链接地址" v-model="item.linkUrl">
+                                        </div>
+                                    </div>
+                                </div>
+                            </draggable>
+                        </div>
+                        <div class="btn-default" @click="onEditorAddData">
+                            <i class="fa fa-plus"></i> 添加一个
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 编辑器: 商品组 -->
+                <div id="tpl_editor_goods" v-if="curItem.type === 'goods'">
+                    <div class="layui-form">
+                        <!--商品数据-->
+                        <div class="j-switch-box" data-item-class="switch-source">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品来源 </label>
+                                <div class="layui-input-block">
+                                    <label class="radio-inline">
+                                        <input type="radio" value="auto" v-model="curItem.config.source"> 自动获取
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" value="choice" v-model="curItem.config.source"> 手动选择
+                                    </label>
+                                </div>
+                            </div>
+                            <!--手动选择-->
+                            <div class="switch-source" v-show="curItem.config.source === 'choice'">
+                                <div class="layui-form-column">
+                                    <draggable :list="curItem.data" :options="{ animation: 120, filter: 'input', preventOnFilter: false }">
+                                        <div class="layui-column-block">
+                                           <div class="layui-column-module drag" v-for="(goods,index) in curItem.data">
+                                               <i class="item-delete" data-no-confirm="true" @click="onEditorDeleteData(index, selectedIndex)">x</i>
+                                               <img :src="goods.imgUrl || goods.image" alt="img">
+                                           </div>
+                                        </div>
+                                    </draggable>
+                                </div>
+                                <div class="btn-default" @click.stop="onSelectGoods(curItem)">选择商品</div>
+                            </div>
+                            <!-- 自动获取 -->
+                            <div class="switch-source" v-show="curItem.config.source === 'auto'">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">商品分类 </label>
+                                    <div class="layui-input-block">
+                                        <select v-model="curItem.config.auto.category">
+                                            <option value="0"> -- 全部分类 --</option>
+                                            <template v-for="item in opts.goodsCategory">
+                                                <option :value="item.id"> {{ item.html }} {{ item.name }} </option>
+                                            </template>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"> 商品排序 </label>
+                                    <div class="layui-input-block">
+                                        <label class="radio-inline">
+                                            <input type="radio" value="all" v-model="curItem.config.auto.goodsSort">
+                                            综合
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" value="sales" v-model="curItem.config.auto.goodsSort">
+                                            销量
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" value="price" v-model="curItem.config.auto.goodsSort">
+                                            价格
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"> 显示数量 </label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" type="number" min="1"
+                                               v-model="curItem.config.auto.showNum">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">圆角风格 </label>
+                                    <div class="layui-input-block">
+                                        <input type="range" v-model="curItem.config.borderRadius" min="0" max="20">
+                                        <div class="display-value">
+                                            <span class="value">{{ curItem.config.borderRadius }}</span>px
+                                            (像素)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">左右外边距 </label>
+                                    <div class="layui-input-block">
+                                        <input type="range" v-model="curItem.config.marginLeft" min="0" max="50">
+                                        <div class="display-value">
+                                            <span class="value">{{ curItem.config.marginLeft }}</span>px
+                                            (像素)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">顶部外边距 </label>
+                                    <div class="layui-input-block">
+                                        <input type="range" v-model="curItem.config.marginTop" min="0" max="50">
+                                        <div class="display-value">
+                                            <span class="value">{{ curItem.config.marginTop }}</span>px
+                                            (像素)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--分割线-->
+                        <hr class="divider-line" />
+                        <!--组件样式-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#F3F3F3')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">显示类型 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" value="list"
+                                           v-model="curItem.config.display"> 列表平铺
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="slide"
+                                           v-model="curItem.config.display"
+                                           :disabled="curItem.config.column === '1'"> 横向滑动
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">分列数量 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" value="1"
+                                           v-model="curItem.config.column"
+                                           :disabled="curItem.config.display === 'slide'"> 单列
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="2"
+                                           v-model="curItem.config.column"> 两列
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="3"
+                                           v-model="curItem.config.column"> 三列
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">显示内容 </label>
+                            <div class="layui-input-block">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" v-model="curItem.config.show.goodsName"> 商品名称
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" v-model="curItem.config.show.goodsPrice"> 商品价格
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" v-model="curItem.config.show.linePrice"> 划线价格
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" v-model="curItem.config.show.goodsSales"> 商品销量
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 编辑器: 优惠券组 -->
+                <div id="tpl_editor_coupon" v-if="curItem.type === 'coupon'">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#ffffff')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">未领取背色 </label>
+                            <div class="layui-input-block">
+                                <input type="color" v-model="curItem.config.normalColor">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'normalColor', '#ff2c3c')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">已领取背色 </label>
+                            <div class="layui-input-block">
+                                <input type="color" v-model="curItem.config.receiveColor">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'receiveColor', '#dadada')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上下内边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.paddingTop" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.paddingTop }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">左右外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginLeft" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginLeft }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">顶部外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginTop" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginTop }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">圆角风格 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.borderRadius" min="0" max="20">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.borderRadius }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">显示数量 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.limit" min="1" max="5">
+                                <div class="display-value">
+                                    最多<span class="value">{{ curItem.config.limit }}</span>个
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 编辑器: 拼团组 -->
+                <div id="tpl_editor_teamGoods" v-if="curItem.type === 'teamGoods'">
+                    <form class="layui-form">
+                        <!--商品数据-->
+                        <div class="j-switch-box" data-item-class="switch-source">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品来源 </label>
+                                <div class="layui-input-block">
+                                    <label class="radio-inline">
+                                        <input type="radio" value="auto"
+                                               v-model="curItem.config.source"> 自动获取
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" value="choice"
+                                               v-model="curItem.config.source"> 手动选择
+                                    </label>
+                                </div>
+                            </div>
+                            <!--手动选择-->
+                            <div class="switch-source" v-show="curItem.config.source === 'choice'">
+                                <div class="layui-form-column">
+                                    <draggable :list="curItem.data" :options="{ animation: 120, filter: 'input', preventOnFilter: false }">
+                                        <div class="layui-column-block">
+                                            <div class="layui-column-module drag" v-for="(goods, index) in curItem.data" :key="index">
+                                                <i class="item-delete" data-no-confirm="true" @click="onEditorDeleteData(index, selectedIndex)">x</i>
+                                                <img :src="goods.image" alt="img">
+                                            </div>
+                                        </div>
+                                    </draggable>
+                                </div>
+                                <div class="btn-default" @click.stop="onSelectGoods(curItem)">选择商品</div>
+                            </div>
+                            <!-- 自动获取 -->
+                            <div class="switch-source" v-show="curItem.config.source === 'auto'">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"> 商品排序 </label>
+                                    <div class="layui-input-block">
+                                        <label class="radio-inline">
+                                            <input type="radio" value="all" v-model="curItem.config.auto.goodsSort">
+                                            综合
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" value="sales" v-model="curItem.config.auto.goodsSort">
+                                            销量
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" value="price" v-model="curItem.config.auto.goodsSort">
+                                            价格
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"> 显示数量 </label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" type="number" min="1"
+                                               v-model="curItem.config.auto.showNum">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--分割线-->
+                        <hr class="divider-line"/>
+                        <!--组件样式-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">圆角风格 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.borderRadius" min="0" max="20">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.borderRadius }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">左右外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginLeft" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginLeft }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">顶部外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginTop" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginTop }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor am-btn am-btn-xs"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#ffffff')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">显示内容 </label>
+                            <div class="layui-input-block">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="1" v-model="curItem.config.show.teamPrice"> 拼团价格
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" v-model="curItem.config.show.teamJoin"> 参团人数
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" v-model="curItem.config.show.teamGoBtn"> 参团按钮
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 编辑器: 秒杀组 -->
+                <div id="tpl_editor_sharpGoods" v-if="curItem.type === 'seckillGoods'">
+                    <form class="layui-form">
+                        <!--商品数据-->
+                        <div class="j-switch-box" data-item-class="switch-source">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品来源 </label>
+                                <div class="layui-input-block">
+                                    <label class="radio-inline">
+                                        <input type="radio" value="auto"
+                                               v-model="curItem.config.source"> 自动获取
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" value="choice"
+                                               v-model="curItem.config.source"> 手动选择
+                                    </label>
+                                </div>
+                            </div>
+                            <!--手动选择-->
+                            <div class="switch-source" v-show="curItem.config.source === 'choice'">
+                                <div class="layui-form-column">
+                                    <draggable :list="curItem.data" :options="{ animation: 120, filter: 'input', preventOnFilter: false }">
+                                        <div class="layui-column-block">
+                                            <div class="layui-column-module drag" v-for="(goods,index) in curItem.data">
+                                                <i class="item-delete" data-no-confirm="true" @click="onEditorDeleteData(index, selectedIndex)">x</i>
+                                                <img :src="goods.imgUrl || goods.image" alt="img">
+                                            </div>
+                                        </div>
+                                    </draggable>
+                                </div>
+                                <div class="btn-default" @click.stop="onSelectGoods(curItem)">选择商品</div>
+                            </div>
+                            <!-- 自动获取 -->
+                            <div class="switch-source" v-show="curItem.config.source === 'auto'">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"> 商品排序 </label>
+                                    <div class="layui-input-block">
+                                        <label class="radio-inline">
+                                            <input type="radio" value="all" v-model="curItem.config.auto.goodsSort">
+                                            综合
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" value="sales" v-model="curItem.config.auto.goodsSort">
+                                            销量
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" value="price" v-model="curItem.config.auto.goodsSort">
+                                            价格
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label"> 显示数量 </label>
+                                    <div class="layui-input-block">
+                                        <input class="layui-input" type="number" min="1"
+                                               v-model="curItem.config.auto.showNum">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--分割线-->
+                        <hr class="divider-line"/>
+                        <!--组件样式-->
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">圆角风格 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.borderRadius" min="0" max="20">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.borderRadius }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">左右外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginLeft" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginLeft }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">顶部外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginTop" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginTop }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#ffffff')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">显示内容 </label>
+                            <div class="layui-input-block">
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="1" v-model="curItem.config.show.intro"> 商品简介
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" value="1" v-model="curItem.config.show.seckillPrice"> 秒杀价格
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" v-model="curItem.config.show.linePrice"> 划线价格
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!--编辑器: 辅助空白-->
+                <div id="tpl_editor_blank" v-if="curItem.type === 'blank'">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input type="color" v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor am-btn am-btn-xs"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#ffffff')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">组件高度 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.height" min="1" max="200">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.height }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!--编辑器: 辅助线-->
+                <div id="tpl_editor_guide" v-if="curItem.type === 'guide'">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">线条样式 </label>
+                            <div class="layui-input-block">
+                                <label class="radio-inline">
+                                    <input type="radio" value="solid"
+                                           v-model='curItem.config.lineStyle'>
+                                    实线
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="dashed"
+                                           v-model='curItem.config.lineStyle'> 虚线
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="dotted"
+                                           v-model='curItem.config.lineStyle'> 点状
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">背景颜色 </label>
+                            <div class="layui-input-block">
+                                <input class="" type="color"
+                                       v-model="curItem.config.background">
+                                <button type="button" class="btn-resetColor am-btn am-btn-xs"
+                                        @click.stop="onEditorResetColor(curItem.config, 'background', '#ffffff')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">线条颜色 </label>
+                            <div class="layui-input-block">
+                                <input type="color" v-model="curItem.config.lineColor">
+                                <button type="button" class="btn-resetColor"
+                                        @click.stop="onEditorResetColor(curItem.config, 'lineColor', '#000000')">
+                                    重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">线条高度 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.lineHeight" min="1" max="20">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.lineHeight }}</span>px
+                                    (像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上下内边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.paddingTop" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.paddingTop }}</span>px(像素)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">左右外边距 </label>
+                            <div class="layui-input-block">
+                                <input type="range" v-model="curItem.config.marginLeft" min="0" max="50">
+                                <div class="display-value">
+                                    <span class="value">{{ curItem.config.marginLeft }}</span>px(像素)
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </template>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="style"}
+<link rel="stylesheet" href="__STATIC__/css/diy.css">
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/js/diy/vue.min.js"></script>
+<script src="__STATIC__/js/diy/Sortable.min.js"></script>
+<script src="__STATIC__/js/diy/vuedraggable.min.js"></script>
+<script src="__STATIC__/js/diy/diy.js"></script>
+<script>
+    $(function () {
+        new diyPhone(
+            JSON.parse('{$defaultData|raw}'),
+            JSON.parse('{$jsonData|raw}'),
+            JSON.parse('{$opts|raw}')
+        );
+        layui.use(["layer"]);
+    });
+</script>
+{/block}

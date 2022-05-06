@@ -1,0 +1,64 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <div class="layui-card-body layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:100px;"><span class="asterisk">*</span>活动状态：</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="is_open" value="1" title="开启" {if $detail.is_open==1}checked{/if}>
+                    <input type="radio" name="is_open" value="0" title="关闭" {if $detail.is_open==0}checked{/if}>
+                    <div class="layui-form-mid layui-word-aux" style="white-space:nowrap;">
+                        开启或关闭抽奖功能
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="limit" class="layui-form-label" style="width:100px;"><span class="asterisk">*</span>抽奖次数：</label>
+                <div class="layui-input-inline">
+                    <input type="number" min="0" name="limit" id="limit" value="{$detail.limit}" class="layui-input" autocomplete="off">
+                    <div class="layui-form-mid layui-word-aux" style="white-space:nowrap;">
+                        每天限制可抽奖次数
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="rules" class="layui-form-label" style="width:100px;"><span class="asterisk">*</span>抽奖规则：</label>
+                <div class="layui-input-inline">
+                    <textarea id="rules" name="rules" class="layui-textarea">{$detail.rules}</textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">提交保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function() {
+        let form = layui.form;
+
+        form.on("submit(addForm)", function(data){
+            wait.ajax({
+                url: "{:url('addons.Lottery/setting')}",
+                type: "POST",
+                data: data.field
+            }).then((res) => {
+                if (res.code === 0) {
+                    layer.msg(res.msg, {icon: 1, time: 1000});
+                } else {
+                    layer.msg(res.msg, {icon: 2, time: 1000});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

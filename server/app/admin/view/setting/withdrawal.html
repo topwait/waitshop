@@ -1,0 +1,87 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-item .layui-form-label {width: 86px;}
+    .layui-form-item .layui-input-inline {width: 220px;}
+</style>
+{/block}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <div class="layui-card-header">提现设置</div>
+        <div class="layui-card-body">
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="asterisk">*</span>提现方式</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="withdraw_way[]" value="1" title="账户余额" lay-skin="primary" {if in_array(1, $detail.withdraw_way)}checked{/if}>
+                    <input type="checkbox" name="withdraw_way[]" value="2" title="微信零钱" lay-skin="primary" {if in_array(2, $detail.withdraw_way)}checked{/if}>
+                    <input type="checkbox" name="withdraw_way[]" value="3" title="银行卡" lay-skin="primary" {if in_array(3, $detail.withdraw_way)}checked{/if}>
+                    <input type="checkbox" name="withdraw_way[]" value="4" title="微信收款码" lay-skin="primary" {if in_array(4, $detail.withdraw_way)}checked{/if}>
+                    <input type="checkbox" name="withdraw_way[]" value="5" title="支付宝收款码" lay-skin="primary" {if in_array(5, $detail.withdraw_way)}checked{/if}>
+                </div>
+            </div>
+            <!-- 最低提现金额 -->
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="asterisk">*</span>最低提现金额</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="withdraw_min_money" min="0" value="{$detail.withdraw_min_money}" lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">需满足最低金额才可提交提现申请。</div>
+                </div>
+                <div class="layui-form-mid">元</div>
+            </div>
+            <!-- 最高提现金额 -->
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="asterisk">*</span>最高提现金额</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="withdraw_max_money"  min="0" value="{$detail.withdraw_max_money}" lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">会员单次最高允许提现的金额。</div>
+                </div>
+                <div class="layui-form-mid">元</div>
+            </div>
+            <!-- 提现的手续费 -->
+            <div class="layui-form-item">
+                <label class="layui-form-label"><span class="asterisk">*</span>提现的手续费</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="withdraw_service_charge" min="0" value="{$detail.withdraw_service_charge}" lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-mid layui-word-aux">会员提现时收取的手续费占比。</div>
+                </div>
+                <div class="layui-form-mid">%</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">保存设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function () {
+        let form = layui.form;
+
+        // 提交表单
+        form.on("submit(addForm)", function(data){
+            layer.confirm("确定保存当前配置吗?", function(index) {
+                wait.ajax({
+                    url: "{:url('setting.withdrawal/set')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1000});
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1000});
+                    }
+                });
+                layer.close(index);
+            });
+        });
+    });
+</script>
+{/block}

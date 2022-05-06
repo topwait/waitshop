@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css"/>
+    <style>body{padding:20px;}</style>
+</head>
+<body>
+<form class="layui-form layui-form-pane" action="">
+    <div class="layui-form-item"></div>
+    <div class="layui-form-item test"></div>
+    <div class="layui-form-item test1" lay-filter="test1"></div>
+    <div class="layui-form-item test2"></div>
+    <div class="layui-form-item test3"></div>
+</form>
+
+<script type="text/javascript" src="layui/layui.js"></script>
+<script type="text/javascript">
+    layui.config({
+        base: 'js/',
+    })
+    layui.use(['interact'],function(){
+        var interact = layui.interact;
+        var data=[{"id":1,"pid":0,"title":"1-1"},{"id":2,"pid":0,"title":"1-2"},{"id":3,"pid":0,"title":"1-3"},{"id":4,"pid":1,"title":"1-1-1"},{"id":5,"pid":1,"title":"1-1-2"},{"id":6,"pid":2,"title":"1-2-1"},{"id":7,"pid":2,"title":"1-2-3"},{"id":8,"pid":3,"title":"1-3-1"},{"id":9,"pid":3,"title":"1-3-2"},{"id":10,"pid":4,"title":"1-1-1-1"},{"id":11,"pid":4,"title":"1-1-1-2"}];
+        interact.render({
+            elem : '.test',
+            title : '选择联动',
+            data : data,
+            name : 'region',
+        });
+        interact.render({
+            elem : '.test1',
+            title : '选择省市区',
+            data : data,
+            name : 'region1',
+            hint : ['请选择省份','请选择城市','请选择县/区'],
+        });
+        interact.render({
+            elem : '.test2',
+            title : '选择联动',
+            data : data,
+            name : 'region2',
+            hint : ['第一级','第二级','第三级'],
+        });
+        interact.render({
+            elem : '.test3',
+            title : '选择联动',
+            data : data,
+            name : 'region3',
+            selected : [1,4,11],
+            hint : ['第一级','第二级','第三级'],
+        });
+        interact.on('interact(test1)',function(data){
+            console.dir(data);
+        })
+    })
+</script>
+</body>
+</html>

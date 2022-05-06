@@ -1,0 +1,98 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 奖品类型 -->
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label"><span class="asterisk">*</span>奖品数量：</label>
+            <div class="layui-input-block">
+                <select id="type" name="type" lay-verType="tips" lay-verify="required|number">
+                    {foreach $types as $key=>$vo}
+                        <option value="{$key}" {if $detail.type==$key}selected{/if}>{$vo}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <!-- 奖品名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>奖品名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" value="{$detail.name}" lay-verType="tips" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 奖品数量 -->
+        <div class="layui-form-item">
+            <label for="number" class="layui-form-label"><span class="asterisk">*</span>奖品数量：</label>
+            <div class="layui-input-block">
+                <input type="number" id="number" name="number" value="{$detail.number}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 奖励内容 -->
+        <div class="layui-form-item">
+            <label for="reward" class="layui-form-label"><span class="asterisk">*</span>奖励内容：</label>
+            <div class="layui-input-block">
+                <input type="number" id="reward" name="reward" value="{$detail.reward}" lay-verType="tips" lay-verify="required|number" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 奖品排序 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label"><span class="asterisk">*</span>奖品排序：</label>
+            <div class="layui-input-block">
+                <input type="number" id="sort" name="sort" value="{$detail.sort}" lay-verType="tips" lay-verify="required|number" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 中奖概率 -->
+        <div class="layui-form-item">
+            <label for="probability" class="layui-form-label"><span class="asterisk">*</span>中奖概率：</label>
+            <div class="layui-input-block">
+                <input type="number" id="probability" name="probability" value="{$detail.probability}" lay-verType="tips" lay-verify="required|number" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 中奖提示 -->
+        <div class="layui-form-item">
+            <label for="tips" class="layui-form-label"><span class="asterisk">*</span>中奖提示：</label>
+            <div class="layui-input-block">
+                <input type="text" id="tips" name="tips" value="{$detail.tips}" lay-verType="tips" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 奖品图片 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="line-height: 64px;"><span class="asterisk">*</span>奖品图片：</label>
+            <div class="layui-input-block">
+                <div class="wait-upload-drag">
+                    {if $detail.image and $detail.image != ""}
+                    <div class="thumbnail">
+                        <img src="{$detail.image}" alt="主图">
+                        <input type="hidden" name="image" value="{$detail.image}">
+                        <i class="del-upload-btn">x</i>
+                    </div>
+                    {/if}
+                    <img class="add-upload-elem" src="__STATIC__/images/ic_up_photo.png" alt="img"
+                         {if $detail.image!==""}style="display:none;"{/if}>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    wait.delUploadFile();
+    $(document).on("click", ".add-upload-elem", function () {
+        wait.imageUpload({
+            that: $(this),
+            filed: "image",
+            limit: 1
+        });
+    });
+</script>
+{/block}

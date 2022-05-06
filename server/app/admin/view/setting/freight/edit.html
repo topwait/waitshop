@@ -1,0 +1,131 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 模板名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">模板名称：</label>
+            <div class="layui-input-block" style="width:320px;">
+                <input type="hidden" name="id" value="{$detail.id}">
+                <input type="text" id="name" name="name" value="{$detail.name}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 计费方式 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">计费方式：</label>
+            <div class="layui-input-block" style="width:320px;">
+                <input type="radio" name="method" value="10" title="按件数" {if $detail.method===10}checked{/if}>
+                <input type="radio" name="method" value="20" title="按重量" {if $detail.method===20}checked{/if}>
+                <input type="radio" name="method" value="30" title="按体积" {if $detail.method===30}checked{/if}>
+            </div>
+        </div>
+        <!-- 排序编号 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序编号：</label>
+            <div class="layui-input-block" style="width:320px;">
+                <input type="number" id="sort" name="sort" value="{$detail.sort}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required|number">
+            </div>
+        </div>
+        <!-- 备注信息 -->
+        <div class="layui-form-item layui-form-text">
+            <label for="remarks" class="layui-form-label">备注信息：</label>
+            <div class="layui-input-block" style="width:320px;">
+                <textarea id="remarks" name="remarks" placeholder="请输入内容" class="layui-textarea">{$detail.remarks}</textarea>
+            </div>
+        </div>
+        <!-- 计费方式 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">计费方式：</label>
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn layui-btn-sm" id="addRule">添加运费规则</button>
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>可配送区域</th>
+                        <th style="width:80px;">首件 (个)</th>
+                        <th style="width:80px;">运费 (元)</th>
+                        <th style="width:80px;">续件 (个)</th>
+                        <th style="width:80px;">续费 (元)</th>
+                        <th style="width:30px;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody class="rule">
+                        {volist name="$detail.rule" id="vo"}
+                        <tr>
+                            <td class="region">
+                                <span>{$vo.address}</span>
+                                <input type="hidden" class="address" name="address[]" value="{$vo.address}">
+                                <input type="hidden" class="regions" name="region[]" value="{$vo.region}">
+                            </td>
+                            <td><input type="number" name="first_unit[]" value="{$vo.first_unit}" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required"></td>
+                            <td><input type="number" name="first_fee[]" value="{$vo.first_fee}" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required"></td>
+                            <td><input type="number" name="continue_unit[]" value="{$vo.continue_unit}" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required"></td>
+                            <td><input type="number" name="continue_fee[]" value="{$vo.continue_fee}" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required"></td>
+                            <td>无</td>
+                        </tr>
+                        {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    // 选择配送地区
+    $(document).on("click", ".region", function (){
+        let that = $(this);
+        wait.popup({
+            title: "选择配送地区",
+            url: "{:url('setting.Freight/region')}?region=" + that.find(".regions").val(),
+            area: ["500px", "500px"],
+            success: function (layero, index) {
+                layero.layui.form.on("submit(addForm)", function(data){
+                    let region = layero.getRegion();
+                    if (!region.id) {
+                        that.find("span").html("全国");
+                        that.find(".address").val("全国");
+                        that.find(".regions").val("0");
+                    } else {
+                        that.find("span").html(region.name);
+                        that.find(".address").val(region.name);
+                        that.find(".regions").val(region.id);
+                    }
+                    layer.close(index)
+                });
+            }
+        });
+    });
+
+    // 添加运费规则项
+    $(document).on("click", "#addRule", function (){
+        $(".rule").append(`
+            <tr>
+                <td class="region">
+                    <span>全国</span>
+                    <input type="hidden" name="region[]" value="0">
+                </td>
+                <td><input type="number" name="first_unit[]" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required"></td>
+                <td><input type="number" name="first_fee[]" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required"></td>
+                <td><input type="number" name="continue_unit[]" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required"></td>
+                <td><input type="number" name="continue_fee[]" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required"></td>
+                <td><button type="button" class="layui-btn layui-btn-xs layui-btn-danger delBtn">删除</button></td>
+            </tr>
+        `);
+    });
+
+    $(document).on("click", ".delBtn", function () {
+        $(this).parents("tr").remove();
+    });
+</script>
+{/block}

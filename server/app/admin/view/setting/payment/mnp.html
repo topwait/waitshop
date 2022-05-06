@@ -1,0 +1,153 @@
+{extend name="public/layout" /}
+
+
+{block name="style"}
+<style>
+    .layui-form-item .layui-form-label { width: 130px; }
+    .layui-form-item .layui-input-block { margin-left: 160px; }
+
+    .upload { position: relative; width: 94px; height: 94px; }
+    .upload .layui-upload-drag {padding: 10px 20px;}
+    .upload.on:hover .del-upload-btn { visibility: visible;  }
+    .upload .del-upload-btn:hover { background: #000; }
+    .upload .del-upload-btn {
+        visibility: hidden; display: flex; align-items: center; justify-content: center;position: absolute;
+        z-index: 100; top: -11px; right: -9px; width: 20px; height: 20px;cursor: pointer; font-size: 14px;
+        font-style:normal; color: #FFFFFF; border-radius: 50%; background: hsla(0, 0%, 60%, .6);
+    }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 支付名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>支付名称：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="alias" value="{$detail.alias}">
+                <input type="hidden" name="id" value="{$detail.id}">
+                <input type="text" id="name" name="name" value="{$detail.name}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 开发者 AppID -->
+        <div class="layui-form-item">
+            <label for="app_id" class="layui-form-label"><span class="asterisk">*</span>开发者 AppID：</label>
+            <div class="layui-input-block">
+                <input type="text" id="app_id" name="app_id" value="{$detail.params.app_id}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 商户号 MCHID -->
+        <div class="layui-form-item">
+            <label for="mch_id" class="layui-form-label"><span class="asterisk">*</span>商户号 MCHID：</label>
+            <div class="layui-input-block">
+                <input type="text" id="mch_id" name="mch_id" value="{$detail.params.mch_id}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 支付密钥 APIKEY -->
+        <div class="layui-form-item">
+            <label for="key" class="layui-form-label"><span class="asterisk">*</span>支付密钥 APIKEY：</label>
+            <div class="layui-input-block">
+                <input type="text" id="key" name="key" value="{$detail.params.key}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 排序号 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label"><span class="asterisk">*</span>排序号：</label>
+            <div class="layui-input-block" style="max-width: 150px;">
+                <input type="number" id="sort" name="sort" value="{$detail.sort}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 状态 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_enable" value="1" title="正常" {if $detail.is_enable==1}checked{/if}>
+                <input type="radio" name="is_enable" value="0" title="禁用" {if $detail.is_enable==0}checked{/if}>
+            </div>
+        </div>
+        <!-- certPem -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">apiclient_cert.pem：</label>
+            <div class="layui-input-block ">
+                <div class="upload {if !empty($detail.params.cert_path)}on{/if}">
+                    <i class="del-upload-btn" data-type="cert">x</i>
+                    <div class="layui-upload-drag" data-type="cert">
+                        <input type="hidden" name="cert_path" value="{$detail.params.cert_path}">
+                        <i class="layui-icon {$detail.params.cert_path ? 'layui-icon-form' : 'layui-icon-upload'}"></i>
+                        <p>{$detail.params.cert_path ? 'cert.pem' : '上传证书'}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- KeyPem -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">apiclient_key.pem：</label>
+            <div class="layui-input-block">
+                <div class="upload {if !empty($detail.params.key_path)}on{/if}">
+                    <i class="del-upload-btn" data-type="key">x</i>
+                    <div class="layui-upload-drag" data-type="key">
+                        <input type="hidden" name="key_path" value="{$detail.params.key_path ?? ''}">
+                        <i class="layui-icon {$detail.params.key_path ? 'layui-icon-key' : 'layui-icon-upload'}"></i>
+                        <p>{$detail.params.key_path ? 'key.pem' : '上传密钥'}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["upload"], function() {
+        let upload = layui.upload;
+
+        // 上传证书
+        upload.render({
+            elem: ".layui-upload-drag"
+            ,url: "{:url('Upload/pem')}"
+            ,field: "iFile"
+            ,multiple: true
+            ,acceptMime: 'pem/*'
+            ,exts: "pem"
+            ,done: function(res){
+                if (res.code === 0) {
+                    let elem = $(this)[0].item;
+                    let type = elem.attr("data-type");
+                    elem.parent().addClass("on");
+                    elem.children("input").val(res.data.uri);
+                    elem.children("p").html(type === 'cert' ? "cert.pem" : 'key.pem');
+                    elem.children("i").removeClass("layui-icon-upload").addClass(type === 'cert' ? "layui-icon-form" : "layui-icon-key");
+                }
+            }
+        });
+
+        // 删除证书
+        $(document).on("click", ".del-upload-btn", function (event) {
+            event.stopPropagation();
+            let type = $(this).attr("data-type");
+            let elem = $(this).next();
+            if (type === "cert") {
+                $(this).parent().removeClass("on");
+                elem.children("input").val("");
+                elem.children("p").html("上传证书");
+                elem.children("i").removeClass("layui-icon-form").addClass("layui-icon-upload");
+            } else {
+                $(this).parent().removeClass("on");
+                elem.children("input").val("");
+                elem.children("p").html("上传证书");
+                elem.children("i").removeClass("layui-icon-key").addClass("layui-icon-upload");
+            }
+        });
+
+    })
+</script>
+{/block}

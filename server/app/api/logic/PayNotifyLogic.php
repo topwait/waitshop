@@ -1,0 +1,242 @@
+<?php
+// +----------------------------------------------------------------------
+// | WaitShop开源电商系统 [ 助力中小企业快速落地 ]
+// +----------------------------------------------------------------------
+// | 欢迎阅读学习程序代码
+// | gitee:   https://gitee.com/wafts/WaitShop
+// | github:  https://github.com/miniWorlds/waitshop
+// | 官方网站: https://www.waitshop.cn
+// +----------------------------------------------------------------------
+// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
+// | WaitShop并不是自由软件,未经许可不能去掉WaitShop相关版权
+// | WaitShop系统产品必须购买商业授权后,方可去除前后端官方标识
+// | WaitShop团队版权所有并拥有最终解释权
+// +----------------------------------------------------------------------
+// | Author: WaitShop Team <2474369941@qq.com>
+// +----------------------------------------------------------------------
+
+namespace app\api\logic;
+
+
+use app\api\service\DistributionServer;
+use app\api\service\TeamOrderServer;
+use app\common\basics\Logic;
+use app\common\enum\LogGrowthEnum;
+use app\common\enum\LogIntegralEnum;
+use app\common\enum\LogWalletEnum;
+use app\common\enum\NoticeEnum;
+use app\common\enum\OrderEnum;
+use app\common\model\addons\RechargeOrder;
+use app\common\model\addons\Seckill;
+use app\common\model\addons\SeckillSku;
+use app\common\model\addons\TeamSku;
+use app\common\model\goods\Goods;
+use app\common\model\goods\GoodsSku;
+use app\common\model\log\LogGrowth;
+use app\common\model\log\LogIntegral;
+use app\common\model\log\LogWallet;
+use app\common\model\order\Order;
+use app\common\model\order\OrderDelivery;
+use app\common\model\user\User;
+use app\common\utils\ConfigUtils;
+use think\facade\Db;
+use Exception;
+
+/**
+ * 支付回调接口-逻辑层
+ * Class PayNotifyLogic
+ * @package app\api\logic
+ */
+class PayNotifyLogic extends Logic
+{
+    /**
+     * 处理回调事件
+     *
+     * @author windy
+     * @param $action (调用的方法)
+     * @param $order_sn (订单编号)
+     * @param array $extra (扩展信息)
+     * @return mixed
+     * @throws Exception
+     */
+    public static function handle($action, $order_sn, $extra = [])
+    {
+        try {
+            return self::$action($order_sn, $extra);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * 订单回调处理
+     *
+     * @author windy
+     * @param $orderSn
+     * @param $extra
+     * @return bool
+     * @throws Exception
+     */
+    public static function order($orderSn, $extra): bool
+    {
+        Db::startTrans();
+        try {
+            // 查询订单信息
+            $order = (new Order())->field(true)
+                ->with(['orderGoods'])
+                ->where(['order_sn' => $orderSn])
+                ->findOrEmpty()->toArray();
+
+            // 查询用户信息
+            $user = (new User())->findOrEmpty($order['user_id'])->toArray();
+
+            // 余额支付(扣余额)
+            if ($order['pay_way'] == OrderEnum::PAY_WAY_BALANCE) {
+                if ($user['money'] - $order['paid_amount'] < 0) {
+                    throw new Exception('余额不足');
+                }
+                User::update([
+                    'money'       => ['dec', $order['paid_amount']],
+                    'update_time' => self::reqTime()
+                ], ['id' => $order['user_id']]);
+            }
+
+            // 更新订单状态
+            Order::update([
+                'transaction_id' => $extra['transaction_id'] ?? '',
+                'pay_status'     => OrderEnum::OK_PAID_STATUS,
+                'order_status'   => OrderEnum::STATUS_WAIT_DELIVERY,
+                'pay_time'       => self::reqTime()
+            ], ['id'=>$order['id']]);
+
+            // 扣除商品库存/增加商品销量
+            if ($order['order_type'] == OrderEnum::NORMAL_ORDER and $order['stock_deduct_method'] == 2) {
+                foreach ($order['orderGoods'] as $item) {
+                    Goods::update([
+                        'stock'        => ['dec', $item['count']],
+                        'sales_volume' => ['inc', $item['count']]
+                    ], ['id' => $item['goods_id']]);
+
+                    GoodsSku::update([
+                        'stock'        => ['dec', $item['count']],
+                        'sales_volume' => ['inc', $item['count']]
+
+                    ], ['id' => $item['sku_id']]);
+                }
+            }
+
+            // 记录用户累计消费
+            User::update([
+                'total_order_amount' => ['inc', $order['paid_amount']],
+                'update_time'        => time()
+            ], ['id'=>$user['id']]);
+
+            // 记录用户消费日志
+            LogWallet::reduce(
+                LogWalletEnum::balance_pay_order,
+                $order['paid_amount'],
+                $user['id'], 0, $order['id'],
+                $order['order_sn']);
+
+            // 普通订单分销发放
+            if ($order['order_type'] === OrderEnum::NORMAL_ORDER) {
+                DistributionServer::commission($order['id']);
+            }
+
+            // [营销扩展]: 拼团订单
+            if ($order['order_type'] == OrderEnum::TEAM_ORDER) {
+                TeamOrderServer::createTeam($order);
+                TeamSku::update([
+                    'team_stock'   => ['dec', $order['orderGoods'][0]['count']],
+                    'sales_volume' => ['inc', $order['orderGoods'][0]['count']]
+                ], [
+                    'team_id'  => $order['team_activity_id'],
+                    'goods_id' => $order['orderGoods'][0]['goods_id']
+                ]);
+            }
+
+            // [营销扩展]: 秒杀订单
+            if ($order['order_type'] == OrderEnum::SECKILL_ORDER) {
+                SeckillSku::update([
+                    'seckill_stock' => ['dec', $order['orderGoods'][0]['count']],
+                    'sales_volume'  => ['inc', $order['orderGoods'][0]['count']]
+                ], [
+                    'seckill_id' => $order['seckill_id'],
+                    'goods_id'   => $order['orderGoods'][0]['goods_id']
+                ]);
+
+                Seckill::update([
+                    'sales_volume' => ['inc', $order['orderGoods'][0]['count']],
+                    'update_time'  => time()
+                ], ['id'=>$order['seckill_id']]);
+            }
+
+            // 消息通知
+            $goodsName = $order['orderGoods'][0]['name'] ?? '商品';
+            event('Notice', [
+                'scene'   => NoticeEnum::ORDER_PAY_NOTICE,
+                'mobile'  => $order['address_snap']['mobile'] ?? '',
+                'user_id' => $order['user_id'],
+                'params'  => [
+                    'time'         => date('Y-m-d H:i:s', self::reqTime()),
+                    'nickname'     => $user['nickname'],
+                    'order_sn'     => $order['order_sn'],
+                    'total_num'    => $order['total_num'],
+                    'paid_amount'  => $order['paid_amount'],
+                    'goods_name'   => strlen($goodsName) > 20 ? mb_substr($goodsName, 0, 16).'...' : $goodsName
+                ]
+            ]);
+
+            Db::commit();
+            return true;
+        } catch (Exception $e) {
+            Db::rollback();
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * 充值回调处理
+     *
+     * @author windy
+     * @param $orderSn (订单编号)
+     * @param $extra (额外参数)
+     */
+    public static function recharge($orderSn, $extra)
+    {
+        // 充值订单
+        $order = (new RechargeOrder())
+            ->where(['order_sn'=>$orderSn])
+            ->findOrEmpty()
+            ->toArray();
+
+        // 更新订单
+        RechargeOrder::update([
+            'transaction_id' => $extra['transaction_id'] ?? '',
+            'pay_status'     => 1,
+            'pay_time'       => time(),
+            'update_time'    => time()
+        ], ['id'=>$order['id']]);
+
+        // 更新钱包
+        User::update([
+            'money'        => ['inc', $order['paid_amount'] + $order['give_amount']],
+            'integral'     => ['inc', $order['give_integral']],
+            'growth_value' => ['inc', $order['give_growth']],
+        ], ['id'=>$order['user_id']]);
+
+        // 金额变动日志
+        $changeAmount = ($order['paid_amount'] + $order['give_amount']);
+        LogWallet::add(LogWalletEnum::recharge_money, $changeAmount, $order['user_id'], 0, $order['id'], $order['order_sn'], '用户充值');
+
+        // 积分变动日志
+        if ($order['give_integral']) {
+            LogIntegral::add(LogIntegralEnum::recharge_money_give, $order['give_integral'], $order['user_id'], 0, $order['id'], $order['order_sn'], '余额充值赠送');
+        }
+
+        // 成长值变动日志
+        if ($order['give_growth']) {
+            LogGrowth::add(LogGrowthEnum::recharge_inc_growth, $order['give_integral'], $order['user_id'], 0, $order['id'], $order['order_sn'], '余额充值赠送');
+        }
+    }
+}

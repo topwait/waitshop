@@ -1,0 +1,283 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-item .layui-form-label { width: 86px; }
+    .layui-form-item .layui-input-block { margin-left: 116px; }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 优惠券类型 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>优惠券类型：</label>
+            <div class="layui-input-block">
+                {if $detail.status==0}
+                    <input type="radio" name="type" value="10" title="满减券" {if $detail.type==10}checked{/if}>
+                    <input type="radio" name="type" value="20" title="折扣券" {if $detail.type==20}checked{/if}>
+                {else}
+                    <input type="radio" name="type" value="10" title="满减券" disabled="disabled" {if $detail.type==10}checked{/if}>
+                    <input type="radio" name="type" value="20" title="折扣券" disabled="disabled" {if $detail.type==20}checked{/if}>
+                {/if}
+            </div>
+        </div>
+        <!-- 优惠券名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>优惠券名称：</label>
+            <div class="layui-input-block">
+                <input type="hidden" name="id" value="{$detail.id}">
+                <input type="text" id="name" name="name" value="{$detail.name}"
+                       class="layui-input" autocomplete="off" lay-verify="required">
+            </div>
+        </div>
+        <!-- 减免金额 -->
+        <div class="layui-form-item reduceNode" {if $detail.type!=10}style="display:none;"{/if}>
+            <label for="reduce_price" class="layui-form-label"><span class="asterisk">*</span>减免金额：</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" id="reduce_price" name="reduce_price" value="{$detail.reduce_price}"
+                       class="layui-input {if $detail.status!==0}layui-disabled{/if}" autocomplete="off" lay-verify="required|number"
+                       {if $detail.status!==0}disabled="disabled"{/if}>
+            </div>
+        </div>
+        <!-- 折扣率 -->
+        <div class="layui-form-item discountNode" {if $detail.type!=20}style="display:none;"{/if}>
+            <label for="discount" class="layui-form-label"><span class="asterisk">*</span>折扣率：</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" max="100" id="discount" name="discount" value="{$detail.discount}"
+                       class="layui-input {if $detail.status!==0}layui-disabled{/if}" autocomplete="off" lay-verify="required|number"
+                       {if $detail.status!==0}disabled="disabled"{/if}>
+                <div class="layui-form-mid layui-word-aux">优惠券类型是折扣券时被使用，折扣率范围0-10，9.5代表9.5折，0代表不折扣</div>
+            </div>
+        </div>
+        <!-- 使用门槛 -->
+        <div class="layui-form-item">
+            <label for="min_price" class="layui-form-label"><span class="asterisk">*</span>使用门槛：</label>
+            <div class="layui-input-block">
+                <input type="text" min="0" id="min_price" name="min_price" value="{$detail.min_price}"
+                       class="layui-input {if $detail.status!==0}layui-disabled{/if}" autocomplete="off" lay-verify="required|number"
+                       {if $detail.status!==0}disabled="disabled"{/if}>
+                <div class="layui-form-mid layui-word-aux">最低消费金额，订单总金额满足以上金额才允许使用</div>
+            </div>
+        </div>
+        <!-- 发放数量 -->
+        <div class="layui-form-item">
+            <label for="total_num" class="layui-form-label"><span class="asterisk">*</span>发放数量：</label>
+            <div class="layui-input-block">
+                <input type="number" min="-1" id="total_num" name="total_num" value="{$detail.total_num}"
+                       class="layui-input {if $detail.status!==0}layui-disabled{/if}" autocomplete="off" lay-verify="required|number">
+                <div class="layui-form-mid layui-word-aux">优惠券发放的总数量，如果为 -1 则表示不限制数量</div>
+            </div>
+        </div>
+        <!-- 失效时间 -->
+        <div class="layui-form-item">
+            <label for="use_expire_time" class="layui-form-label"><span class="asterisk">*</span>失效时间：</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" id="use_expire_time" name="use_expire_time" value="{$detail.use_expire_time}"
+                       class="layui-input {if $detail.status!==0}layui-disabled{/if}" autocomplete="off" lay-verify="required|number"
+                       {if $detail.status!==0}disabled="disabled"{/if}>
+                <div class="layui-form-mid layui-word-aux">优惠券领取后，多久不使用自动失效过期，单位：天，如为0则不失效</div>
+            </div>
+        </div>
+        <!-- 使用说明 -->
+        <div class="layui-form-item">
+            <label for="explain" class="layui-form-label"><span class="asterisk">*</span>使用说明：</label>
+            <div class="layui-input-block">
+                <textarea id="explain" name="explain" class="layui-textarea">{$detail.explain ?? ''}</textarea>
+            </div>
+        </div>
+        <!-- 领取方式 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>领取方式：</label>
+            <div class="layui-input-block">
+                {if $detail.status==0}
+                    <input type="radio" name="get_method" value="1" title="直接领取" {if $detail.get_method==1}checked{/if}>
+                    <input type="radio" name="get_method" value="2" title="指定发放" {if $detail.get_method==2}checked{/if}>
+                {else}
+                    <input type="radio" name="get_method" value="1" title="直接领取" disabled="disabled" {if $detail.get_method==1}checked{/if}>
+                    <input type="radio" name="get_method" value="2" title="指定发放" disabled="disabled" {if $detail.get_method==2}checked{/if}>
+                {/if}
+            </div>
+        </div>
+        <!-- 领取次数 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>领取限制：</label>
+            <div class="layui-input-inline">
+                {if $detail.status==0}
+                    <input type="radio" name="get_num_type" value="0" title="不限制领取次数" {if $detail.get_num_type==0}checked{/if}>
+                {else}
+                    <input type="radio" name="get_num_type" value="0" title="不限制领取次数" disabled="disabled" {if $detail.get_num_type==0}checked{/if}>
+                {/if}
+            </div>
+            <div class="layui-form-item" style="padding-top: 10px">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline" style="margin-right:0;width: auto">
+                    {if $detail.status==0}
+                        <input type="radio" name="get_num_type" value="1" title="限制领取次数" {if $detail.get_num_type==1}checked{/if}>
+                    {else}
+                        <input type="radio" name="get_num_type" value="1" title="限制领取次数" disabled="disabled" {if $detail.get_num_type==1}checked{/if}>
+                    {/if}
+                </div>
+                <div class="layui-input-inline" style="width: 110px">
+                    <input type="number" name="get_num" value="{$detail.get_num_type==1 ? $detail.get_num : ''}"
+                           {if $detail.status!==0}disabled="disabled"{/if}
+                           class="layui-input {if $detail.status!==0}layui-disabled{/if}">
+                </div>
+                <div class="layui-form-mid">次</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline" style="margin-right:0; width:auto;">
+                    {if $detail.status==0}
+                        <input type="radio" name="get_num_type" value="2" title="每天限制领取" {if $detail.get_num_type==2}checked{/if}>
+                    {else}
+                        <input type="radio" name="get_num_type" value="2" title="每天限制领取" disabled="disabled" {if $detail.get_num_type==2}checked{/if}>
+                    {/if}
+                </div>
+                <div class="layui-input-inline" style="width: 110px">
+                    <input type="number" min="0" name="day_get_num" value="{$detail.get_num_type==2 ? $detail.get_num : ''}"
+                           {if $detail.status!==0}disabled="disabled"{/if}
+                           class="layui-input {if $detail.status!==0}layui-disabled{/if}">
+                </div>
+                <div class="layui-form-mid">次</div>
+            </div>
+        </div>
+        <!-- 限制商品 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>限制商品：</label>
+            <div class="layui-input-block">
+                {if $detail.status==0}
+                    <input type="radio" name="use_goods_type" lay-filter="use_goods_type" value="0" title="全部商品可用" {if $detail.use_goods_type==0}checked{/if}>
+                    <input type="radio" name="use_goods_type" lay-filter="use_goods_type" value="1" title="指定可用商品" {if $detail.use_goods_type==1}checked{/if}>
+                    <input type="radio" name="use_goods_type" lay-filter="use_goods_type" value="2" title="指定不可用商品" {if $detail.use_goods_type==2}checked{/if}>
+                {else}
+                    <input type="radio" name="use_goods_type"  lay-filter="use_goods_type" value="0" title="全部商品可用" disabled="disabled" {if $detail.use_goods_type==0}checked{/if}>
+                    <input type="radio" name="use_goods_type" lay-filter="use_goods_type" value="1" title="指定可用商品" disabled="disabled" {if $detail.use_goods_type==1}checked{/if}>
+                    <input type="radio" name="use_goods_type" lay-filter="use_goods_type" value="2" title="指定不可用商品" disabled="disabled" {if $detail.use_goods_type==2}checked{/if}>
+                {/if}
+            </div>
+        </div>
+        <!-- 选择的商品 -->
+        <div class="layui-form-item" id="use-goods-table" {if $detail.use_goods_type==0}style="display:none;"{/if}>
+            <div class="layui-input-block">
+                <button type="button" class="layui-btn layui-btn-sm layEvent" lay-event="addGoods">
+                    <i class="layui-icon layui-icon-add-circle"></i> 添加限制商品
+                </button>
+                <table class="layui-table">
+                    <colgroup>
+                        <col>
+                        <col width="90">
+                        <col width="90">
+                        <col width="60">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>商品名称</th>
+                            <th>售价</th>
+                            <th>类目</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {volist name="$detail.goods" id="vo"}
+                            <tr>
+                                <td>
+                                    <img src="{$vo.image}" alt="主图" style="float:left;width:50px;height:50px;">
+                                    <p style="float:left;margin-left:8px;width:200px;height:50px;line-height:1.3;word-break:normal;">{$vo.name}</p>
+                                </td>
+                                <td>￥{$vo.min_price}</td>
+                                <td>{$vo.category}</td>
+                                <td>
+                                    <input type="hidden" name="use_goods_ids[]" value="{$vo.id}">
+                                    <button type="button" class="layui-btn layui-btn-xs layui-btn-danger del-use-goods">删除</button>
+                                </td>
+                            </tr>
+                        {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function () {
+        let $ = layui.$;
+        let form = layui.form;
+
+        // 监听事件绑定
+        let active = wait.BindEvents({
+            /**
+             * 选择限制商品
+             */
+            addGoods: function () {
+                parent.layer.open({
+                    type: 2
+                    ,title: "选择商品"
+                    ,area: ["850px", "520px"]
+                    ,offset: "auto"
+                    ,anim: 1
+                    ,closeBtn: 1
+                    ,shade: 0.3
+                    ,btn: ["确定", "取消"]
+                    ,content: "/admin/data/goods"
+                    ,yes: function (index, layero) {
+                        let iframeWin = parent.window[layero.find("iframe")[0]["name"]];
+                        let data = iframeWin.getSelectedData();
+
+                        data.forEach(function (item) {
+                            let template  = '<tr><td><img src="'+item.image+'" alt="主图" style="float:left;width:50px;height:50px;">';
+                                template += '<p style="float:left;margin-left:8px;width:200px;height:50px;line-height:1.3;word-break:normal;">'+item.name+'</p></td>';
+                                template += '<td>￥'+item.min_price+'</td><td>'+item.category[0].name||"无"+'</td>';
+                                template += '<td><input type="hidden" name="use_goods_ids[]" value="'+item.id+'">';
+                                template += '<button type="button" class="layui-btn layui-btn-xs layui-btn-danger del-use-goods">删除</button>';
+                                template += '</td></tr>';
+
+                            $("#use-goods-table tbody").append(template);
+                        });
+
+                        active.delGoods();
+                        parent.layer.close(index);
+                    }
+                });
+            },
+            /**
+             * 删除限制商品
+             */
+            delGoods: function () {
+                $(document).on("click", ".del-use-goods", function () {
+                    $(this).parents("tr").remove();
+                })
+            }
+        });
+
+        // 切换限制商品
+        form.on("radio(use_goods_type)", function(data) {
+            let that = $("#use-goods-table");
+            data.value === "0" ? that.hide() : that.show();
+        });
+
+        // 切换券类型
+        form.on('radio(type)', function (data) {
+            if (data.value === "10") {
+                $(".reduceNode").show();
+                $(".discountNode").hide();
+            } else {
+                $(".reduceNode").hide();
+                $(".discountNode").show();
+            }
+        });
+
+    });
+</script>
+{/block}

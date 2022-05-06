@@ -1,0 +1,180 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-item { margin-bottom: 0; }
+    .layui-form-item .layui-form-label { width: 95px; padding: 9px 0; }
+    .layui-form-item .layui-input-inline { width: 140px; }
+    .avatar { width: 60px; height: 60px; margin: 0 auto; }
+    .avatar .image { width: 100%; height: 100%; }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form container">
+    <!-- 用户头像 -->
+    <div class="avatar">
+        <img class="image" src="{$detail.avatar ?? '__STATIC__/images/default_avatar.png'}" alt="头像">
+    </div>
+
+    <!-- 基础信息 -->
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>基础信息</legend>
+        <div class="layui-field-box">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户名称：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.nickname}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">会员编号：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.sn}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">手机号码：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.mobile ? $detail.mobile : '无'}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户等级：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.grade.name ?? '无等级'}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">钱包余额：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid" style="color:red;">￥{$detail.money ?? 0}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">剩余积分：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid" style="color:green;">{$detail.integral ?? 0}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否禁用：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.is_disable == 1 ? '是' : '否'}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">登录地址：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.login_ip}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">注册时间：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.create_time}</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">最后登录：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">{$detail.login_time | date='Y-m-d H:i:s'}</div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </fieldset>
+
+    <!-- 消费能力 -->
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>消费能力</legend>
+        <div class="layui-field-box" style="padding-left: 25px;">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">本月消费金额：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">￥0</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">本月订单笔数：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">累积消费金额：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">￥0</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">累积订单笔数：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">0</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </fieldset>
+
+    <!-- 分销信息 -->
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>分销信息</legend>
+        <div class="layui-field-box" style="padding-left: 25px;">
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">分销会员：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">是</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">他的邀请码：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">N98Z26</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">他的推荐人：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">￥0</div>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">推荐人编号：</label>
+                    <div class="layui-input-inline">
+                        <div class="layui-form-mid">0</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </fieldset>
+</form>
+{/block}

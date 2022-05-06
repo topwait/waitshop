@@ -1,0 +1,123 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 内容栏 -->
+        <div class="layui-card-body wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">新增充值套餐</button>
+                </div>
+            </script>
+            <script type="text/html" id="table-show">
+                {{#  if(d.is_show === 0){ }} <span class="text-info"><i class="layui-icon layui-icon-circle-dot"></i> 禁用</span> {{#  } }}
+                {{#  if(d.is_show === 1){ }} <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 显示</span> {{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('addons.Recharge/packageList')}"
+            ,cols: [[
+                {field:"id", title:"id", width:60, align:"center"},
+                {field:"money", title:"充值金额", width:110, align:"center"},
+                {field:"give_money", title:"赠送金额", width:110, align:"center"},
+                {field:"sort", title:"排序", width:80, align:"center"},
+                {field:"is_show", title:"状态", width:100, align:"center", templet:"#table-show"},
+                {field:"create_time", title:"创建时间", width:170, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:130, align:"center"},
+            ]]
+        });
+
+        // 绑定事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增充值套餐",
+                    url: "{:url('addons.Recharge/packageAdd')}",
+                    area: ["400px", "330px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('addons.Recharge/packageAdd')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists", {
+                                        where: [],
+                                        page: { curr: 1 }
+                                    });
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "新增充值套餐",
+                    url: "{:url('addons.Recharge/packageEdit')}?id="+obj.data.id,
+                    area: ["400px", "330px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('addons.Recharge/packageEdit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists");
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定要删除此套餐吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('addons.Recharge/packageDel')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            active.statistics();
+                            table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+    });
+</script>
+{/block}

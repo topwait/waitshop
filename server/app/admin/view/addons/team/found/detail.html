@@ -1,0 +1,126 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .sharing .layui-form-item { margin-bottom: 0; }
+    .sharing .layui-form-item .layui-inline { min-width: 135px; }
+    .sharing .layui-form-item .layui-form-label { padding-right: 0; }
+    .sharing .layui-form-item .layui-input-block { line-height: 37px; margin-left: 95px; }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 团信息 -->
+        <div class="sharing">
+            <div class="layui-form-item">
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">拼团类型：</label>
+                    <div class="layui-input-block">普通团</div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">拼团状态：</label>
+                    <div class="layui-input-block">{$detail.status}</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">虚拟成团：</label>
+                    <div class="layui-input-block">{$detail.snapshot.is_automatic ? '是' : '否'}</div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">用优惠券：</label>
+                        <div class="layui-input-block">{$detail.snapshot.is_coupon ? '是' : '否'}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">参与分销：</label>
+                    <div class="layui-input-block">{$detail.snapshot.is_distribution ? '是' : '否'}</div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">成团人数：</label>
+                    <div class="layui-input-block">{$detail.people}/{$detail.join}</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">开团时间：</label>
+                <div class="layui-input-block">{$detail.kaituan_time}</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">失效时间：</label>
+                <div class="layui-input-block">{$detail.invalid_time}</div>
+            </div>
+        </div>
+
+        <!-- 参团记录 -->
+        <div class="join wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="table-userInfo">
+                <img src="{{d.user.avatar}}" alt="头像" style="height:60px; width:60px; margin-right:10px;">
+                <div class="layui-input-inline">
+                    <p>编号：{{d.user.sn || '未知'}}</p>
+                    <p>昵称：{{d.user.nickname || '未知'}}</p>
+                    <p>电话：{{d.user.mobile || '未知'}}</p>
+                </div>
+            </script>
+            <script type="text/html" id="table-goodsInfo">
+                <img src="{{d.orderSnap.spec_image ? d.orderSnap.spec_image : d.orderSnap.goods_image}}" alt="商品" style="height:60px; width:60px; margin-right:10px;">
+                <div class="layui-input-inline" style="width: 145px;">
+                    <p class="wait-line-2" style="line-height:19px;">{{d.orderSnap.goods_name}}</p>
+                    <p class="wait-line-2" style="margin-top:5px; font-size:12px; color:#999; line-height:19px;">{{d.orderSnap.spec_value_str}}</p>
+                </div>
+            </script>
+            <script type="text/html" id="table-orderInfo">
+                <p>订单编号：{{d.orders.order_sn}}</p>
+                <p>订单状态：{{d.orders.order_status}}</p>
+                <p>支付状态：{{d.orders.pay_status}}</p>
+                <p>退款状态：{{d.orders.refund_status}}</p>
+            </script>
+            <script type="text/html" id="table-amountInfo">
+                <p>{{d.orders.paid_amount}}</p>
+            </script>
+            <script type="text/html" id="table-identity">
+                {{
+                    d.identity===1
+                    ? '<span style="color:green;font-weight:bold;">团长</span>'
+                    : '<span style="color:goldenrod;font-weight:bold;">团员</span>'
+                }}
+            </script>
+            <script type="text/html" id="table-status">
+                {{#  if(d.status === 1){ }}<span style="font-weight:bold; color:#0e90d2;">拼团中</span>{{#  } }}
+                {{#  if(d.status === 2){ }}<span style="font-weight:bold; color:#00C777;">拼团成功</span>{{#  } }}
+                {{#  if(d.status === 3){ }}<span style="font-weight:bold; color:#FB3535;">拼团失败</span>{{#  } }}
+            </script>
+        </div>
+    </div>
+
+</form>
+{/block}
+
+
+{block name="js"}
+<script>
+    layui.use(["table"], function () {
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('addons.team.TeamFound/join')}?found_id={$detail.id}"
+            ,toolbar: false
+            ,cols: [[
+                {field:"identity", title:"身份", width:60, align:"center", templet:"#table-identity"},
+                {field:"userInfo", title:"参与人", width:230, templet:"#table-userInfo"},
+                {field:"goodsInfo", title:"拼团商品", width:250, templet:"#table-goodsInfo"},
+                {field:"orders", title:"订单信息", width:220, templet:"#table-orderInfo"},
+                {field:"amount", title:"实付金额", width:90, align:"center", templet:"#table-amountInfo"},
+                {field:"create_time", title:"参团时间", width:190, align:"center"},
+                {field:"status", title:"状态", width:80, align:"center", templet:"#table-status"},
+            ]]
+        });
+    });
+</script>
+{/block}

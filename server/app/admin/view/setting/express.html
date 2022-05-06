@@ -1,0 +1,40 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <div class="layui-card-header">物流公司</div>
+
+        <!-- 表格栏 -->
+        <div class="layui-card-body">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="table-image">
+                <img src="{{d.image}}" alt="图标" style="width:28px;height:28px;">
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+
+        // 加载数据表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('setting.Express/lists')}"
+            ,toolbar: false
+            ,cols: [[
+                {field:"id", title:"ID", event:"id", align:"center", width:60},
+                {field:"sort", title:"排序", align:"center", width:60},
+                {field:"name", title:"快递公司", align:"center", width:150},
+                {field:"image", title:"图标", align:"center", width:80, templet:"#table-image"},
+                {field:"code100", title:"快递100编码", align:"center", width:200},
+                {field:"codebird", title:"快递鸟编码", align:"center", width:200},
+                {field:"create_time", title:"创建时间", align:"center", width:180}
+            ]]
+        });
+    });
+</script>
+{/block}

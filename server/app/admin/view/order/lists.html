@@ -1,0 +1,382 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <!-- 搜索栏 -->
+    <div class="layui-card">
+        <div class="layui-card-header"><h5>搜索条件</h5></div>
+        <div class="layui-card-body layui-form order-search-switch">
+            <div class="layui-row layui-col-space10 layui-form-item" style="margin-bottom:0;">
+                <div class="layui-col-lg12">
+                    <label class="layui-form-label">订单状态：</label>
+                    <div class="layui-input-block">
+                        <button type="button" class="layui-btn layui-btn-sm" data-type="order_status" data-status="">全部</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="order_status" data-status="0">未支付</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="order_status" data-status="1">待发货<span class="layui-badge">{$statistics.to_be_shipped}</span></button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="delivery_type" data-status="2">待核销<span class="layui-badge layui-bg-orange">{$statistics.to_be_verify}</span></button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="order_status" data-status="2">待收货<span class="layui-badge layui-bg-gray">{$statistics.to_be_received}</span></button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="order_status" data-status="3">交易完成</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="is_after_sale" data-status="1">退款中<span class="layui-badge">{$statistics.apply_refund}</span></button>
+                    </div>
+                </div>
+                <div class="layui-col-lg12">
+                    <label class="layui-form-label">订单类型：</label>
+                    <div class="layui-input-block">
+                        <button type="button" class="layui-btn layui-btn-sm" data-type="order_type" data-status="">全部</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="order_type" data-status="1">普通订单</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="order_type" data-status="2">秒杀订单</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="order_type" data-status="3">拼团订单</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="order_type" data-status="4">砍价订单</button>
+                    </div>
+                </div>
+                <div class="layui-col-lg12">
+                    <label class="layui-form-label">支付方式：</label>
+                    <div class="layui-input-block" data-type="payWay">
+                        <button type="button" class="layui-btn layui-btn-sm">全部</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="pay_way" data-status="1">余额支付</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="pay_way" data-status="2">微信支付</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="pay_way" data-status="3">支付宝</button>
+                    </div>
+                </div>
+                <div class="layui-col-lg12">
+                    <label class="layui-form-label">创建时间：</label>
+                    <div class="layui-input-block">
+                        <button type="button" class="layui-btn layui-btn-sm" data-type="create_time" data-status="">全部</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="create_time" data-status="today">今天</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="create_time" data-status="yesterday">昨天</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="create_time" data-status="dayToNow7">最近7天</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="create_time" data-status="dayToNow30">最近30天</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="create_time" data-status="month">本月</button>
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" data-type="create_time" data-status="year">本年</button>
+                    </div>
+                </div>
+                <div class="layui-col-lg12">
+                    <label for="keyword" class="layui-form-label">订单号：</label>
+                    <div class="layui-input-block">
+                        <div class="layui-inline" style="width:100px;margin-right:0;">
+                            <select name="keyword_type" lay-verify="required">
+                                <option value="orderSn">订单编号</option>
+                                <option value="userSn">用户编号</option>
+                                <option value="contact">收货人名</option>
+                                <option value="mobile">联系电话</option>
+                            </select>
+                        </div>
+                        <div class="layui-inline" style="width:680px;">
+                            <input type="text" id="keyword" name="keyword" placeholder="请输入收货人姓名、电话、订单编号" class="layui-input" style="width: 50%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-lg12">
+                    <div class="layui-input-block">
+                        <a class="layui-btn layui-btn-sm" lay-submit lay-filter="search"><i class="layui-icon layui-icon-search"></i>搜索</a>
+                        <!-- <a class="layui-btn layui-btn-warm layui-btn-sm export">导出</a>-->
+                         <a class="layui-btn layui-btn-primary layui-btn-sm" lay-submit lay-filter="clear-search"><i class="layui-icon layui-icon-refresh"></i>刷新</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 数据列表 -->
+    <div class="layui-card wait-table-cell">
+        <div class="layui-card-header"><h5>订单列表</h5></div>
+        <div class="layui-card-body">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <!-- 订单信息 -->
+            <script type="text/html" id="table-orderInfo">
+                <div>
+                    <p>订单编号：{{d.order_sn}}</p>
+                    <p>订单类型：{{d.order_type_text}}</p>
+                    <p>下单时间：{{d.create_time}}</p>
+                    <p>支付时间：{{d.pay_time}}</p>
+                </div>
+            </script>
+            <!-- 用户信息 -->
+            <script type="text/html" id="table-userInfo">
+                <img src="{{d.user.avatar}}" alt="头像" style="height:80px; width:80px; margin-right:10px;">
+                <div class="layui-input-inline">
+                    <p>昵称：{{d.user.nickname}}</p>
+                    <p>编号：{{d.user.sn}}</p>
+                    <p>电话：{{d.user.mobile || '无'}}</p>
+                    <p>余额：{{d.user.money}}</p>
+                </div>
+            </script>
+            <!-- 订单金额 -->
+            <script type="text/html" id="table-orderPrice">
+                <div style="text-align: left">
+                    <p>积分抵扣：{{d.integral_amount}}</p>
+                    <p>优惠金额：{{d.discount_amount}}</p>
+                    <p>订单总额：{{d.total_amount}}</p>
+                    <p>实付金额：{{d.paid_amount}}</p>
+                </div>
+            </script>
+            <!-- 商品信息 -->
+            <script type="text/html" id="table-goodsInfo">
+                {{#  layui.each(d.orderGoods, function(index, item){ }}
+                    <div style="margin-bottom:5px; padding:5px 0; border:1px dashed #ccc;">
+                        <img src="{{item.image}}" alt="商品图" style="height:50px; width:50px; margin:0 10px;">
+                        <div class="layui-input-inline" style="width:194px;">
+                            <p title="{{item.name}}" style="line-height:18px; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; ">
+                                {{#  if(item.refund_status===1){ }}<span style="color:red;">[售后中]</span>{{#  } }}
+                                {{#  if(item.refund_status===3){ }}<span style="color:red;">[已退款]</span>{{#  } }}
+                                {{item.name}}
+                            </p>
+                            <p class="wait-line-2" style="font-size:12px; line-height:18px; color:#999" title="{{item.spec_value_str}}">
+                                规格：{{item.spec_value_str}}
+                            </p>
+                            <p class="wait-line-2" style="font-size:12px; line-height:18px;">
+                                <span style="color:#009688;">￥{{item.sell_price}}</span>
+                                <span style="padding-left:6px;color:red;">x{{item.count}}</span>
+
+                            </p>
+                        </div>
+                    </div>
+                {{#  }); }}
+            </script>
+            <!-- 收货信息 -->
+            <script type="text/html" id="table-collectInfo">
+                <div class="layui-input-inline">
+                    {{#  if(!d.address_snap){ }}未知{{#  } }}
+                    {{#  if(d.address_snap){ }}
+                        <p>收货人名：{{d.address_snap.contact}}</p>
+                        <p>手机号码：{{d.address_snap.mobile}}</p>
+                        <p>配送方式：{{d.delivery_type_text}}</p>
+                        <p>收货地址：{{d.address_snap.address}}</p>
+                    {{#  } }}
+                </div>
+            </script>
+            <!-- 订单状态 -->
+            <script type="text/html" id="table-orderStatus">
+                <div class="layui-input-inline">
+                    <p>订单状态：<span style="color:red;">{{d.order_status_text}}</span></p>
+                    <p>支付状态：{{d.pay_status_text}}</p>
+                    <p>支付方式：{{d.pay_way_text}}</p>
+                    <p>买家备注：{{d.buyers_remarks || '无'}}</p>
+                </div>
+            </script>
+            <!-- 操作按钮 -->
+            <script type="text/html" id="operate">
+                <div class="order-table-button">
+                    {{#  if(d.order_status === 1){ }}
+                        {{#  if(d.delivery_type === 1){ }}<button type="button" class="layui-btn layui-btn-xs" lay-event="deliver">立即发货</button>{{#  } }}
+                        {{#  if(d.delivery_type === 2){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="pickUp">提货核销</button>{{#  } }}
+                        <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="cancel">取消订单</button>
+                    {{#  } }}
+                    {{#  if(d.order_status === 0){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="close">关闭订单</button>{{#  } }}
+                    <button type="button" class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">订单详情</button>
+                </div>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table", "form"], function() {
+        let $ = layui.$;
+        let table = layui.table;
+        let form = layui.form;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('order.Order/lists')}"
+            ,method: "POST"
+            ,toolbar: false
+            ,cols: [[
+                {field:"id", title:"ID", width:60},
+                {field:"orderInfo", title:"订单信息", width:230, templet:"#table-orderInfo"},
+                {field:"userInfo", title:"用户信息", width:250, templet:"#table-userInfo"},
+                {field:"goodsInfo", title:"商品信息", width:300, templet:"#table-goodsInfo"},
+                {field:"orderPrice", title:"订单金额", width:140, templet:"#table-orderPrice"},
+                {field:"orderStatus", title:"订单状态", width:150, templet:"#table-orderStatus"},
+                {field:"collectInfo", title:"收货信息", width:200, templet:"#table-collectInfo"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:200, align:"center"},
+            ]]
+        });
+
+        // 逻辑事件
+        wait.BindEvents({
+            detail: function (obj) {
+                wait.popup({
+                    title: "订单详情",
+                    url: "{:url('order.Order/detail')}?id="+obj.data.id,
+                    area: ["90%", "90%"],
+                    success: function () {}
+                });
+            },
+            close: function (obj) {
+                layer.confirm('确定要关闭订单吗?', {}, function () {
+                    wait.ajax({
+                        url: "{:url('order.Order/close')}",
+                        type: "POST",
+                        data: {order_id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1500});
+                            table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1500});
+                        }
+                    });
+                });
+            },
+            cancel: function (obj) {
+                layer.confirm('确定要取消订单吗?', {}, function () {
+                    wait.ajax({
+                        url: "{:url('order.Order/cancel')}",
+                        type: "POST",
+                        data: {order_id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1500});
+                            table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1500});
+                        }
+                    });
+                });
+            },
+            deliver: function (obj) {
+                wait.popup({
+                    title: "发货",
+                    url: "{:url('order.Order/deliver')}",
+                    area: ["400px", "400px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field["id"] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('order.Order/deliver')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload('wait-table-lists');
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1500});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            pickUp: function (obj) {
+                wait.popup({
+                    title: "提货核销",
+                    url: "{:url('order.Order/pickUp')}?id="+obj.data.id,
+                    area: ["90%", "90%"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field["id"] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('order.Order/pickUp')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload('wait-table-lists');
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1500});
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+
+        // 监听搜索
+        form.on("submit(search)", function(data) {
+            // 获取所有条件
+            let where = [];
+            let button = $(".order-search-switch button:not(.layui-btn-primary)");
+            button.each(function () {
+                let type = $(this).attr("data-type");
+                let status = $(this).attr("data-status");
+                if (status !== "" && parseInt(status) >= 0) {
+                    if (type === "delivery_type") {
+                        where.push(["delivery_type", '=', status]);
+                        where.push(["order_status", '=', 1]);
+                    } else {
+                        where.push([type, '=', status]);
+                    }
+                } else if (status === 'today') {
+                    where.push(["O."+type, '>=', '{$today[0]}']);
+                    where.push(["O."+type, '<=', '{$today[1]}']);
+                } else if (status === 'yesterday') {
+                    where.push(["O."+type, '>=', '{$yesterday[0]}']);
+                    where.push(["O."+type, '<=', '{$yesterday[1]}']);
+                } else if (status === 'dayToNow7') {
+                    where.push(["O."+type, '>=', '{$dayToNow7[0]}']);
+                    where.push(["O."+type, '<=', '{$dayToNow7[1]}']);
+                } else if (status === 'dayToNow30') {
+                    where.push(["O."+type, '>=', '{$dayToNow30[0]}']);
+                    where.push(["O."+type, '<=', '{$dayToNow30[1]}']);
+                } else if (status === 'month') {
+                    where.push(["O."+type, '>=', '{$month[0]}']);
+                    where.push(["O."+type, '<=', '{$month[1]}']);
+                } else if (status === 'year') {
+                    where.push(["O."+type, '>=', '{$year[0]}']);
+                    where.push(["O."+type, '<=', '{$year[1]}']);
+                }
+            });
+            data.field["where"] = where;
+            // 重载数据表格
+            table.reload("wait-table-lists", {
+                where: data.field,
+                page: { curr: 1 }
+            });
+        });
+
+        // 刷新页面
+        form.on("submit(clear-search)", function() {
+            location.reload();
+        });
+
+        // 实现点击即可搜索
+        $(document).on("click", ".order-search-switch button", function () {
+            // 切换点击样式
+            $(this).siblings().addClass("layui-btn-primary");
+            $(this).removeClass("layui-btn-primary");
+            // 获取所有条件
+            let where = [];
+            let button = $(".order-search-switch button:not(.layui-btn-primary)");
+            button.each(function () {
+                let type = $(this).attr("data-type");
+                let status = $(this).attr("data-status");
+                if (status !== "" && parseInt(status) >= 0) {
+                    where.push([type, '=', status]);
+                } else if (status === 'today') {
+                    where.push(["O."+type, '>=', '{$today[0]}']);
+                    where.push(["O."+type, '<=', '{$today[1]}']);
+                } else if (status === 'yesterday') {
+                    where.push(["O."+type, '>=', '{$yesterday[0]}']);
+                    where.push(["O."+type, '<=', '{$yesterday[1]}']);
+                } else if (status === 'dayToNow7') {
+                    where.push(["O."+type, '>=', '{$dayToNow7[0]}']);
+                    where.push(["O."+type, '<=', '{$dayToNow7[1]}']);
+                } else if (status === 'dayToNow30') {
+                    where.push(["O."+type, '>=', '{$dayToNow30[0]}']);
+                    where.push(["O."+type, '<=', '{$dayToNow30[1]}']);
+                } else if (status === 'month') {
+                    where.push(["O."+type, '>=', '{$month[0]}']);
+                    where.push(["O."+type, '<=', '{$month[1]}']);
+                } else if (status === 'year') {
+                    where.push(["O."+type, '>=', '{$year[0]}']);
+                    where.push(["O."+type, '<=', '{$year[1]}']);
+                }
+            });
+            // 重载数据表格
+            table.reload("wait-table-lists", {
+                where: where.length ? {where} : []
+                ,page: { curr: 1 }
+            });
+        });
+    });
+</script>
+{/block}

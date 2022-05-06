@@ -1,0 +1,76 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <div class="layui-card-header">风格装饰</div>
+        <div class="layui-card-body">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:110px;">底部导航未选颜色:</label>
+                <div class="layui-input-block">
+                    <div id="unselectedColor"></div>
+                    <input type="hidden" name="unselectedColor" value="{$detail.unselectedColor}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:110px;">底部导航选中颜色:</label>
+                <div class="layui-input-block">
+                    <div id="selectedColor"></div>
+                    <input type="hidden" name="selectedColor" value="{$detail.selectedColor}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">保存设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form", "colorpicker"], function () {
+        let form = layui.form;
+        let colorpicker = layui.colorpicker;
+
+        colorpicker.render({
+            elem: '#unselectedColor',
+            color: '{$detail.unselectedColor}'
+            ,change: function(color){
+                $("input[name=unselectedColor]").val(color);
+            }
+        });
+
+        colorpicker.render({
+            elem: '#selectedColor',
+            color: '{$detail.selectedColor}'
+            ,change: function(color){
+                $("input[name=selectedColor]").val(color);
+            }
+        });
+
+        // 提交表单
+        form.on("submit(addForm)", function(data){
+            layer.confirm("确定保存当前配置吗?", function(index) {
+                wait.ajax({
+                    url: "{:url('diy.Style/set')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1000});
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1000});
+                    }
+                });
+                layer.close(index);
+            });
+        });
+
+    });
+</script>
+{/block}

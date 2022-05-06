@@ -1,0 +1,66 @@
+/** 必填项描述 **/
+.form-label-asterisk { padding-right: 5px; color: red; }
+
+/** 表格中规格图片样式 **/
+.goods-spec-img-div img { width: 48px; height: 48px; }
+.goods-spec-img-div .thumbnail { position: relative; background-color: #FFF; }
+.goods-spec-img-div .thumbnail:hover .goods-spec-img-del-x { display: block; }
+.goods-spec-img-div .thumbnail .goods-spec-img-del-x { display: none; position: absolute; top: -8px; right: -8px; width: 20px; height: 20px; text-align: center; border-radius: 50%; background: rgba(153, 153, 153, 0.7); }
+.goods-spec-img-div .thumbnail .goods-spec-img-del-x i { color: #FFFFFF; font-size: 13px; text-align: center; }
+.goods-spec-img-div .thumbnail .goods-spec-img-del-x:hover { color: #FFFFFF; font-style: normal; background: #000; }
+
+/** 多规格块样式 **/
+.goods-spec-div {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    color: #6a6f6c;
+    background-color: #f3f5f9;
+}
+/** 多规格项目块样式 **/
+.goods-spec-div .deleteSpecItem {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    top: 15px;
+    right: 15px;
+    width: 18px;
+    height: 18px;
+    font-size: 16px;
+    line-height: 14px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15px;
+    background: hsla(0, 0%, 60%, .6);
+}
+.goods-spec-div:hover .deleteSpecItem { display: block; }
+
+/* 规格值样式 */
+.goods-spec-div .goods-spec-value { width: 90px !important; margin-bottom: 5px; }
+.goods-spec-div .goods-spec-value .deleteSpecValue {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    font-size: 15px;
+    line-height: 20px;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15px;
+    background: hsla(0, 0%, 60%, .6);
+}
+.goods-spec-div .goods-spec-value:hover .deleteSpecValue { display: block !important; }
+.goods-spec-div .addSpecValue { height: 38px; line-height: 38px; color: #4e8bff; cursor: pointer; }
+.goods-spec-div .addSpecValue:hover { color: #0641cb; }
+
+/* 批量设置 */
+.batch-div { padding-bottom: 10px; padding-top: 10px; }
+.batch-div .batch-spec-title { color: #6a6f6c; float: left; }
+.batch-div .click-a { color: #4685fd; padding-right: 10px; cursor: pointer; }
+

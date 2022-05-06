@@ -1,0 +1,113 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <div class="layui-card-header">页面设计</div>
+        <div class="layui-card-body">
+            <!-- 表格栏-->
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <!-- 工具栏 -->
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">新增页面</button>
+                </div>
+            </script>
+            <!-- 页面类型 -->
+            <script type="text/html" id="table-type">
+                {{# if (d.page_type == 20) { }}
+                    <button class="layui-btn layui-btn-xs">自定义页面</button>
+                {{# } else { }}
+                    <button class="layui-btn layui-btn-xs layui-btn-warm">商城首页</button>
+                {{# } }}
+            </script>
+            <!-- 操作栏 -->
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                {{# if (d.page_type !== 10) { }}
+                    <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+                    <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="home">设为首页</button>
+                {{# } }}
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('diy.Page/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", width:80, align:"center"},
+                {field:"page_name", title:"页面名称", width:200},
+                {field:"type", title:"页面类型", width:120, align:"center", templet:"#table-type"},
+                {field:"create_time", title:"添加时间", width:200, align:"center"},
+                {field:"update_time", title:"更新时间", width:200, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:200, align:"center"},
+            ]]
+        });
+
+        // 逻辑事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增页面",
+                    url: "{:url('diy.Page/add')}",
+                    area: ["90%", "90%"],
+                    success: function () {}
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑页面",
+                    url: "{:url('diy.Page/edit')}?id="+obj.data.id,
+                    area: ["90%", "90%"],
+                    success: function () {}
+                });
+            },
+            del: function (obj) {
+                layer.confirm('确定删除该页面吗？', function(index) {
+                    wait.ajax({
+                        url: "{:url('diy.Page/del')}",
+                        type: "POST",
+                        data: {"id": obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload('wait-table-lists');
+                        }
+                        layer.close(index)
+                    });
+                });
+            },
+            home: function (obj) {
+                layer.confirm('要设为首页吗？', function(index) {
+                    wait.ajax({
+                        url: "{:url('diy.Page/home')}",
+                        type: "POST",
+                        data: {"id": obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload('wait-table-lists', {
+                                where: {},
+                                page: { curr: 1 }
+                            });
+                            layer.close(index)
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                });
+            }
+        });
+
+    });
+</script>
+{/block}

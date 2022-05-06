@@ -1,0 +1,135 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 头部栏 -->
+        <div class="layui-card-header">管理员</div>
+
+        <!-- 表格栏 -->
+        <div class="layui-card-body">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <a class="layui-btn layui-btn-sm" lay-event="add">添加管理员</a>
+                </div>
+            </script>
+            <script type="text/html" id="table-role">
+                {{#  if(d.id === 1){ }}
+                    <button type="button" class="layui-btn layui-btn-xs layui-btn-danger">超级管理员</button>
+                {{#  }else{ }}
+                    <button type="button" class="layui-btn layui-btn-xs">{{ d.role.name }}</button>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="table-disable">
+                {{#  if(d.is_disable === 0){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 正常</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 禁用</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                {{#  if(d.id !== 1){ }}
+                    <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                    <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+                {{#  } }}
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('auth.Admin/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", event:"id", align:"center", width:60},
+                {field:"nickname", title:"昵称", align:"center", width:100},
+                {field:"username", title:"用户名", align:"center", width:100},
+                {field:"role", title:"角色", align:"center", width:120, templet:"#table-role"},
+                {field:"email", title:"邮箱", align:"center", width:200},
+                {field:"login_ip", title:"登录IP", align:"center", width:120},
+                {field:"login_time", title:"登录时间", align:"center", width:200},
+                {field:"disable", title:"状态", align:"center", width:100, templet:"#table-disable"},
+                {fixed:"right", title:"操作", align:"center", width:150,toolbar:"#operate"},
+            ]]
+        });
+
+        // 逻辑事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增管理员",
+                    url: "{:url('auth.Admin/add')}",
+                    area: ["510px", "540px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('auth.Admin/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists", {
+                                        where: {type: 1},
+                                        page: { curr: 1 }
+                                    });
+                                    layer.close(index)
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑管理员",
+                    url: "{:url('auth.Admin/edit')}?id="+obj.data.id,
+                    area: ["510px", "540px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('auth.Admin/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists");
+                                    layer.close(index)
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定删除该管理员吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('auth.Admin/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+{/block}

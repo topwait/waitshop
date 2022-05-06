@@ -1,0 +1,5 @@
+.idea
+.vscode
+/uniapp/unpackage
+server/.idea/
+server/install.lock

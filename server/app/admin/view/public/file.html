@@ -1,0 +1,459 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    body { background-color: #fff; }
+    .layui-card { box-shadow: none; }
+    .empty {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        color: #ccc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        overflow: hidden;
+        text-align: center;
+    }
+    .empty i { font-size: 180px; }
+    .empty p { margin-top: 70px; text-align: center; width: 180px; }
+</style>
+{/block}
+
+{block name="body"}
+<div class="attachment">
+    <div class="catalog">
+        <ul>
+            <li class="active" data-id="-1"><a href="javascript:">全部</a></li>
+            <li data-id="0"><a href="javascript:">未分组</a></li>
+            {volist name="groupData" id="vo"}
+            <li data-id="{$vo.id}">
+                <a class="group-edit" href="javascript:" title="编辑分组"><i class="layui-icon layui-icon-edit"></i></a>
+                <a class="group-name" href="javascript:">{$vo.name}</a>
+                <a class="group-delete" href="javascript:" title="删除分组"><i class="layui-icon layui-icon-delete"></i></a>
+            </li>
+            {/volist}
+        </ul>
+    </div>
+    <div class="layui-card file-container">
+        <div class="layui-card-header">
+            <ul class="dropdown">
+                <li class="dropdown-header">请选择分组</li>
+                {volist name="groupData" id="vo"}
+                <li data-id="{$vo.id}"><a href="javascript:">{$vo.name}</a></li>
+                {/volist}
+            </ul>
+            <div class="layui-btn-group">
+                <button type="button" class="layui-btn layui-btn layui-btn-sm" id="addDir">添加目录</button>
+                <button type="button" class="layui-btn layui-btn layui-btn-sm layui-btn-warm" id="moveFile">移动至<i class="layui-icon layui-icon-triangle-d"></i></button>
+                {if $type == 1}
+                    <button type="button" class="layui-btn layui-btn layui-btn-sm layui-btn-normal" id="imageUpload">上传图片</button>
+                {else}
+                    <button type="button" class="layui-btn layui-btn layui-btn-sm layui-btn-normal" id="videoUpload">上传视频</button>
+                {/if}
+                <button type="button" class="layui-btn layui-btn layui-btn-sm layui-btn-danger" id="delFile">删除文件</button>
+            </div>
+            <button type="button" class="layui-btn layui-btn layui-btn-sm layui-btn-disabled" id="okFile">使用选中文件</button>
+        </div>
+        <div class="layui-card-body">
+            <script id="warehouse" type="text/html">
+                <ul class="warehouse">
+                    {{#  layui.each(d, function(index, item){ }}
+                    <li title="{{ item.file_url }}">
+                        {{#  if(item.file_type === 1){ }}<img src="{{item.file_url }}" alt="{{ item.file_name }}">{{#  } }}
+                        {{#  if(item.file_type === 2){ }}<video src="{{item.file_url}}" controls="controls"></video>{{#  } }}
+                        <p data-id="{{ item.id }}">{{ item.file_name || "未知名称"}}</p>
+                        <div class="mask">
+                            <img src="__STATIC__/images/ic_hook.png" alt="选中">
+                        </div>
+                    </li>
+                    {{#  }); }}
+
+                    {{#  if(d.length === 0){ }}
+                    <div class="empty">
+                        <i class="layui-icon layui-icon-upload"></i>
+                        <p>空空如也，骚年快去上传吧</p>
+                    </div>
+                    {{#  } }}
+                </ul>
+
+            </script>
+            <div id="view"></div>
+        </div>
+        <div class="footer">
+            <div id="paging"></div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form","upload", "laytpl", "laypage"], function() {
+        let $ = layui.$;
+        let upload = layui.upload;
+        let laytpl = layui.laytpl;
+        let laypage = layui.laypage;
+
+        /** 初始化 **/
+        getFileList();
+        chickDir();
+        clickFile();
+        imageUpload();
+        videoUpload();
+
+        /** 分组: 新增 **/
+        $(document).on("click", "#addDir", function () {
+            layer.prompt({title: "请输入新分组名称", formType: 3}, function(text, index){
+                if (text === "" || text.length <= 0) {
+                    layer.msg("请输入分组名称", {icon: 0});
+                }
+                wait.ajax({
+                    url: "{:url('File/addGroup')}",
+                    type: "POST",
+                    data: {group_name: text}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        let html = renderTpl("dir", res.data);
+                        $(".catalog ul").append(html);
+                        layer.close(index);
+                    }
+                    layer.msg(res.msg, {time: 1000});
+                });
+            });
+        });
+
+        /** 分组: 编辑 **/
+        $(document).on("click", ".group-edit", function () {
+            let group_id = $(this).parent().attr("data-id");
+            let defaultText = $(this).next().html();
+            let that = $(this);
+            layer.prompt({title: "修改分组名称",  value: defaultText, formType: 3}, function(text, index){
+                if (text === "" || text.length <= 0) {
+                    layer.msg("请输入分组名称", {icon: 0});
+                }
+                wait.ajax({
+                    url: "{:url('File/editGroup')}",
+                    type: "POST",
+                    data: {group_id: group_id, group_name: text}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        that.next().html(text);
+                        layer.close(index);
+                    }
+                    layer.msg(res.msg, {time: 1000});
+                });
+            });
+        });
+
+        /** 分组: 删除 **/
+        $(document).on("click", ".group-delete", function () {
+            let group_id = $(this).parent().attr("data-id");
+            let that = $(this);
+            layer.confirm("确定要销毁吗?", {
+                btn: ["确定","取消"]
+            }, function() {
+                wait.ajax({
+                    url: "{:url('File/delGroup')}",
+                    type: "POST",
+                    data: {group_id: group_id}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        that.parent().remove();
+                        $(".catalog ul li").eq(0).addClass("active");
+                        getFileList();
+                    }
+                    layer.msg(res.msg, {time: 1000});
+                });
+            });
+        });
+
+        /** 文件: 编辑 **/
+        $(document).on("contextmenu", ".warehouse li p", function () {
+            let that = $(this);
+            let file_id   = that.attr("data-id");
+            let file_name = that.html();
+            layer.prompt({title: "修改文件名称", value: file_name, formType: 3}, function(text, index){
+                if (text === "" || text.length <= 0) {
+                    layer.msg("文件名称不可为空", {icon: 0});
+                }
+                wait.ajax({
+                    url: "{:url('File/rename')}",
+                    type: "POST",
+                    data: {file_id: file_id, file_name: text}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        that.html(text);
+                        layer.close(index);
+                    }
+                    layer.msg(res.msg, {time: 1000});
+                });
+            });
+            return false;
+        });
+
+        /** 文件: 删除 **/
+        $(document).on("click", "#delFile", function () {
+            let fileData = [];  //要删除的文件ID
+            let objData = [];   //要删除的文件对象
+            $(".warehouse li.active").each(function(){
+                fileData.push($(this).find("p").attr("data-id"));
+                objData.push($(this));
+            });
+            if (fileData.length <= 0) {
+                layer.msg("未选中任何文件", {icon: 0});
+            } else {
+                layer.confirm("确定要销毁吗?", {
+                    btn: ["确定","取消"]
+                }, function(){
+                    wait.ajax({
+                        url: "{:url('File/recycle')}",
+                        type: "POST",
+                        data: {files: fileData}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            objData.forEach(function (item) {
+                                item.remove();
+                            });
+                            if ($(".warehouse li").length <= 0) {
+                                $(".warehouse").append(renderTpl("empty"))
+                            }
+                            layer.msg(res.msg, {icon: 1});
+                        }
+                        layer.msg(res.msg);
+                    });
+                });
+            }
+        });
+
+        /** 文件: 移动 **/
+        $(document).on("click", ".dropdown li", function () {
+            let that = $(this);
+            let curGroup = $(".catalog li.active").attr("data-id"); // 当前所在目录
+            let group_id = that.attr("data-id");   // 要移动到组的组ID
+            let fileData = [];  // 要移动的文件ID
+            let objData = [];   // 选中的文件对象
+
+            $(".warehouse li.active").each(function () {
+                fileData.push($(this).find("p").attr("data-id"));
+                objData.push($(this));
+            });
+
+            if (curGroup === group_id) {
+                layer.msg("当前文件就在这目录!!!", {icon: 0, time: 1000});
+                return false;
+            }
+
+            if (fileData.length <= 0) {
+                layer.msg("未选中任何文件", {icon: 0, time: 1000});
+                return false;
+            } else {
+                layer.confirm("确定要移动选中的文件吗?", {
+                    btn: ["确定", "取消"]
+                }, function () {
+                    wait.ajax({
+                        url: "{:url('File/move')}",
+                        type: "POST",
+                        data: {files: fileData, group_id: group_id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            if ($(".catalog ul li.active").attr("data-id") >= 0) {
+                                objData.forEach(function (item) {
+                                    item.remove();
+                                });
+                                if ($(".warehouse li").length <= 0) {
+                                    $(".warehouse").append(renderTpl("empty"))
+                                }
+                            }
+                        }
+                        layer.msg(res.msg, {time: 1000});
+                    });
+                });
+            }
+        });
+
+        /** 图层: 打开 **/
+        $(document).on("click", "#moveFile", function (e) {
+            $(".dropdown").show();
+            e.stopPropagation();
+        });
+
+        /** 图层: 关闭 **/
+        $(document).bind("click", function(e){
+            let target = $(e.target);
+            if(target.closest(".dropdown").length === 0){
+                $(".dropdown").hide();
+            }
+        });
+
+        /** 获取文件 **/
+        function getFileList(group_id=-1, page=1) {
+            let index = layer.load(1, {shade: false});
+            let data = {group_id: group_id, type: "{$type}", page: page};
+            wait.ajax({
+                url: "{:url('File/lists')}",
+                type: "GET",
+                data: data,
+                beforeSend: true
+            }).then((res) => {
+                // 关闭加载
+                layer.close(index);
+
+                // 渲染模板
+                let getTpl = document.getElementById("warehouse").innerHTML
+                    ,view = document.getElementById("view");
+                laytpl(getTpl).render(res.data.data, function(html){
+                    view.innerHTML = html;
+                });
+
+                // 渲染分页
+                laypage.render({
+                    elem: "paging"
+                    ,count: res.data.total
+                    ,curr: res.data.current_page
+                    ,limit: res.data.per_page
+                    ,last: res.data.last_page
+                    ,jump: function (obj, first) {
+                        if (!first) {
+                            getFileList(group_id, obj.curr)
+                        }
+                    }
+                });
+
+                // 重新渲染点击
+                clickFile();
+            })
+        }
+
+        /** 切换目录 **/
+        function chickDir() {
+            $(".catalog").on("click", "li", function () {
+                $(this).siblings().removeClass("active");
+                $(this).addClass("active");
+                getFileList($(this).attr("data-id"), 1);
+            });
+        }
+
+        /** 选中文件 **/
+        function clickFile() {
+            $(".warehouse").on("click", "li", function () {
+                if ($(this).hasClass("active")) {
+                    $(this).removeClass("active");
+                } else {
+                    $(this).addClass("active");
+                }
+                if ($(".warehouse li.active").length <= 0) {
+                    $("#okFile").addClass("layui-btn-disabled");
+                } else {
+                    $("#okFile").removeClass("layui-btn-disabled");
+                }
+            });
+        }
+
+        /** 上传图片 **/
+        function imageUpload() {
+            upload.render({
+                elem: "#imageUpload"
+                ,url: "{:url('Upload/image')}"
+                ,accept: "images"
+                ,field: "iFile"
+                ,multiple: true
+                ,acceptMime: 'image/*'
+                ,exts: "jpg|png|gif|bmp|jpeg"
+                ,data: {
+                    group_id: function () {
+                        return $(".catalog ul li.active").attr("data-id");
+                    }
+                }
+                ,done: function(res){
+                    if (res.code === 0) {
+                        if ($("ul.warehouse .empty").length > 0) {
+                            $(".warehouse .empty").remove();
+                        }
+                        let html = renderTpl("image", res.data);
+                        $(".warehouse").prepend(html);
+                    }
+                    layer.msg(res.msg, {time: 2000});
+                }
+                ,error: function(){
+                    layer.msg("上传异常", {icon: 2, time: 1000});
+                }
+            });
+        }
+
+        /** 上传视频 **/
+        function videoUpload() {
+            upload.render({
+                elem: "#videoUpload"
+                ,url: "{:url('Upload/video')}"
+                ,accept: "video"
+                ,field: "iFile"
+                ,multiple: true
+                ,acceptMime: 'video/*'
+                ,exts: "jmp3|mp4|AVI|mov|rmvb|rm|FLV|3GP|wav"
+                ,data: {
+                    group_id: function () {
+                        return $(".catalog ul li.active").attr("data-id");
+                    }
+                }
+                ,done: function(res){
+                    if (res.code === 0) {
+                        if ($("ul.warehouse .empty").length > 0) {
+                            $(".warehouse .empty").remove();
+                        }
+                        let html = renderTpl("video", res.data);
+                        $(".warehouse").prepend(html);
+                    }
+                    layer.msg(res.msg, {time: 2000});
+                }
+                ,error: function(){
+                    layer.msg("上传异常", {icon: 2, time: 1000});
+                }
+            });
+        }
+
+        /** 生成模板 **/
+        function renderTpl(type="image", data=[]) {
+            // 模板["dir"=>"目录模板", "image"=>"图片模板", "video"=>"视频模型", "empty"=>"没有文件"]
+            let html = "";
+            switch (type) {
+                case "image":
+                    html = `<li title="${data.image}">
+                        <img src="${data.image}" alt="${data.name}">
+                        <p>${data.name}</p>
+                        <div class="mask">
+                            <img src="__STATIC__/images/ic_hook.png" alt="选中">
+                        </div>
+                    </li>`;
+                    break;
+                case "video":
+                    html = `<li title="${data.video}">
+                        <video src="${data.video}" controls="controls"></video>
+                        <p>${data.name}</p>
+                        <div class="mask">
+                            <img src="__STATIC__/images/ic_hook.png" alt="选中">
+                        </div>
+                    </li>`;
+                    break;
+                case "dir":
+                    html = `<li data-id="${data.id}">
+                        <a class="group-edit" href="javascript:" title="编辑分组"><i class="layui-icon layui-icon-edit"></i></a>
+                        <a class="group-name" href="javascript:">${data.name}</a>
+                        <a class="group-delete" href="javascript:" title="删除分组"><i class="layui-icon layui-icon-delete"></i></a>
+                    </li>`;
+                    break;
+                case "empty":
+                    html = `<div class="empty">
+                        <i class="layui-icon layui-icon-face-surprised"></i>
+                        <p>空空如也，骚年快去上传吧</p>
+                    </div> `
+            }
+            return html;
+        }
+    });
+</script>
+{/block}

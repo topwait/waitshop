@@ -1,0 +1,335 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content" style="padding:0;">
+        <div class="layui-tab layui-tab-card" style="margin:0;">
+            <ul class="layui-tab-title">
+                <li class="layui-this">基本信息</li>
+                <li>价格库存</li>
+                <li>其他设置</li>
+            </ul>
+            <div class="layui-tab-content">
+                <!-- 1、基本信息 -->
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-item">
+                        <label for="name" class="layui-form-label"><span class="asterisk">*</span>商品名称：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="name" name="name" placeholder="最多只允许输入64个字符"
+                                   switch-tab="0" lay-verType="tips" lay-verify="must" verify-msg="请填写商品名称"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="height:38px;">
+                        <div class="layui-form-item category" switch-tab="0" lay-verType="tips" lay-verify="category"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="brand_id" class="layui-form-label">商品品牌：</label>
+                        <div class="layui-input-inline">
+                            <select id="brand_id" name="brand_id">
+                                <option value="">请选择品牌</option>
+                                {volist name="brand" id="vo"}
+                                    <option value="{$vo.id}">{$vo.name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="supplier_id" class="layui-form-label">供货商家：</label>
+                        <div class="layui-input-inline">
+                            <select id="supplier_id" name="supplier_id">
+                                <option value="">请选择供应商</option>
+                                {volist name="supplier" id="vo"}
+                                    <option value="{$vo.id}">{$vo.name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="code" class="layui-form-label">商品编码：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="code" name="code" switch-tab="0"
+                                   lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="intro" class="layui-form-label">商品简介：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="intro" name="intro" switch-tab="0"
+                                   lay-verType="tips" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="line-height: 84px;"><span class="asterisk">*</span>商品主图：</label>
+                        <div class="layui-input-block" switch-tab="0" lay-verType="tips" lay-verify="image">
+                            <div class="wait-upload-drag">
+                                <img class="add-upload-elem img" src="__STATIC__/images/ic_up_photo.png" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="line-height: 84px;">商品视频：</label>
+                        <div class="layui-input-block">
+                            <div class="wait-upload-drag">
+                                <img class="add-upload-elem video" src="__STATIC__/images/ic_up_video.png" alt="video">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="line-height: 84px;"><span class="asterisk">*</span>商品轮播：</label>
+                        <div class="layui-input-block" switch-tab="0" lay-verType="tips" lay-verify="banner">
+                            <div class="wait-upload-drag">
+                                <img class="add-upload-elem banner" src="__STATIC__/images/ic_up_photo.png" alt="banner">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="textarea" class="layui-form-label" style="line-height: 450px;">商品详情：</label>
+                        <div class="layui-input-block" style="width:850px;">
+                            <textarea id="textarea" name="content"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- 2、价格库存 -->
+                <div class="layui-tab-item">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span class="asterisk">*</span>商品规格：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" title="统一规格" id="spec_type_one" name="spec_type" lay-filter="spec-type" value="1" checked>
+                            <input type="radio"  title="多规格" id="spec_type_tow" name="spec_type" lay-filter="spec-type" value="2">
+                        </div>
+                    </div>
+                    <!-- 单规格区域 -->
+                    <div id="single-spec-region"></div>
+                    <!-- 多规格区域 -->
+                    <div id="batch-spec-region" style="display:none;"></div>
+                </div>
+                <!-- 3、其他设置 -->
+                <div class="layui-tab-item">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label for="sales_volume" class="layui-form-label">预设销量：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="sales_volume" name="sales_volume" value="0"
+                                       switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写预设销量"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品排序：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="sort" name="sort" value="0"
+                                       switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写排序号"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">库存预警：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="stock_warn" name="stock_warn"
+                                       switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写库存预警数"
+                                       value="0" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label for="freight_id" class="layui-form-label"><span class="asterisk">*</span>运费模板：</label>
+                            <div class="layui-input-inline">
+                                <select id="freight_id" name="freight_id" lay-verify="must|negative" switch-tab="2" verify-msg="请选择运费模板">
+                                    <option value="">请选择运费模板</option>
+                                    <option value="0">全国包邮</option>
+                                    {volist name="freight" id="vo"}
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span class="asterisk">*</span>商品状态：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="is_show" value="1" title="立即上架">
+                            <input type="radio" name="is_show" value="0" title="加入仓库" checked>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><span class="asterisk">*</span>积分抵扣：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="is_integral" value="1" title="允许积分抵扣">
+                            <input type="radio" name="is_integral" value="0" title="不允许积分抵扣" checked>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">商品标签：</label>
+                        <div class="layui-input-inline">
+                            <input type="checkbox" name="is_new" lay-skin="primary" title="新品推荐">
+                            <input type="checkbox" name="is_best" lay-skin="primary" title="好物优选">
+                            <input type="checkbox" name="is_like" lay-skin="primary" title="猜你喜欢">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/js/tinymce/tinymce.min.js"></script>
+<script src="__STATIC__/js/tinymce/jquery.tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: '#textarea',
+        language: 'zh_CN',
+        menubar: false,
+        height: "800",
+        convert_urls: false,
+        plugins: `code  preview fullpage searchreplace autolink
+            directionality visualblocks visualchars fullscreen image link media template
+            codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists
+            wordcount imagetools textpattern help emoticons table searchreplace fullscreen autosave
+            autolink insertdatetime pagebreak paste images media preview print visualblocks wordcount codesample`,
+        toolbar: [
+            `code
+                    | bold italic underline strikethrough forecolor backcolor subscript superscript
+                    | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent
+                    | emoticons charmap wordcount | fullscreen`,
+            `formatselect
+                    | fontselect | fontsizeselect | table hr blockquote codesample link | images media
+                    | anchor removeformat print | searchreplace`
+        ],
+        batch_upload_callback: function(callback) {
+            wait.imageUpload({
+                that: $(this),
+                field: "image",
+                limit: 20
+            }).then((res) => {
+                callback(res);
+            });
+        }
+    });
+</script>
+
+<script>
+    layui.config({
+        base: "__STATIC__/js/"
+    }).extend({
+        goodsSku: "goodsSku/goodsSku",
+        interact: "interact/interact"
+    }).use(["form", "element", "goodsSku", "interact"], function () {
+        let $ = layui.$;
+        let form = layui.form;
+        let goodsSku = layui.goodsSku;
+        let interact = layui.interact;
+
+        /** =========================【分类模块start】========================= **/
+        let category = {$category|raw};
+        interact.render({
+            elem : ".category",
+            data: category,
+            name: "category",
+            title: "<span class='asterisk'>*</span>商品分类：",
+            hint: ['第一级','第二级','第三级'],
+        });
+
+        /** =========================【图片模块start】========================= **/
+        // 添加上传图片
+        wait.delUploadFile();
+        $(document).on("click", ".add-upload-elem.img", function () {
+            wait.imageUpload({
+                that: $(this),
+                field: "image",
+                limit: 1
+            });
+        });
+
+        // 添加上传轮播
+        $(document).on("click", ".add-upload-elem.banner", function () {
+            wait.imageUpload({
+                that: $(this),
+                field: "banner[]",
+                limit: 5
+            });
+        });
+
+        // 添加上传视频
+        $(document).on("click", ".add-upload-elem.video", function () {
+            wait.videoUpload({
+                that: $(this),
+                field: "video",
+                limit: 1
+            });
+        });
+
+        /** =========================【规格模块start】========================= **/
+        // 切换规格状态
+        goodsSku.initSingleSpec("#single-spec-region");
+        form.on("radio(spec-type)", function (data) {
+            if (data.value === "2") {
+                $("#batch-spec-region").show();
+                $("#single-spec-region").hide();
+                goodsSku.initBatchSpec("#batch-spec-region");
+            } else {
+                $("#single-spec-region").show();
+                $("#batch-spec-region").hide();
+                goodsSku.initSingleSpec("#single-spec-region");
+            }
+        });
+
+        // 添加单规格图片
+        $(document).on("click", ".one-spec-img-add", function () {
+            let that = $(this);
+            wait.imageUpload({
+                that: $(this),
+                field: "one_spec_image",
+                delBtn: "goods-spec-img-del-x",
+                verify: false,
+                limit: 1
+            }).then((res) => {
+                that.prev().remove();
+                goodsSku.setTableData("one_spec_image", "0000", res[0]);
+            });
+        });
+
+        // 添加多规格图片
+        $(document).on("click", ".multi-spec-img-add", function () {
+            let that = $(this);
+            wait.imageUpload({
+                that: $(this),
+                filed: "spec_image[]",
+                delBtn: "goods-spec-img-del-x",
+                verify: false,
+                limit: 1
+            }).then((res) => {
+                that.prev().remove();
+                let key = that.parent().parent().parent().attr("spec-value-temp-ids");
+                goodsSku.setTableData("spec_image[]", key, res[0]);
+            });
+        });
+
+        // 绑定删除规格图片事件
+        $(document).on("click", ".goods-spec-img-del-x", function () {
+            let key = $(this).parent().parent().parent().parent().attr('spec-value-temp-ids');
+            if (key || key !== undefined) {
+                goodsSku.setTableData("spec_image[]", key, "");
+                $(this).parent().parent().prepend('<div class="thumbnail"><input type="hidden" name="spec_image[]"></div>');
+                $(this).parent().parent().find("img").show();
+                $(this).parent().remove();
+            } else {
+                goodsSku.setTableData("one_spec_image", "0000", "");
+                $(this).parent().parent().prepend('<div class="thumbnail"><input type="hidden" name="one_spec_image"></div>');
+                $(this).parent().parent().find("img").show();
+                $(this).parent().remove();
+            }
+        });
+    });
+</script>
+{/block}

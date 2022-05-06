@@ -1,0 +1,88 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 父级 -->
+        <div class="layui-form-item">
+            <label for="pid" class="layui-form-label">父级：</label>
+            <div class="layui-input-block">
+                <select id="pid" name="pid" lay-verify="required|number" lay-search>
+                    <option value="0">顶级</option>
+                    {volist name="treeRule" id="vo"}
+                        <option value="{$vo.id}">{$vo.html} {$vo.title}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <!-- 图标 -->
+        <div class="layui-form-item">
+            <label for="iconPicker" class="layui-form-label">图标：</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="iconPicker" lay-filter="iconPicker">
+                <input type="hidden" name="icon">
+            </div>
+        </div>
+        <!-- 名称 -->
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label">名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="title" name="title" class="layui-input" autocomplete="off" lay-verify="required" >
+            </div>
+        </div>
+        <!-- 规则 -->
+        <div class="layui-form-item">
+            <label for="uri" class="layui-form-label">规则：</label>
+            <div class="layui-input-block">
+                <input type="text" id="uri" name="uri" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 排序 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">排序：</label>
+            <div class="layui-input-block">
+                <input type="text" id="sort" name="sort" lay-verify="required|number" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 菜单 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_menu" value="1" title="是" checked>
+                <input type="radio" name="is_menu" value="0" title="否">
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.config({
+        base: "__STATIC__/js/"
+    }).extend({
+        iconPicker: "iconPicker/iconPicker"
+    }).use(["iconPicker"], function () {
+        let iconPicker = layui.iconPicker;
+
+        // 图标选择器
+        iconPicker.render({
+            elem: "#iconPicker",
+            search: true,
+            page: true,
+            limit: 12,
+            cellWidth: "20%",
+            click: function (data) {
+                $('input[name="icon"]').val(data.icon);
+            }
+        });
+    });
+</script>
+{/block}

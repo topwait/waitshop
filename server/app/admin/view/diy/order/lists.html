@@ -1,0 +1,77 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <div class="layui-card-header">订单导航</div>
+        <div class="layui-card-body">
+            <!-- 表格栏-->
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <!-- 图标 -->
+            <script type="text/html" id="table-image">
+                <img src="{{d.image}}" alt="img" style="width:30px; height:30px;">
+            </script>
+            <!-- 操作 -->
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('diy.Order/lists')}"
+            ,toolbar: false
+            ,cols: [[
+                {field:"id", title:"ID", width:80, align:"center"},
+                {field:"name", title:"名称", width:100},
+                {field:"image", title:"图标", width:90, align:"center", templet:"#table-image"},
+                {field:"sort", title:"排序", width:90, align:"center"},
+                {field:"path", title:"链接", width:300},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:100, align:"center"},
+            ]]
+        });
+
+        // 逻辑事件
+        wait.BindEvents({
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑订单导航",
+                    url: "{:url('diy.Order/edit')}?id="+obj.data.id,
+                    area: ["500px", "400px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            if (!data.field.image) {
+                                return layer.msg("请选择图标");
+                            }
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('diy.Order/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists");
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+{/block}

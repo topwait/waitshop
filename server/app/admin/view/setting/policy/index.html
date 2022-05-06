@@ -1,0 +1,81 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title">
+                <li class="layui-this">服务协议</li>
+                <li>隐私政策</li>
+                <li>售后保障</li>
+            </ul>
+            <div class="layui-tab-content">
+                <!-- 1、服务协议 -->
+                <div class="layui-tab-item layui-show">
+                    <label for="service"><textarea id="service" name="service">{$lists.service.content ?? ''}</textarea></label>
+                </div>
+                <!-- 2、隐私政策 -->
+                <div class="layui-tab-item">
+                    <label for="privacy"><textarea id="privacy" name="privacy">{$lists.privacy.content ?? ''}</textarea></label>
+                </div>
+                <!-- 3、售后保障 -->
+                <div class="layui-tab-item">
+                    <label for="ensure"><textarea id="ensure" name="ensure">{$lists.ensure.content ?? ''}</textarea></label>
+                </div>
+                <!-- 5、保存 -->
+                <div style="margin-top: 20px;">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">保存内容</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/js/tinymce/tinymce.min.js"></script>
+<script src="__STATIC__/js/tinymce/jquery.tinymce.min.js"></script>
+<script>
+    layui.config({
+        base: "__STATIC__/js/"
+    }).extend({
+        waitTinymce: "tinymce/waitTinymce"
+    }).use(["form", "waitTinymce"], function () {
+        let form = layui.form;
+        let waitTinymce = layui.waitTinymce;
+
+        // 初始化富文本
+        waitTinymce.init({selector: "#service", height: 600});
+        waitTinymce.init({selector: "#privacy", height: 600});
+        waitTinymce.init({selector: "#ensure", height: 600});
+
+        // 提交表单
+        form.on("submit(addForm)", function(){
+            let service = tinymce.editors[0].getContent();
+            let privacy = tinymce.editors[1].getContent();
+            let ensure  = tinymce.editors[2].getContent();
+
+            service = service.replace("<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n", '');
+            service = service.replace("</body>\n</html>", '');
+            privacy = privacy.replace("<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n", '');
+            privacy = privacy.replace("</body>\n</html>", '');
+            ensure = ensure.replace("<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n", '');
+            ensure = ensure.replace("</body>\n</html>", '');
+
+            layer.confirm("确定保存设置的内容吗？", function() {
+                wait.ajax({
+                    url: "{:url('setting.Policy/set')}",
+                    type: "POST",
+                    data: {service:service, privacy:privacy, ensure:ensure}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1000});
+                    } else  {
+                        layer.msg(res.msg, {icon: 2, time: 1000});
+                    }
+                });
+            });
+        });
+    });
+</script>
+{/block}

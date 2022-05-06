@@ -1,0 +1,42 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 用户评论 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户评论：</label>
+            <div class="layui-input-block">
+              <p style="padding-top:10px; color:#EA5057;">{$detail.content}</p>
+            </div>
+        </div>
+        <!-- 评论图片 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">评论图片：</label>
+            <div class="layui-input-block">
+                {if $detail.images}
+                    {volist name="$detail.images" id="url"}
+                        <img src="{$url}" alt="评论图片" style="width:50px;height:50px;margin-right:8px;border:1px dashed #ccc;">
+                    {/volist}
+                {else}
+                    <p style="padding-top:10px;"> 暂无评论图片</p>
+                {/if}
+            </div>
+        </div>
+        <!-- 商家回复 -->
+        <div class="layui-form-item">
+            <label for="reply" class="layui-form-label">商家回复：</label>
+            <div class="layui-input-block">
+                <textarea id="reply" name="reply" placeholder="请输入要回复的内容" class="layui-textarea">{$detail.reply}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}

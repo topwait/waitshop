@@ -1,0 +1,93 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-field-box{display: flex; flex-wrap: wrap;}
+    .notice-widget{width: 24%; margin-right: 1.3%; min-width: 380px; margin-bottom: 25px; box-sizing: border-box; border: 1px solid #F1F1F1;}
+    .notice-widget .notice-title{height: 52px; line-height: 52px; font-size: 12px; color: #333; background-color: #F7F8FA; padding-left: 25px;}
+    .notice-widget .notice-content{padding: 20px 25px 0; display: flex; flex-wrap: wrap;}
+    .notice-widget .notice-content span{height: 25px; line-height: 25px; width: 33.3%; margin-bottom: 20px; color: #454545; display: flex; align-items: center; white-space: nowrap;}
+    .notice-widget .notice-content span i{display: inline-block; margin-right: 3px; color: #999; font-size: 16px; font-weight: 600;}
+    .notice-widget .notice-content span i.on{color: red;}
+    /* 一行4个卡片时的排布 */
+    @media screen and (min-width: 1670px) {
+        .notice-widget{width: 24%; margin-right: 1.3%; margin-bottom: 25px;}
+        .notice-widget:nth-child(4n){margin-right: 0;}
+    }
+    /* 一行3个卡片时的排布 */
+    @media screen and (max-width: 1669px) and (min-width: 1299px) {
+        .notice-widget{width: 32%; margin-right: 2%; margin-bottom: 25px;}
+        .notice-widget:nth-child(3n){margin-right: 0;}
+    }
+    /* 一行2个卡片时的排布 */
+    @media screen and (max-width: 1300px) {
+        .notice-widget{width: 49%; margin-right: 2%; margin-bottom: 25px;}
+        .notice-widget:nth-child(2n){margin-right: 0;}
+    }
+    /* 一行1个卡片时的排布 */
+    @media screen and (max-width: 900px) {
+        .notice-widget{width: 100%; margin-right: 2%; margin-bottom: 25px;}
+        .notice-widget{margin-right: 0;}
+    }
+</style>
+{/block}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <div class="layui-card-header"><span style="font-weight: bold;">买家消息</span></div>
+        <div class="layui-card-body layui-field-box">
+            {volist name="lists" id="vo"}
+            <div class="notice-widget">
+                <div class="notice-title">{$vo.name}</div>
+                <div class="notice-content">
+                    {if $vo.sms_template}<span class="edit" lay-type="sms" lay-id="{$vo.id}"><i class="layui-icon {if $vo.sms_template.status}layui-icon-ok on{else}layui-icon-close{/if}"></i>短信模板</span>{/if}
+                    {if $vo.official_template}<span class="edit" lay-type="oa" lay-id="{$vo.id}"><i class="layui-icon {if $vo.official_template.status}layui-icon-ok on{else}layui-icon-close{/if}"></i>微信公众号</span>{/if}
+                    {if $vo.mnp_template}<span class="edit" lay-type="mnp" lay-id="{$vo.id}"><i class="layui-icon {if $vo.mnp_template.status}layui-icon-ok on{else}layui-icon-close{/if}"></i>微信小程序</span>{/if}
+                </div>
+            </div>
+            {/volist}
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use([], function() {
+
+       $(document).on("click", ".edit", function () {
+           let scene = $(this).attr("lay-type");
+           let id = $(this).attr("lay-id");
+           wait.popup({
+               title: "配置：" + $(this).text(),
+               url: "{:url('setting.Notice/set')}?id=" + id + "&scene=" + scene,
+               area: ["750px", "680px"],
+               success: function (layero, index) {
+                   layero.layui.form.on("submit(addForm)", function(data){
+                       data.field["id"] = id;
+                       data.field["scene"] = scene;
+                       wait.ajax({
+                           url: "{:url('setting.Notice/set')}",
+                           type: "POST",
+                           data: data.field
+                       }).then((res) => {
+                           if (res.code === 0) {
+                               layer.msg(res.msg, {icon: 1, time: 1000});
+                               setTimeout(function () {
+                                   location.reload();
+                               }, 1500);
+                               layer.close(index);
+                           } else {
+                               layer.msg(res.msg, {icon: 2, time: 1000});
+                           }
+
+                       });
+                   });
+               }
+           });
+       });
+
+    });
+</script>
+{/block}

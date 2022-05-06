@@ -1,0 +1,99 @@
+/* 基础样式 */
+page {
+    font-family: PingFang SC, Arial, Hiragino Sans GB, Microsoft YaHei, sans-serif;
+    font-size: 28rpx;
+    color: $-color-normal;
+	padding-bottom: env(safe-area-inset-bottom);
+    background-color: $-color-body;
+}
+
+page .container { overflow: hidden; }
+img { vertical-align: middle; }
+
+/* 重置上拉没有更多样式 */
+.mescroll-upwarp {
+	min-height: 39rpx !important;
+	padding: 20rpx 0 !important;
+}
+
+/* 隐藏滚动条 */
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    color: transparent;
+}
+
+/* 背景颜色 */
+.u-bg-primary { background-color: $-color-main; }
+.u-bg-white { background-color: $-color-white; }
+.u-bg-body { background-color: $-color-body; }
+.u-bg-gray { background-color: $-color-border; }
+
+/* 基础颜色 */
+.u-color-main { color: $-color-main; }
+.u-color-major { color: $-color-major; }
+.u-color-black { color: $-color-black; }
+.u-color-white { color: $-color-white; }
+.u-color-normal { color: $-color-normal; }
+.u-color-lighter { color: $-color-lighter; }
+.u-color-muted { color: $-color-muted; }
+.u-color-body { color: $-color-body; }
+.u-color-placeholder { color: $-color-placeholder; }
+.u-color-success { color: $-color-success; }
+.u-color-danger { color: $-color-danger; }
+
+/* 字体大小 */
+.u-font-hg { font-size: 48rpx; }
+.u-font-xxl { font-size: 32rpx; }
+.u-font-xxs { font-size: 24rpx; }
+.u-font-weight { font-weight: bold; }
+.u-font-noweight { font-weight: normal; }
+
+/* 划线 */
+.u-line-through { text-decoration: line-through; }
+.u-line-overline { text-decoration: line-overline; }
+.u-line-underline { text-decoration: line-underline; }
+.u-line-blink { text-decoration: line-blink; }
+
+/* 边框 */
+.u-solid-border { border: $-solid-border; }
+.u-dashed-border { border: $-dashed-border; }
+.u-solid-border-tp { border-top: $-solid-border; }
+.u-solid-border-bt { border-bottom: $-solid-border; }
+.u-dashed-border-tp { border-top: $-dashed-border; }
+.u-dashed-border-bt { border-bottom: $-dashed-border; }
+
+/* 圆角 */
+.u-radius-circular { border-radius: 50%; }
+@for $i from 0 through 20 {
+	@if $i % 2 == 0 {
+		.u-radius-tl-#{$i} { border-top-left-radius: $i + rpx; }
+		.u-radius-tr-#{$i} { border-top-right-radius: $i + rpx; }
+		.u-radius-bl-#{$i} { border-bottom-left-radius: $i + rpx; }
+		.u-radius-br-#{$i} { border-bottom-right-radius: $i + rpx; }
+		.u-radius-#{$i} { border-radius: $i + rpx; }
+	}
+}
+
+/* 相等比例宽高 */
+.u-equal-bfb { width: 100%; height: 100%; }
+@for $i from 1 through 80 {
+	@if $i % 2 == 0 {
+		.u-equal-#{$i} {
+			width: $i + rpx; 
+			height: $i + rpx;
+		}
+	}
+}
+
+/* 边距 */
+@for $i from 0 through 60 {
+	@if $i % 2 == 0 or $i % 5 == 0 {
+		.u-margin-tb-#{$i} { margin: ($i + rpx) 0; }
+        .u-margin-lr-#{$i} { margin: 0 ($i + rpx); }
+        .u-margin-cr-#{$i} { margin: ($i + rpx) auto; }
+        .u-padding-tb-#{$i} { padding: ($i + rpx) 0; }
+        .u-padding-lr-#{$i} { padding: 0 ($i + rpx); }
+        .u-padding-cr-#{$i} { padding: ($i + rpx) auto; }
+	}
+}

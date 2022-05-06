@@ -1,0 +1,215 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 搜索栏 -->
+        <div class="layui-card-body search">
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline type">
+                        <label for="category_id" class="layui-form-label">文章分类：</label>
+                        <div class="layui-input-block">
+                            <select id="category_id" name="category_id">
+                                <option value="">全部</option>
+                                {volist name="category" id="vo"}
+                                    <option value="{$vo.id}">{$vo.name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline type">
+                        <label for="is_notice" class="layui-form-label">商城公告：</label>
+                        <div class="layui-input-block">
+                            <select id="is_notice" name="is_notice" class="layui-unselect">
+                                <option value="">全部</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline type">
+                        <label for="is_show" class="layui-form-label">是否显示：</label>
+                        <div class="layui-input-block">
+                            <select id="is_show" name="is_show">
+                                <option value="">全部</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label for="title" class="layui-form-label">文章标题：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="title" name="title" class="layui-input" placeholder="请输入">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <a class="layui-btn layui-btn-sm" lay-submit lay-filter="search">查询</a>
+                        <a class="layui-btn layui-btn-sm layui-btn-primary" lay-submit lay-filter="clear-search">清空查询</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- 内容栏 -->
+        <div class="layui-card-body wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">新增文章</button>
+                </div>
+            </script>
+            <script type="text/html" id="table-image">
+                <img src="{{d.image}}" alt="img" style="width:60px; height:60px;">
+            </script>
+            <script type="text/html" id="table-title">
+                <p class="wait-line-3" style="line-height:20px;">{{d.title}}</p>
+            </script>
+            <script type="text/html" id="table-notice">
+                {{#  if(d.is_notice === 1){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 是</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 否</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="table-status">
+                {{#  if(d.is_show === 1){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 显示</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 隐藏</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table", "form"], function() {
+        let table = layui.table;
+        let form = layui.form;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('content.Article/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", width:80, align:"center"},
+                {field:"image", title:"封面图片", width:100, align:"center", templet:"#table-image"},
+                {field:"title", title:"文章标题", width:250, templet:"#table-title"},
+                {field:"category", title:"文章分类", width:130, align:"center"},
+                {field:"views", title:"浏览量", width:100, align:"center"},
+                {field:"sort", title:"排序", width:80, align:"center"},
+                {field:"notice", title:"商城公告", width:100, align:"center", templet:"#table-notice"},
+                {field:"show", title:"是否显示", width:100, align:"center", templet:"#table-status"},
+                {field:"create_time", title:"创建时间", width:150, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:120, align:"center"},
+            ]]
+        });
+
+        // 绑定事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增文章",
+                    url: "{:url('content.Article/add')}",
+                    area: ["1000px", "90%"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            let content = layero.tinymce.activeEditor.getContent();
+                            content = content.replace("<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n", '');
+                            content = content.replace("</body>\n</html>", '');
+                            data.field["content"] = content;
+                            wait.ajax({
+                                url: "{:url('content.Article/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists", {
+                                        where: [],
+                                        page: { curr: 1 }
+                                    });
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑文章",
+                    url: "{:url('content.Article/edit')}?id=" + obj.data.id,
+                    area: ["95%", "95%"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            let content = layero.tinymce.activeEditor.getContent();
+                            content = content.replace("<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n", '');
+                            content = content.replace("</body>\n</html>", '');
+                            data.field["id"] = obj.data.id;
+                            data.field["content"] = content;
+                            wait.ajax({
+                                url: "{:url('content.Article/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists");
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定要删除此文章吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('content.Article/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+        });
+
+        // 监听搜索
+        form.on("submit(search)", function(data) {
+            table.reload("wait-table-lists", {
+                where: data.field,
+                page: { curr: 1 }
+            });
+        });
+
+        // 清空搜索
+        form.on("submit(clear-search)", function() {
+            $("#title").val("");
+            form.render("select");
+            table.reload("wait-table-lists", {
+                where: [],
+                page: { curr: 1 }
+            });
+        });
+
+    });
+</script>
+{/block}

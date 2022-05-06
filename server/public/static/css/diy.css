@@ -1,0 +1,452 @@
+@charset "UTF-8";
+* { -webkit-box-sizing: border-box; box-sizing: border-box;}
+::-moz-selection { background: #009688; color: #FFF; }
+::selection { background: #159b76; color: #FFF; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { border-radius: 10px; background-color: #bdbdbd; -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); }
+.container {
+    margin: 15px;
+    padding: 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: #FFFFFF;
+}
+.divider-line {
+    height: 0;
+    margin: 15px auto;
+    overflow: hidden;
+    border-top: 1px #ccc dashed;
+}
+
+.flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+.col-baseline { align-items: baseline; }
+.col-center { align-items: center; }
+.col-top { align-items: flex-start; }
+.col-bottom { align-items: flex-end; }
+.col-stretch { align-items:stretch; }
+.row-center { justify-content: center; }
+.row-left { justify-content: flex-start; }
+.row-right { justify-content: flex-end; }
+.row-between { justify-content: space-between; }
+.row-around { justify-content: space-around; }
+
+.line-h20 {line-height: 20px;}
+.line-h22 {line-height: 22px;}
+.line-h24 {line-height: 24px;}
+.line-h26 {line-height: 26px;}
+.line-h28 {line-height: 28px;}
+.line-h30 {line-height: 30px;}
+
+.over-line-1 {display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;}
+.over-line-2 {display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;}
+.over-line-3 {display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;}
+.over-line-4 {display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden;}
+
+/**====================== 工具模块 ============================= **/
+#diyView { display: flex; align-items: flex-start; justify-content: flex-start; }
+#diyView .diy-menu { width: 274px; min-width: 274px; user-select: none; padding: 0 5px; transition: all 0.3s; border: 1px solid #ddd; border-radius: 3px; background: #fdfdfd; }
+#diyView .diy-menu .navs { padding: 10px 5px; border-bottom: 1px dotted #ddd; }
+#diyView .diy-menu .navs .title { font-size: 12px; color: #999; margin: 10px 0; }
+#diyView .diy-menu .navs .components::after { content: ""; display: block; visibility: hidden; clear: both; }
+#diyView .diy-menu .navs nav { float: left; width: 74px; padding: 3px 0; margin: 5px; box-sizing: border-box; border: 1px solid #dddddd; transition: All 0.3s ease-in-out; background: #f4f4f4; }
+#diyView .diy-menu .navs nav p { text-align: center; font-size: 12px; color: #424242; height: 19px; line-height: 19px; }
+#diyView .diy-menu .navs nav p.item-icon { height: 28px; line-height: 28px; }
+#diyView .diy-menu .navs nav p.item-icon i { font-size: 18px; }
+#diyView .diy-menu .navs nav:hover { color: #009688; cursor: pointer; transition: All 0.3s; border: 1px solid #009688; background: #FFFFFF;  }
+#diyView .diy-menu .navs nav:active { box-shadow: inset 1px 3px 5px rgba(0, 0, 0, 0.2); }
+#diyView .diy-menu .action { margin: 15px 0; text-align: right; position: relative; }
+
+
+/**====================== DIY手机模块 ============================= **/
+/** 导航栏样式 **/
+#diyView .diy-phone { width: 375px; min-width: 375px; margin: 0 30px; box-sizing: border-box; border-radius: 3px; border: 1px solid #ddd; background: #f3f3f3; }
+#diyView .diy-phone .phone-navBar { width: 100%; height: 66px; text-align: center; }
+#diyView .diy-phone .phone-navBar h4 { padding-top: 32px; font-size: 14px; font-weight: normal; white-space: nowrap; }
+/** 屏幕区样式 **/
+#diyView .diy-phone .phone-main { position: relative; border-top: 0; user-select: none; line-height: normal; }
+#diyView .diy-phone .phone-main .dragArea { overflow-y: auto; height: 580px; }
+#diyView .diy-phone .phone-main .drag { display: block; overflow: hidden; font-size: 1.3rem; }
+#diyView .diy-phone .phone-main .drag .btn-edit-del { height: 16px; position: absolute; right: 2px; bottom: 2px; display: none; z-index: 1100; }
+#diyView .diy-phone .phone-main .drag .btn-edit-del > div { width: 32px; height: 16px; line-height: 16px; display: inline-block; text-align: center; font-size: 10px; color: #fff; background: rgba(0, 0, 0, 0.4); margin-left: 2px; cursor: pointer; position: relative; z-index: 11; }
+#diyView .diy-phone .phone-main .drag.selected .btn-edit-del, #diyView .diy-phone .phone-main .drag:hover .btn-edit-del { display: block; }
+#diyView .diy-phone .phone-main a { color: #337ab7; }
+/** 搜索组件 **/
+#diyView .diy-phone .phone-main .diy-search { padding: 10px 10px; background: #FFFFFF; }
+#diyView .diy-phone .phone-main .diy-search .inner { height: 30px; background: #F4F4F4;  }
+#diyView .diy-phone .phone-main .diy-search .inner.radius { border-radius: 5px; }
+#diyView .diy-phone .phone-main .diy-search .inner.round { border-radius: 30px; }
+#diyView .diy-phone .phone-main .diy-search .inner .search-input { height: 30px; line-height: 30px; font-size: 14px; color: #999999; padding: 0 10px; }
+/** 轮播组件 **/
+#diyView .diy-phone .phone-main .diy-banner { display: block; position: relative; margin: 0; padding: 0; height: auto; overflow: hidden; }
+#diyView .diy-phone .phone-main .diy-banner img { display: none; width: 100%; }
+#diyView .diy-phone .phone-main .diy-banner img:first-child { display: block; }
+#diyView .diy-phone .phone-main .diy-banner .dots { padding: 0 10px; position: absolute; left: 0; right: 0; bottom: 10px;opacity: 0.8; text-align: center; }
+#diyView .diy-phone .phone-main .diy-banner .dots span { display: inline-block; margin-left: 3px; background: rgba(0,0,0,.3); }
+#diyView .diy-phone .phone-main .diy-banner .dots span:first-child { background: #FFFFFF; }
+#diyView .diy-phone .phone-main .diy-banner .dots.round span { height: 5px; width: 5px; border-radius: 10px; }
+#diyView .diy-phone .phone-main .diy-banner .dots.round span:first-child { height: 5px; width: 12px; background: #FFFFFF;  }
+#diyView .diy-phone .phone-main .diy-banner .dots.dot span { height: 6px; width: 6px; border-radius: 50%; }
+#diyView .diy-phone .phone-main .diy-banner .dots.rect span { height: 5px; width: 12px; }
+#diyView .diy-phone .phone-main .diy-banner .dots.rect span:first-child  { background: #FFFFFF; }
+#diyView .diy-phone .phone-main .diy-banner.card .banner-images { position: absolute; top: 0; padding: 0 10px; }
+#diyView .diy-phone .phone-main .diy-banner.card .banner-images.card { height: 162px; overflow: hidden;}
+#diyView .diy-phone .phone-main .diy-banner.card .banner-images.card img { border-radius: 6px; width: 100%; height: 100%  }
+/** 单图组件 **/
+#diyView .diy-phone .phone-main .diy-image { display: block; margin: 0; padding: 0; height: auto; overflow: hidden; }
+#diyView .diy-phone .phone-main .diy-image img { display: block; width: 100%; }
+/** 导航组件 **/
+#diyView .diy-phone .phone-main .diy-navBar li { margin: 10px 0; }
+#diyView .diy-phone .phone-main .diy-navBar li .item-image { text-align: center; margin-bottom: 4px; }
+#diyView .diy-phone .phone-main .diy-navBar li .item-image img { height: 35px; width: 35px; }
+#diyView .diy-phone .phone-main .diy-navBar li .item-text { text-align: center; font-size: 13px; }
+#diyView .diy-phone .phone-main .diy-navBar ul { display: flex; justify-content: space-between; flex-wrap: wrap; box-sizing: border-box; padding: 0 5px; }
+#diyView .diy-phone .phone-main .diy-navBar ul.line-row-3 li { width: 33.33333333%; }
+#diyView .diy-phone .phone-main .diy-navBar ul.line-row-4 li { width: 25%; }
+#diyView .diy-phone .phone-main .diy-navBar ul.line-row-5 li { width: 20%; }
+/** 公告组件 **/
+#diyView .diy-phone .phone-main .diy-notice { display: flex; align-items: center; height: 38px; padding: 0 10px; }
+#diyView .diy-phone .phone-main .diy-notice .notice__icon { width: 64px; }
+#diyView .diy-phone .phone-main .diy-notice .notice__icon img{ width: 100%; height: 100%; }
+#diyView .diy-phone .phone-main .diy-notice .notice__split { width: 1px; height: 13px; background-color: #E4E4E4; margin: 0 11px; }
+#diyView .diy-phone .phone-main .diy-notice .notice__text { font-size: 13px; }
+/** 辅助线组件 **/
+#diyView .diy-phone .phone-main .diy-guide .line { height: 0; width: 100%; }
+/** 视频组件 **/
+#diyView .diy-phone .phone-main .diy-video video { display: block; width: 100%; height: 100%; }
+/** 商品组件 **/
+#diyView .diy-phone .phone-main .diy-goods .goods-list.display__slide { overflow-x: hidden; white-space: nowrap; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.display__slide::-webkit-scrollbar { display: none; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__1 .goods-item { display: flex; width: 100%; margin-bottom: 7px; box-sizing: border-box; background: #FFFFFF; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__1 .goods-item:last-child { margin-bottom: 0; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__1 .goods-item_left { display: flex; align-items: center; flex-shrink: 0; width: 120px; height: 120px; margin-right: 10px; background: #FFFFFF; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__1 .goods-item_left img { display: block; width: 100%; height: 100%; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__1 .goods-item_right { position: relative; display: flex; flex-direction: column; justify-content: center; padding-right: 10px; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__1 .desc_title { margin-bottom: 5px; height: 36px; font-size: 14px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-height: 1.3; color: #333; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__1 .desc_sales span { display: inline-block; padding: 1px 10px; margin-bottom: 7px; font-size: 12px; color: #F79C0C; border-radius: 19px; background: #fff5e6;}
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__1 .desc_footer .sale_price { font-size: 15px; color: #f03c3c; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__1 .desc_footer .market_price { font-size: 12px; color: #999; text-decoration:line-through; }
+
+#diyView .diy-phone .phone-main .diy-goods .goods-list.display__slide.column__2 .goods-item { flex-shrink: 0; padding-bottom: 0; background: #FFFFFF; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__2 { display: flex; flex-wrap: wrap; justify-content: space-between;  }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__2 .goods-item { width: 49%; background: #FFFFFF; margin-bottom: 10px; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__2 .goods-item:nth-last-child(1) { margin-bottom: 0; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__2 .goods-item:nth-last-child(2) { margin-bottom: 0; }
+
+#diyView .diy-phone .phone-main .diy-goods .goods-list.display__slide.column__3 .goods-item { flex-shrink: 0; padding-bottom: 0; background: #FFFFFF; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.display__slide.column__3 {justify-content: space-between;overflow: hidden; height: 173px; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__3 { display: flex; flex-wrap: wrap; justify-content: space-between; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list.column__3 .goods-item { width: 32%; background: #FFFFFF; margin-bottom: 10px; }
+
+#diyView .diy-phone .phone-main .diy-goods .goods-list .goods-item:nth-last-of-type(-n+2) { padding-bottom: 0; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list .goods-item .goods_image { position: relative; width: 100%; height: 0; padding-bottom: 100%; overflow: hidden; background: #fff; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list .goods-item .goods_image:after { content: ''; display: block; margin-top: 100%;  }
+#diyView .diy-phone .phone-main .diy-goods .goods-list .goods-item .goods_image img { position: absolute; width: 100%; height: 100%; top: 0; left: 0; object-fit: cover; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list .goods-item .goods-item_desc { padding: 5px; overflow: hidden;  }
+#diyView .diy-phone .phone-main .diy-goods .goods-list .goods-item .goods-item_desc .goods_name { height: 32px; overflow: hidden; white-space: initial; font-size: 13px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;  line-height: 1.3; color: #333; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list .goods-item .goods-item_desc .sale_price { font-size: 15px; padding-right: 3px; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list .goods-item .goods-item_desc .market_price { padding-right: 3px; font-size: 12px; color: #999; text-decoration: line-through; }
+#diyView .diy-phone .phone-main .diy-goods .goods-list .goods-item .sales_volume { font-size: 12px; color: #999; }
+
+/** 优惠券组件 **/
+#diyView .diy-phone .phone-main .diy-coupon {display: flex; align-items: center;}
+#diyView .diy-phone .phone-main .diy-coupon .coupon-item {display: flex; position: relative; overflow: hidden; width: 152px; height: 76px; color: #fff; border-radius: 5px; margin-right: 10px;}
+#diyView .diy-phone .phone-main .diy-coupon .coupon-item .left {width: 120px; height: 76px; display: flex; flex-direction: column; align-items: center; justify-content: center;}
+#diyView .diy-phone .phone-main .diy-coupon .coupon-item .left .num {font-size: 24px; font-weight: 700;}
+#diyView .diy-phone .phone-main .diy-coupon .coupon-item .left .num .unit {font-size: 12px;}
+#diyView .diy-phone .phone-main .diy-coupon .coupon-item .left .text {font-size: 12px;}
+#diyView .diy-phone .phone-main .diy-coupon .coupon-item .right {flex: 1; display: flex; align-items: center; justify-content: center; font-size: 12px; border-left: 1px dashed #fff;}
+#diyView .diy-phone .phone-main .diy-coupon .coupon-item::after {content: ""; position: absolute; right: 26px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: #f8f8f8;}
+#diyView .diy-phone .phone-main .diy-coupon .coupon-item::before {content: ""; position: absolute; right: 26px; bottom: -5px; width: 10px; height: 10px; border-radius: 50%; background: #f8f8f8;}
+#diyView .diy-phone .phone-main .diy-coupon .coupon-item:last-child { margin-right: 0; }
+
+/** 拼团商品组件 **/
+#diyView .diy-phone .phone-main .diy-teamGoods .title-wrapper {display: flex; align-content: center; justify-content: space-between; padding: 10px;}
+#diyView .diy-phone .phone-main .diy-teamGoods .title-wrapper .title{display: flex; align-items: center; font-size: 16px; font-weight: 600; color: #282828;}
+#diyView .diy-phone .phone-main .diy-teamGoods .title-wrapper .title .icon{width: 18px; height: 18px; margin-right: 5px;}
+#diyView .diy-phone .phone-main .diy-teamGoods .title-wrapper .more{font-size: 12px; color: #999;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper{display: flex; padding: 0 10px 10px; overflow: hidden;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper .item{flex-shrink: 0; width: 31.7%; background: #fff; border-radius: 6px; margin-right: 8px;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper .item:last-child{margin-right: 0;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper .item .img-box{position: relative; width: 100%; height: 110px;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper .item .img-box img{width: 100%; height: 100%; background: #f3f5f7; border-radius: 6px;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper .item .join {position: absolute; left: 6px; top: 6px; width: 70px; height: 16px; line-height: 16px; text-align: center; background: rgba(0,0,0,.1); box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 6%); border-radius: 8px; color: #fff; font-size: 12px;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper .item .title {margin: 5px 2px; font-size: 12px; color: #282828; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper .item .info {margin: 0 2px 4px; display: flex; align-items: center; justify-content: space-between;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper .item .info .price {color: #f44; font-size: 14px; font-weight: 700; line-height: 14px; padding-top: 2px;}
+#diyView .diy-phone .phone-main .diy-teamGoods .list-wrapper .item .info .go-team-btn {font-size: 12px; color: #FFFFFF; line-height: 12px; padding: 4px 6px; border-radius: 30px; background: #f44;}
+
+/** 秒杀商品组件 **/
+#diyView .diy-phone .phone-main .diy-seckillGoods .title-wrapper {display: flex; align-content: center; justify-content: space-between;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .title-wrapper {padding: 10px;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .title-wrapper .title {display: flex; align-items: center; font-size: 16px; font-weight: 600; color: #282828; }
+#diyView .diy-phone .phone-main .diy-seckillGoods .title-wrapper .title .icon {width: 18px; height: 18px; margin-right: 5px;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .title-wrapper .title .time {display: flex; align-items: center; margin-left: 5px; color: #f44;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .title-wrapper .title .time .time-group {width: 20px;height: 16px; font-size: 12px; text-align: center; line-height: 16px; background: rgba(252, 60, 62, 0.09); color: rgb(233, 51, 35);}
+#diyView .diy-phone .phone-main .diy-seckillGoods .title-wrapper .title .time .item-colon {font-size: 12px; margin: 0 3px; font-style: normal; font-weight: 700;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .title-wrapper .more {font-size: 12px; color: #999;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper {display: flex; padding: 0 10px 10px; overflow: hidden;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper .item {flex-shrink: 0; width: 31.7%; background: #fff; border-radius: 6px; margin-right: 8px;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper .item:last-child {margin-right: 0;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper .item .img-box {position: relative; width: 100%; height: 110px;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper .item .img-box img {width: 100%; height: 100%; background: #f3f5f7; border-radius: 6px;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper .item .title {margin: 5px 2px; font-size: 12px; color: #282828; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper .item .info {margin: 0 2px 4px; display: flex; align-items: center; justify-content: space-between;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper .item .info .sell-price {color: #f44; font-size: 14px; font-weight: 700;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper .item .info .line-price {color: #999; font-size: 12px; text-decoration:line-through;}
+#diyView .diy-phone .phone-main .diy-seckillGoods .list-wrapper .item .info .go-team-btn {font-size: 12px; color: #FFFFFF; line-height: 12px; padding: 4px 8px; border-radius: 30px; background: #f44;}
+
+/** 橱窗组件 **/
+#diyView .diy-phone .phone-main .diy-window .pileup {display: flex; flex-wrap: wrap;}
+#diyView .diy-phone .phone-main .diy-window .pileup .item-image img {width: 100%;}
+#diyView .diy-phone .phone-main .diy-window .pileup.layout-2 li  {width: 50%;}
+#diyView .diy-phone .phone-main .diy-window .pileup.layout-3 li {width: 33.333%;}
+#diyView .diy-phone .phone-main .diy-window .pileup.layout-4 li {width: 25%;}
+#diyView .diy-phone .phone-main .diy-window .display {height: 0; width: 100%; margin: 0; padding-bottom: 50%; position: relative; }
+#diyView .diy-phone .phone-main .diy-window .display img {width: 100%; height: 100%; }
+#diyView .diy-phone .phone-main .diy-window .display .display-left {width: 50%; height: 100%; position: absolute; top: 0; left: 0;}
+#diyView .diy-phone .phone-main .diy-window .display .display-right {width: 50%; height: 100%; position: absolute; top: 0; left: 50%;}
+#diyView .diy-phone .phone-main .diy-window .display .display-right1 {width: 100%; height: 50%; position: absolute; top: 0; left: 0;}
+#diyView .diy-phone .phone-main .diy-window .display .display-right2 {width: 100%; height: 50%; position: absolute; top: 50%; left: 0;}
+#diyView .diy-phone .phone-main .diy-window .display .display-right2 .left {width: 50%; height: 100%; position: absolute; top: 0; left: 0;}
+#diyView .diy-phone .phone-main .diy-window .display .display-right2 .right {width: 50%; height: 100%; position: absolute; top: 0; left: 50%;}
+
+/** 公共设计样式 **/
+#diyView .diy-phone .optional { position: relative; }
+#diyView .diy-phone .optional:before { content: ""; }
+#diyView .diy-phone .optional.__z10:before { z-index: 10; }
+#diyView .diy-phone .optional.__no-move:before { cursor: pointer !important; }
+#diyView .diy-phone .optional.selected:before,
+#diyView .diy-phone .optional:hover:before { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; cursor: move; border: 2px dashed #009688;  }
+
+
+/**====================== 编辑模块 ============================= **/
+#diyView .diy-editor {
+    position: relative;
+    z-index: 200;
+    width: 400px;
+    height: auto;
+    text-align: left;
+    padding: 20px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fdfdfd;
+}
+#diyView .diy-editor:after {
+    position: absolute;
+    top: 25px;
+    left: -9px;
+    z-index: 100;
+    content: "";
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: #fdfdfd;
+    transform: rotate(135deg);
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+/** 重置表单样式 **/
+.diy-editor .layui-form-item { margin-bottom: 10px; margin-right: 25px; }
+.diy-editor .layui-form-label { padding: 5px 0; font-size: 12px; color: #666; }
+.diy-editor .layui-input-block { margin-left: 90px; min-height: 30px; }
+.diy-editor .layui-input { font-size: 12px; color: #5e6166; height: 30px; }
+.diy-editor .layui-form-mid { font-size: 12px; padding: 5px 0 !important; }
+.diy-editor .layui-form input[type=checkbox],
+.diy-editor .layui-form input[type=radio],
+.diy-editor .layui-form select { display: block; }
+.diy-editor input[type=color] {
+    width: 65px;
+    height: 26px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 4px;
+    border: 1px solid #efefef;
+    background: #FFFFFF;
+}
+.diy-editor select {
+    border-radius: 2px;
+    margin: 0;
+    border: 1px solid #eceef1;
+    box-shadow: none;
+    font-size: 12px;
+    width: 100%;
+    padding: 0 6px;
+    height: 30px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+/** 自定义板块样式 **/
+.layui-plate-item .item {
+    height: auto;
+    padding: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #e7eaec;
+    background: #FFFFFF;
+}
+.layui-plate-item .item .item-delete {
+    height: 0;
+    width: 100%;
+    display: block;
+    position: relative;
+}
+.layui-plate-item .item .item-delete:before {
+    content: "×";
+    text-decoration: none;
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    text-align: center;
+    line-height: 14px;
+    color: #fff;
+    cursor: pointer;
+    box-sizing: border-box;
+    background: rgba(0,0,0,0.3);
+    border-radius: 16px;
+    top: -6px;
+    right: -6px;
+    z-index: 10;
+}
+.layui-plate-item .item .item-image {
+    position: relative;
+    float: left;
+    height: 68px;
+    width: auto;
+    min-width: 40px;
+    max-width: 220px;
+    margin-right: 10px;
+    border: 1px solid #e7eaec;
+    background: #eee;
+}
+.layui-plate-item .item .item-image img { height: 68px; width: 125px; max-width: 220px; display: block; }
+.layui-plate-item .item .item-form { height: auto; display: block; overflow: hidden; }
+.layui-plate-item .item .item-input-group { display: flex; margin-top: 10px; margin-bottom: 0; }
+.layui-plate-item .item .item-input-group:first-child { margin-top: 0; }
+
+/** 自定义选框样式 **/
+.diy-editor .radio-inline,
+.diy-editor .checkbox-inline {
+    float: left;
+    display: flex;
+    font-size: 12px;
+    color: #666;
+    cursor: pointer;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 20px;
+}
+.diy-editor input[type=radio],
+.diy-editor input[type=checkbox] {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    outline: 0;
+    cursor: pointer;
+    margin-right: 5px;
+    margin-top: 6px;
+    border-radius: 18px;
+    border: 1px solid #e0e0e0;
+    background: #FFFFFF;
+    vertical-align: middle;
+    box-sizing: border-box;
+    appearance: none;
+    transition-duration: 300ms;
+    transition-property: border-color;
+}
+.diy-editor input[type=radio]:checked{
+    border: 2px solid #009688;
+    background: #FFFFFF;
+}
+.diy-editor input[type=radio]:checked:before {
+    content: " ";
+    position: absolute;
+    top: 2px;
+    display: inline-block;
+    margin-left:2px;
+    height:8px;
+    width: 8px;
+    border-radius: 50%;
+    background: #009688;
+}
+.diy-editor input[type=checkbox] { border-radius: 2px; }
+.diy-editor input[type=checkbox]:checked { border-color: #009688;; background: #009688; }
+.diy-editor input[type=checkbox]:checked:before {
+    content: " ";
+    position: absolute;
+    top: 3px;
+    display: inline-block;
+    margin-left:2px;
+    height: 3px;
+    width: 7px;
+    border-width: 2px 2px 0 0;
+    border-color: #fff;
+    border-style: solid;
+    transform: rotate(135deg);
+}
+
+/* input滑块 */
+.diy-editor input[type=range] {
+    outline: none;
+    height: 3px;
+    border-radius: 5px;
+    -webkit-appearance: none;
+    background: -webkit-linear-gradient(#61bd12, #61bd12) no-repeat, #ddd;
+}
+.diy-editor input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    position: relative;
+    height: 15px;
+    width: 15px;
+    border: 1px solid #d3d3d3;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+}
+.diy-editor .display-value {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 13px !important;
+    color: #656565;
+}
+
+/** 自定义按钮样式 **/
+.diy-editor .btn-resetColor {
+    font-size: 12px;
+    padding: 5px 12px;
+    color: #444;
+    cursor: pointer;
+    outline: none;
+    margin-left: -4px;
+    vertical-align: top;
+    border: 1px solid #efefef;
+    border-left: none;
+    background: #fdfdfd;
+}
+.diy-editor .btn-default {
+    cursor: pointer;
+    color: #6b6b6b;
+    text-align: center;
+    font-size: 12px;
+    white-space: nowrap;
+    padding: 6px 12px;
+    border: 1px solid #efefef;
+    transition: background-color 0.3s;
+    background: #fdfdfd !important;
+}
+.diy-editor .btn-outline { border-left: none; }
+
+/** 行内模块 **/
+.layui-form-column { display: flex; height: auto; padding: 5px; box-sizing: border-box; }
+.layui-column-block { display: flex; flex-wrap: wrap; }
+.layui-column-module { position: relative; padding: 10px; margin-right: 20px; background: #f7fafc; }
+.layui-column-module img { width: 50px; height: 50px; }
+.layui-column-module .item-delete { position: absolute; top: -6px; right: -6px; height: 16px;
+    width: 16px; line-height: 16px; color: #fff; border-radius: 50%; text-align: center;
+    cursor: pointer; font-size: 12px; background: rgba(153, 153, 153, 0.7);
+    transition: background-color .3s ease-out, border-color .3s ease-out;
+}

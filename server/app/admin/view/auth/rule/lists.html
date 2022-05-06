@@ -1,0 +1,146 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 头部栏 -->
+        <div class="layui-card-header"><h5>菜单管理</h5></div>
+
+        <!-- 表格栏 -->
+        <div class="layui-card-body">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <a class="layui-btn layui-btn-sm" lay-event="add">添加菜单</a>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="expand">展开所有</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="fold">折叠所有</button>
+                </div>
+            </script>
+            <script type="text/html" id="table-icon">
+                <i class="layui-icon {{d.icon}}"></i>
+            </script>
+            <script type="text/html" id="table-menu">
+                {{#  if(d.is_menu === 0){ }}
+                    <span class="text-muted" title="否"><i class="layui-icon layui-icon-close" style="font-weight: bold;"></i></span>
+                {{# } else { }}
+                    <span class="text-error" title="是"><i class="layui-icon layui-icon-ok" style="font-weight: bold;"></i></span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.config({
+        base: "__STATIC__/js/treeTable/"
+    }).extend({
+        treeTable: "treeTable"
+    }).use(["treeTable", "table"], function () {
+        let treeTable = layui.treeTable;
+
+        // 渲染表格
+        treeTable.render({
+            treeColIndex: 1
+            ,treeSpid: 0
+            ,treeIdName: "id"
+            ,treePidName: "pid"
+            ,treeDefaultClose: true
+            ,treeLinkage: true
+            ,treeDirIcon: false
+            ,elem: "#wait-table-lists"
+            ,url: "{:url('auth.Rule/lists')}"
+            ,toolbar: "#toolbar"
+            ,defaultToolbar: ["filter", "exports", "print"]
+            ,cols: [[
+                {field:"id", title:"id", width:70},
+                {field:"title", title:"权限名称", width:200},
+                {field:"icon", title:"图标", align:"center", width:80, templet:"#table-icon"},
+                {field:"uri", title:"权限地址", width:300},
+                {field:"sort", title:"排序", align:"center", width:80},
+                {field:"is_menu", title:"菜单", align:"center", width:80, templet:"#table-menu"},
+                {field:"right", title:"操作", align:"center", width:150, toolbar:"#operate"},
+            ]]
+        });
+
+        // 逻辑事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增菜单",
+                    url: "{:url('auth.Rule/add')}",
+                    area: ["500px", "450px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('auth.Rule/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    location.reload();
+                                    layer.close(index)
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000})
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑菜单",
+                    url: "{:url('auth.Rule/edit')}?id="+obj.data.id,
+                    area: ["500px", "450px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field["id"] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('auth.Rule/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    location.reload();
+                                    layer.close(index)
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定删除该菜单吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('auth.Rule/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            obj.del();
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            expand: function () {
+                treeTable.expandAll('#wait-table-lists');
+            },
+            fold: function () {
+                treeTable.foldAll('#wait-table-lists');
+            }
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,123 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 头部栏 -->
+        <div class="layui-card-header">角色管理</div>
+
+        <!-- 表格栏 -->
+        <div class="layui-card-body">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <a class="layui-btn layui-btn-sm" lay-event="add">添加角色</a>
+                </div>
+            </script>
+            <script type="text/html" id="table-disable">
+                {{#  if(d.is_disable === 0){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 正常</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 禁用</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('auth.Role/lists')}"
+            ,cols: [[
+                {field: "id", title: "ID", align:"center", width:60},
+                {field: "name", title: "角色名称", align:"center", width:150},
+                {field: "describe", title: "描述信息", width:250},
+                {field: "disable", title: "状态", align:"center", width:100, templet:"#table-disable"},
+                {fixed: "right", title: "操作", align:"center", toolbar:"#operate", width:150},
+            ]]
+        });
+
+        // 逻辑事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增角色",
+                    url: "{:url('auth.Role/add')}",
+                    area: ["500px", "450px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('auth.Role/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload('wait-table-lists', {
+                                        where: [],
+                                        page: { curr: 1 }
+                                    });
+                                    layer.close(index)
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑角色",
+                    url: "{:url('auth.Role/edit')}?id="+obj.data.id,
+                    area: ["500px", "450px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('auth.Role/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload('wait-table-lists');
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定删除该角色吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('auth.Role/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload('wait-table-lists');
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+{/block}

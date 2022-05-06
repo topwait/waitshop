@@ -1,0 +1,30 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 审核状态 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>审核状态：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="审核通过" checked>
+                <input type="radio" name="status" value="2" title="审核拒绝">
+            </div>
+        </div>
+        <!-- 审核理由 -->
+        <div class="layui-form-item">
+            <label for="audit_reason" class="layui-form-label">审核理由：</label>
+            <div class="layui-input-block">
+                <textarea id="audit_reason" name="audit_reason" placeholder="请输理由" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}

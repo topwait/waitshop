@@ -1,0 +1,286 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 商品主图 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="line-height: 84px;"><span class="asterisk">*</span>商品主图：</label>
+            <div class="layui-input-block" lay-verType="tips" lay-verify="image">
+                <div class="wait-upload-drag" switch-tab="0" lay-verType="tips" lay-verify="image">
+                    {if $goodsDetail.base.image and $goodsDetail.base.image != ""}
+                        <div class="thumbnail">
+                            <img src="{$goodsDetail.base.image}" alt="商品主图">
+                            <input type="hidden" name="image" value="{$goodsDetail.base.image}">
+                            <i class="del-upload-btn">x</i>
+                        </div>
+                    {/if}
+                    <img class="add-upload-elem img" src="__STATIC__/images/ic_up_photo.png" alt="img"
+                         {if $goodsDetail.base.image!==""}style="display:none;"{/if}>
+                </div>
+            </div>
+        </div>
+        <!-- 商品轮播 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="line-height: 84px;"><span class="asterisk">*</span>商品轮播：</label>
+            <div class="layui-input-block" lay-verType="tips" lay-verify="banner">
+                <div class="wait-upload-drag">
+                    {volist name="$goodsDetail.base.banner" id="vo"}
+                        <div class="thumbnail">
+                            <img src="{$vo}" alt="轮播图">
+                            <input type="hidden" name="banner[]" value="{$vo}">
+                            <i class="del-upload-btn">x</i>
+                        </div>
+                    {/volist}
+                    <img class="add-upload-elem banner" src="__STATIC__/images/ic_up_photo.png" alt="banner"
+                         {if $goodsDetail.base.banner && count($goodsDetail.base.banner) >= 5}style="display:none;"{/if} >
+                </div>
+            </div>
+        </div>
+        <!-- 拼团名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>拼团名称：</label>
+            <div class="layui-input-inline" style="width: 400px;">
+                <input type="text" id="name" name="name" class="layui-input" value="{$goodsDetail.base.name}" autocomplete="off" lay-verType="tips" lay-verify="required">
+                <input type="hidden" name="goods_id" value="{$goodsDetail.base.id}">
+            </div>
+        </div>
+        <!-- 拼团简介 -->
+        <div class="layui-form-item">
+            <label for="intro" class="layui-form-label"><span class="asterisk">*</span>拼团简介：</label>
+            <div class="layui-input-inline" style="width: 400px;">
+                <textarea id="intro" name="intro" placeholder="请输入拼团简介"
+                          class="layui-textarea" lay-verType="tips" lay-verify="required">{$goodsDetail.base.intro}</textarea>
+            </div>
+        </div>
+        <!-- 活动时间 -->
+        <div class="layui-form-item">
+            <label for="activity_time" class="layui-form-label"><span class="asterisk">*</span>活动时间：</label>
+            <div class="layui-input-inline" style="width: 280px;">
+                <input type="text" id="activity_time" name="activity_time" placeholder="请选择活动时间"
+                       class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 拼团时效(单位 分钟) -->
+        <div class="layui-form-item">
+            <label for="effective_time" class="layui-form-label"><span class="asterisk">*</span>拼团时效：</label>
+            <div class="layui-input-inline" style="width: 280px;">
+                <input type="number" min="1" id="effective_time" name="effective_time"
+                       placeholder="请输入拼团时效(单位 分钟)" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required|number"
+                       onkeyup="value=value.replace(/[^\d]/g,'')">
+            </div>
+        </div>
+        <!-- 拼团所需人数 -->
+        <div class="layui-form-item">
+            <label for="people_num" class="layui-form-label"><span class="asterisk">*</span>拼团人数：</label>
+            <div class="layui-input-inline" style="width: 280px;">
+                <input type="number" min="1" id="people_num" name="people_num"
+                       placeholder="请输入拼团所需人数" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required|number"
+                       onkeyup="value=value.replace(/[^\d]/g,'')">
+            </div>
+        </div>
+        <!-- 起购限制 -->
+        <div class="layui-form-item">
+            <label for="min_buy" class="layui-form-label"><span class="asterisk">*</span>起购限制：</label>
+            <div class="layui-input-inline" style="width: 280px;">
+                <input type="number" min="1" id="min_buy" name="min_buy"
+                       placeholder="请输入每单最小购买数" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required|number"
+                       onkeyup="value=value.replace(/[^\d]/g,'')">
+            </div>
+        </div>
+        <!-- 每单限制 -->
+        <div class="layui-form-item">
+            <label for="max_buy" class="layui-form-label"><span class="asterisk">*</span>每单限制：</label>
+            <div class="layui-input-inline" style="width: 280px;">
+                <input type="number" min="1" id="max_buy" name="max_buy"
+                       placeholder="请输入每单最大购买数" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required|number"
+                       onkeyup="value=value.replace(/[^\d]/g,'')">
+            </div>
+        </div>
+        <!-- 虚拟成团 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>虚拟成团：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_automatic" value="1" title="是">
+                <input type="radio" name="is_automatic" value="0" title="否" checked>
+            </div>
+        </div>
+        <!-- 使用优惠券 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>用优惠券：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_coupon" value="1" title="允许使用">
+                <input type="radio" name="is_coupon" value="0" title="不允许使用" checked>
+            </div>
+        </div>
+        <!-- 是否参与分销 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>参与分销：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_distribution" value="1" title="参与分销">
+                <input type="radio" name="is_distribution" value="0" title="不参与分销" checked>
+            </div>
+        </div>
+        <!-- 选择规格 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>选择规格：</label>
+            <div class="layui-input-block">
+                <table id="sku-lists-table" class="layui-table" lay-size="sm">
+                    <thead>
+                        <tr style="background-color: #F3F5F9">
+                            <th width="20"><input type="checkbox" name="check" lay-skin="primary" lay-filter="all"></th>
+                            {volist name="goodsDetail.spec" id="vo"}
+                                <th style="white-space: nowrap;">{$vo.name}</th>
+                            {/volist}
+                            <th width="50">规格图片</th>
+                            <th width="50"><span class="asterisk">*</span>拼团价格</th>
+                            <th width="50"><span class="asterisk">*</span>拼团库存</th>
+                            <th>市场价</th>
+                            <th>售卖价</th>
+                            <th>成本价</th>
+                            <th>总库存</th>
+                            <th>体积(m3)</th>
+                            <th>重量(kg)</th>
+                            <th>条码</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {volist name="goodsDetail.sku" id="vo" key="index"}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="sku" lay-skin="primary" lay-filter="one">
+                                    <input type="hidden" name="sku_id" value="{$vo.id}">
+                                </td>
+                                {foreach :explode(',', $vo.spec_value_str) as $item }
+                                    <td>{$item}</td>
+                                {/foreach}
+                                <td>
+                                    <div class="goods-spec-img-div">
+                                        {if $vo.image}
+                                            <div class="thumbnail">
+                                                <img src="{$vo.image}" alt="img">
+                                                <input type="hidden" name="spec_image" value="{$vo.image}">
+                                                <div class="goods-spec-img-del-x"><i class="layui-icon layui-icon-close"></i></div>
+                                            </div>
+                                        {/if}
+                                        <img src="/static/images/ic_add_enc.png" class="multi-spec-img-add" alt="image" {if $vo.image!==""}style="display:none;"{/if}>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="number" name="team_price" class="layui-input" autocomplete="off"
+                                           lay-vertype="tips" lay-verify="" style="width: 90px;"
+                                           onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')">
+                                </td>
+                                <td>
+                                    <input type="number" name="team_stock" class="layui-input" autocomplete="off"
+                                           lay-vertype="tips" lay-verify="" style="width: 90px;"
+                                           onkeyup="value=value.replace(/[^\d]/g,'')">
+                                </td>
+                                <td>{$vo.market_price}</td>
+                                <td>{$vo.sell_price}</td>
+                                <td>{$vo.cost_price}</td>
+                                <td>{$vo.stock}</td>
+                                <td>{$vo.volume}</td>
+                                <td>{$vo.weight}</td>
+                                <td>{$vo.bar_code}</td>
+                            </tr>
+                        {/volist}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+
+{block name="js"}
+<script>
+    layui.use(["laydate", "form"], function () {
+        let laydate = layui.laydate;
+        let form = layui.form;
+
+        // 选择拼团活动时间
+        laydate.render({
+            elem: "#activity_time"
+            ,type: "datetime"
+            ,range: true
+            ,trigger: "click"
+        });
+
+        // 添加上传图片
+        wait.delUploadFile();
+        $(document).on("click", ".add-upload-elem.img", function () {
+            wait.imageUpload({
+                that: $(this),
+                field: "image",
+                limit: 1
+            });
+        });
+
+        // 添加上传轮播
+        $(document).on("click", ".add-upload-elem.banner", function () {
+            wait.imageUpload({
+                that: $(this),
+                field: "banner[]",
+                limit: 5
+            });
+        });
+
+        // 添加多规格图片
+        $(document).on("click", ".multi-spec-img-add", function () {
+            wait.imageUpload({
+                that: $(this),
+                filed: "spec_image",
+                destroy: "goods-spec-img-del-x",
+                limit: 1
+            });
+        });
+
+        // 绑定删除规格图片事件
+        $(document).on("click", ".goods-spec-img-del-x", function () {
+            $(this).parent().parent().prepend('<div class="thumbnail"><input type="hidden" name="spec_image[]"></div>');
+            $(this).parent().parent().find("img").show();
+            $(this).parent().remove();
+        });
+
+        // 全选或反选
+        form.on('checkbox(all)', function (data) {
+            if (data.elem.checked) {
+                $("input[name='sku']").prop("checked", true);
+                $("tbody td input[name='sku']").parents("tr").addClass("on")
+                form.render("checkbox");
+            } else {
+                $("input[name='sku']").prop("checked", false);
+                $("tbody td input[name='sku']").parents("tr").removeClass("on")
+                form.render("checkbox");
+            }
+        });
+
+        // 单选
+        form.on('checkbox(one)', function (data) {
+            if (data.elem.checked) {
+                $(this).prop("checked", true);
+                $(this).parents("tr").addClass("on")
+                form.render("checkbox");
+            } else {
+                $(this).prop("checked", false);
+                $(this).parents("tr").removeClass("on")
+                form.render("checkbox");
+            }
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,86 @@
+{extend name="public/layout" /}
+
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <div class="layui-card-header">支付配置</div>
+        <div class="layui-card-body">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="table-image">
+                <img src="{{d.image}}" alt="logo">
+            </script>
+            <script type="text/html" id="table-icon">
+                <img src="{{d.icon}}" alt="图标" style="width: 25px; height: 25px;">
+            </script>
+            <script type="text/html" id="table-enable">
+                {{#  if(d.is_enable === 1){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 正常</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 禁用</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="set">配置</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table", "form"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('setting.Payment/lists')}"
+            ,toolbar: false
+            ,cols: [[
+                {field:"id", title:"ID", event:"id", align:"center", width:60},
+                {field:"sort", title:"排序", align:"center", width:60},
+                {field:"image", title:"Logo", align:"center", width:150, templet:"#table-image"},
+                {field:"icon", title:"图标", align:"center", width:80, templet:"#table-icon"},
+                {field:"name", title:"支付名称", align:"center", width:120},
+                {field:"desc", title:"支付描述", width:320},
+                {field:"enable", title:"启用状态", align:"center", width:100, templet:"#table-enable"},
+                {fixed:"right", title:"操作", align:"center", width:80,toolbar:"#operate"},
+            ]]
+        });
+
+        // 事件操作
+        wait.BindEvents({
+            set: function (obj) {
+                let width  = obj.data.alias === "wallet" ? "400px" : "600px";
+                let height = obj.data.alias === "wallet" ? "300px" : "600px";
+
+                wait.popup({
+                    title: "配置：" + obj.data.name,
+                    url: "{:url('setting.Payment/set')}?alias=" + obj.data.alias,
+                    area: [width, height],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('setting.Payment/set')}?alias=" + obj.data.alias,
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    table.reload("wait-table-lists", {page: { cur: 1}})
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+{/block}

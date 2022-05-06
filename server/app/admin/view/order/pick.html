@@ -1,0 +1,199 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+ <form class="layui-form container">
+    <div class="order-detail-panel">
+        <div class="panel-sidebar">
+            <dl>
+                <dt>订单信息</dt>
+                <dd>
+                    <span>订单编号：</span>
+                    <span class="tip">{$detail.order_sn}</span>
+                </dd>
+                <dd>
+                    <span>支付流水：</span>
+                    <span class="tip">{$detail.transaction_id |default="无"}</span>
+                </dd>
+                <dd>
+                    <span>支付方式：</span>
+                    <span class="tip">{$detail.pay_way_text |default="未知"}</span>
+                </dd>
+                <dd>
+                    <span>订单类型：</span>
+                    <span class="tip">{$detail.order_type_text}</span>
+                </dd>
+                <dd>
+                    <span>订单状态：</span>
+                    <span class="tip">{$detail.order_status_text}</span>
+                </dd>
+                <dd>
+                    <span>订单总额：</span>
+                    <span class="tip">{$detail.total_amount}元</span>
+                </dd>
+                <dd>
+                    <span>积分抵扣：</span>
+                    <span class="tip">{$detail.integral_amount}元</span>
+                </dd>
+                <dd>
+                    <span>优惠金额：</span>
+                    <span class="tip">{$detail.discount_amount}元</span>
+                </dd>
+                <dd>
+                    <span>实付金额：</span>
+                    <span class="tip">{$detail.paid_amount}元</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="panel-main">
+            <!-- 提货信息 -->
+            <div class="panel-main-information">
+                <h3>提货信息</h3>
+                <div class="information-content">
+                    <dl>
+                        <dd>
+                            <span>提货人：</span>
+                            <span class="tip">{$detail.address_snap.contact}</span>
+                        </dd>
+                        <dd>
+                            <span>提货门店：</span>
+                            <span class="tip">
+                                {$detail.address_snap.region}
+                                {$detail.address_snap.address}
+                                ({$detail.store_name})
+                            </span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dd>
+                            <span>联系电话：</span>
+                            <span class="tip">{$detail.address_snap.mobile}</span>
+                        </dd>
+                        <dd>
+                            <span>买家留言：</span>
+                            <span class="tip">{$detail.buyers_remarks|default="无"}</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- 订单操作 -->
+            {if $detail.order_status === 1}
+            <div style="margin-top:20px;">
+                <button type="button" class="layui-btn layui-btn-sm" id="pickUp">确认核销</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" id="cancel">取消订单</button>
+            </div>
+            {elseif $detail.order_status === 0}
+            <div style="margin-top:20px;">
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" id="close">关闭订单</button>
+            </div>
+            {/if}
+
+            <!-- 订单商品 -->
+            <table class="layui-table">
+                <colgroup>
+                    <col width="60">
+                    <col width="290">
+                    <col width="150">
+                    <col width="120">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>商品信息</th>
+                        <th>商品价格</th>
+                        <th>规格属性</th>
+                        <th>购买数量</th>
+                        <th>合计</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="$detail.orderGoods" id="vo"}
+                        <tr>
+                            <td>{$vo.id}</td>
+                            <td>
+                                <img src="{$vo.image}" alt="{$vo.id}" style="height:50px; width:50px; margin-right: 10px;">
+                                <div class="layui-input-inline" style="width:185px;">
+                                    <p title="aa" style="line-height:18px; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; ">
+                                        {$vo.name}
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <p>现售价：{$vo.sell_price}元</p>
+                                <p>市场价：{$vo.snapshot.market_price}元</p>
+                                <p>成本价：{$vo.snapshot.cost_price}元</p>
+                            </td>
+                            <td>{$vo.spec_value_str}</td>
+                            <td>x{$vo.count}</td>
+                            <td>{$vo.total_price}元</td>
+                        </tr>
+                    {/volist}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function () {
+
+        // 立即核销
+        $(document).on("click", "#pickUp", function () {
+            layer.confirm('确定要核销订单吗?', {}, function () {
+                wait.ajax({
+                    url: "{:url('order.Order/pickUp')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1500});
+                        location.reload();
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1500});
+                    }
+                });
+            });
+        });
+
+        // 取消订单
+        $(document).on("click", "#cancel", function () {
+            layer.confirm('确定要取消订单吗?', {}, function () {
+                wait.ajax({
+                    url: "{:url('order.Order/cancel')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1500});
+                        location.reload();
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1500});
+                    }
+                });
+            });
+        });
+
+        // 关闭订单(未支付)
+        $(document).on("click", "#close", function () {
+            layer.confirm('确定要关闭订单吗?', {}, function () {
+                wait.ajax({
+                    url: "{:url('order.Order/close')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1500});
+                        location.reload();
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1500});
+                    }
+                });
+            });
+        });
+
+    });
+</script>
+{/block}

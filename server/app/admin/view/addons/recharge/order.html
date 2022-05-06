@@ -1,0 +1,59 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 内容栏 -->
+        <div class="layui-card-body wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <!-- 用户信息 -->
+            <script type="text/html" id="table-userInfo">
+                <img src="{{d.avatar}}" alt="头像" style="height:60px; width:60px; margin-right:10px;">
+                <div class="layui-input-inline">
+                    <p class="wait-lh-20">昵称：{{d.nickname}}</p>
+                    <p class="wait-lh-20">电话：{{d.mobile || '未知'}}</p>
+                    <p class="wait-lh-20">余额：{{d.money}}</p>
+                </div>
+            </script>
+            <!-- 订单信息 -->
+            <script type="text/html" id="table-orderInfo">
+                <div>
+                    <p class="wait-lh-20">订单编号：{{d.order_sn}}</p>
+                    <p class="wait-lh-20">来源平台：{{d.order_platform}}</p>
+                    <p class="wait-lh-20">支付方式：{{d.pay_way}}</p>
+                </div>
+            </script>
+            <script type="text/html" id="table-status">
+                {{#  if(d.pay_status === 0){ }} <span class="text-info"><i class="layui-icon layui-icon-circle-dot"></i> 待支付</span> {{#  } }}
+                {{#  if(d.pay_status === 1){ }} <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 已支付</span> {{#  } }}
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('addons.Recharge/order')}"
+            ,toolbar: false
+            ,cols: [[
+                {field:"id", title:"id", width:60, align:"center"},
+                {field:"user", title:"用户信息", width:220, templet:"#table-userInfo"},
+                {field:"order", title:"订单信息", width:220, templet:"#table-orderInfo"},
+                {field:"paid_amount", title:"充值金额", width:90, align:"center"},
+                {field:"give_amount", title:"赠送金额", width:90, align:"center"},
+                {field:"give_integral", title:"赠送积分", width:90, align:"center"},
+                {field:"give_growth", title:"赠送成长值", width:100, align:"center"},
+                {field:"pay_status", title:"状态", width:100, align:"center", templet:"#table-status"},
+                {field:"pay_time", title:"支付时间", width:100, align:"center"},
+                {field:"create_time", title:"创建时间", width:100, align:"center"}
+            ]]
+        });
+
+    });
+</script>
+{/block}

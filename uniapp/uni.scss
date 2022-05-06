@@ -1,0 +1,28 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+
+/* 颜色 */
+$-color-body: #F6F6F6;    //背景色
+$-color-main: #FF5058;    //主题色
+$-color-major: #FF2C3C;   //重要色
+$-color-black:#101010;    //黑色
+$-color-white: #ffffff;   //白色
+$-color-normal: #333333;  //主浅色
+$-color-lighter: #666666; //浅灰色
+$-color-muted: #999999;   //更浅灰色
+$-color-border: #E5E5E5;  //边框色
+$-color-placeholder: #BBBBBB; //占位灰色
+$-color-success: #009688;  //成功样式
+$-color-danger: #FFB800;  //成功样式
+
+/* 边框 */
+$-solid-border: 1px solid $-color-border;
+$-dashed-border: 1px dashed $-color-border;
+
+/* 引入Uview */
+@import "components/uview-ui/theme.scss";

@@ -1,0 +1,57 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 供应商名 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>供应商名：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" value="{$detail.name}" lay-verType="tips" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 联系人名 -->
+        <div class="layui-form-item">
+            <label for="nickname" class="layui-form-label"><span class="asterisk">*</span>联系人名：</label>
+            <div class="layui-input-block">
+                <input type="text" id="nickname" name="nickname" value="{$detail.nickname}" lay-verType="tips" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 联系电话 -->
+        <div class="layui-form-item">
+            <label for="mobile" class="layui-form-label"><span class="asterisk">*</span>联系电话：</label>
+            <div class="layui-input-block">
+                <input type="text" id="mobile" name="mobile" value="{$detail.mobile}" lay-verType="tips" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 联系地址 -->
+        <div class="layui-form-item">
+            <label for="address" class="layui-form-label"><span class="asterisk">*</span>联系地址：</label>
+            <div class="layui-input-block">
+                <input type="text" id="address" name="address" value="{$detail.address}" lay-verType="tips" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 排序号码 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label"><span class="asterisk">*</span>排序号码：</label>
+            <div class="layui-input-block">
+                <input type="number" id="sort" name="sort" value="{$detail.sort}" lay-verType="tips" lay-verify="required|number" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 备注信息 -->
+        <div class="layui-form-item">
+            <label for="remarks" class="layui-form-label">备注信息：</label>
+            <div class="layui-input-block">
+                <textarea id="remarks" name="remarks" placeholder="请输入备注" class="layui-textarea">{$detail.remarks}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}

@@ -1,0 +1,75 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .userInfo {width: 260px; background: #f2f2f2; padding: 6px; border-radius: 2px;}
+    .userInfo .avatar {height:80px; width:80px; margin-right:10px;}
+    .userInfo .layui-inline {width:145px; margin-bottom:0; color:#333;}
+    .userInfo .layui-inline p {line-height:26px;}
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 选择用户 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>选择用户：</label>
+            <div class="layui-input-block" style="line-height: 36px;">
+                <div class="userInfo">
+                    <input type="hidden" name="user_id" value="{$detail.user.id}">
+                    <img class="avatar" src="{$detail.user.avatar}" alt="头像">
+                    <div class="layui-inline">
+                        <p>昵称：{$detail.user.nickname}</p>
+                        <p>编号：{$detail.user.sn}</p>
+                        <p>电话：{$detail.user.mobile}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 所属门店 -->
+        <div class="layui-form-item">
+            <label for="shop" class="layui-form-label"><span class="asterisk">*</span>所属门店：</label>
+            <div class="layui-input-block">
+                <select id="shop" name="store_id" lay-verType="tips" lay-verify="required|number">
+                    <option value=""></option>
+                    {volist name="storeList" id="vo"}
+                        <option value="{$vo.id}" {if $detail.store_id==$vo.id}selected{/if}>{$vo.name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <!-- 店员姓名  -->
+        <div class="layui-form-item">
+            <label for="nickname" class="layui-form-label"><span class="asterisk">*</span>店员姓名 ：</label>
+            <div class="layui-input-block">
+                <input type="text" id="nickname" name="nickname" value="{$detail.nickname}"
+                       class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 店员电话 -->
+        <div class="layui-form-item">
+            <label for="mobile" class="layui-form-label"><span class="asterisk">*</span>店员电话：</label>
+            <div class="layui-input-block">
+                <input type="text" id="mobile" name="mobile" value="{$detail.mobile}" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 状态 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>状态：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="启用" {if $detail.status==1}checked{/if}>
+                <input type="radio" name="status" value="0" title="禁用" {if $detail.status==0}checked{/if}>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}

@@ -1,0 +1,36 @@
+body {background-color: #F6F6F6;color: rgba(0,0,0,.85);font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;}
+img {vertical-align: middle;}
+
+/* 容器栏 */
+.install {width: 920px;margin: 50px auto 30px;background-color: #FFFFFF;}
+.install .header {height: 80px;line-height: 80px;padding-left: 20px;box-shadow: 0 3px 3px #ddd;position: relative;color: #fff;background: #333;}
+.install .section {margin-bottom: 20px;}
+.install .section .section-header {font-weight: bold;padding: 8px 16px;font-family: PingFang SC, serif;background-color: #E5E5E5;}
+.install .section .section-content {padding: 23px 60px;border: 1px solid #E5E5E5;}
+.install .section .section-record {padding: 16px;height: 479px;max-height: 479px;overflow: hidden;overflow-y: scroll;border: 1px solid #E5E5E5;}
+.install .section .section-fixed {padding: 16px;height: 400px;max-height: 400px;border: 1px solid #E5E5E5;}
+/* 导航条 */
+.navigation {display: flex;justify-content: center;margin-top: 15px;}
+.navigation .active {color: white;background-color: #009688;border: 1px solid #009688 !important;}
+.navigation li:nth-of-type(even) {width: 140px;height: 36px;cursor: pointer;display: flex;justify-content: center;align-items: center;font-size: 14px;font-family: PingFang SC;border-top: 1px solid #E5E5E5;border-bottom: 1px solid #E5E5E5;}
+.navigation li:nth-of-type(odd) { width: 140px;height: 36px;cursor: pointer;display: flex;justify-content: center;align-items: center;font-size: 14px;font-family: PingFang SC;border: 1px solid #E5E5E5;}
+.navigation li:last-child {border-right: 1px solid #E5E5E5;}
+/* 主流程 */
+.main {margin: 0 auto;padding: 20px 30px;}
+.main .footer {text-align: center;margin-top: 20px;}
+.main .footer .layui-btn {width: 140px;}
+.step-1 .agreement {display: block;overflow: hidden;overflow-y: scroll;height: 500px;font-size: 12px;line-height: 1.5;padding: 10px;margin: 0 auto; margin-bottom: 22px;outline: none;border: 1px solid #bdbcbc;box-shadow: 5px 5px 5px #f7f7f7 inset;}
+.step-2 .environment .layui-table thead tr th {font-weight: bold !important;}
+.step-2 .environment .layui-table tbody tr:hover {background-color: #FFFFFF;}
+.step-2 .environment .icon {width: 15px;height: 15px;vertical-align: middle;}
+.step-3 .layui-form-label {width: 90px;}
+.step-3 .layui-input-inline {width: 350px;}
+.step-4 .sql {padding: 4px 0px;display: flex;align-items: center;justify-content: space-between;}
+.step-4 .sql .sql-left {display: flex;align-items: center;}
+.step-4 .sql .sql-left .layui-icon-ok {font-size: 16px;font-weight: bold;color: green;}
+.step-5 .success-install {display: flex;flex-direction: column;align-items: center;justify-content: center;}
+.step-5 .success-install .icon {margin-top: 20px;margin-right: 10px;}
+.step-5 .success-install h1 {margin-top: 20px;}
+.step-5 .success-install .tips {margin-top: 20px;padding: 15px;width: 400px;text-align: center;color: #FFFFFF;border-radius: 2px;background-color: #3c5675;}
+.step-5 .success-install .warning {margin-top: 20px;padding: 15px;width: 400px;text-align: center;color: #e74c3c;border-radius: 2px;background-color: #ffcdcd;}
+.step-5 .success-install .footer {margin-top: 20px;}

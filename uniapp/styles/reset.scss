@@ -1,0 +1,99 @@
+/* 初始化按钮 */
+page button {
+    padding: 0;
+    margin: 0;
+    font-weight: normal;
+    font-size: 28rpx;
+    overflow: unset;
+	margin-left: 0;
+	margin-right: 0;
+	background-color: transparent;
+	&::after { border: none; }
+}
+
+/* 弹窗透明背景 */
+.transparent .u-mode-center-box {
+	background-color: transparent !important;
+}
+
+/* 登录协议复选框 */
+.index-agreement-widget .login-text .u-checkbox__label {
+	margin-right: 0 !important;
+}
+
+/* 初始化单选框*/
+radio {
+	//#ifndef H5
+	.uni-radio-input {
+	    border-radius: 50%;
+	    width: 34rpx;
+	    height: 34rpx;
+	}
+	.uni-radio-input {
+	    border-radius: 50%;
+	    width: 34rpx;
+	    height: 34rpx;
+		&.uni-radio-input-checked {
+			border: 1px solid $-color-main !important;
+			background-color: $-color-main !important;
+		}
+	}
+	//#endif
+	// #ifdef MP-WEIXIN
+	.wx-radio-input {
+	    border-radius: 50%;
+	    width: 34rpx;
+	    height: 34rpx;
+	}
+	.wx-radio-input {
+	    border-radius: 50%;
+	    width: 34rpx;
+	    height: 34rpx;
+		&.wx-radio-input-checked {
+			border: 1px solid $-color-main !important;
+			background-color: $-color-main !important;
+		}
+	}
+	// #endif
+}
+
+/* 初始化复选框 */
+checkbox {
+	//#ifndef H5
+	.uni-checkbox-input {
+	    border-radius: 50%;
+	    width: 34rpx;
+	    height: 34rpx;
+		&.uni-checkbox-input-checked {
+		    border: 1px solid $-color-main !important;
+		    background-color: $-color-main !important;
+		    color: #fff !important;
+			&::before {
+				font-size: 35rpx;
+			}
+		}
+	}
+	//#endif
+	// #ifdef MP-WEIXIN
+	.wx-checkbox-input {
+	    border-radius: 50%;
+	    width: 34rpx;
+	    height: 34rpx;
+		&.wx-checkbox-input-checked {
+		    border: 1px solid $-color-main !important;
+		    background-color: $-color-main !important;
+		    color: #fff !important;
+			&::before {
+				font-size: 35rpx;
+			}
+		}
+	}
+	// #endif
+}
+
+// 优惠券列表,查询详情
+.index-coupon-widget {
+	.u-collapse-head .u-collapse-title {
+		flex: none !important;
+	}
+}

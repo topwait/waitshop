@@ -1,0 +1,125 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-item .layui-form-label { width: 160px; }
+    .layui-form-item .layui-input-inline { width: 260px; }
+    .layui-form-item .layui-form-mid { white-space: nowrap; }
+    .layui-field-title .layui-field-box { padding-top: 20px; }
+</style>
+{/block}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <div class="layui-card-body layui-form">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>订单基础设置</legend>
+                <!-- 配送方式 -->
+                <div class="layui-field-box">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">配送方式：</label>
+                        <div class="layui-input-inline">
+                            <input type="checkbox" name="delivery_method[]" value="1" title="快递配送" {if ($detail.delivery_method ?? 1)==1}checked{/if}>
+                            <input type="checkbox" name="delivery_method[]" value="2" title="上门自提" {if ($detail.delivery_method ?? 1)==2}checked{/if}>
+                            <div class="layui-form-mid layui-word-aux">注：配送方式至少选择一个,在下单时会出现选择配送方式</div>
+                        </div>
+                    </div>
+                    <!-- 扣库存 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">扣库存方式：</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" name="stock_deduct_method" value="order" title="下单扣库存" {if ($detail.stock_deduct_method ?? 'order')=='order'}checked{/if}>
+                            <input type="radio" name="stock_deduct_method" value="payment" title="支付扣库存" {if ($detail.stock_deduct_method ?? 'order')=='payment'}checked{/if}>
+                            <div class="layui-form-mid layui-word-aux">下单扣库存:提交订单就扣库存,支付扣库存:下单后支付成功才扣库存.</div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>订单流程设置</legend>
+                <div class="layui-field-box">
+                    <!-- 订单自动取消时长 -->
+                    <div class="layui-form-item">
+                        <label for="automatic_cancel_duration" class="layui-form-label">订单自动取消时长：</label>
+                        <div class="layui-input-inline">
+                            <input type="number" min="0" id="automatic_cancel_duration" value="{$detail.automatic_cancel_duration ?? 0}"
+                                   name="automatic_cancel_duration" class="layui-input" autocomplete="off"
+                                   onkeyup="value=value.replace(/[^\d]/g,'')">
+                            <div class="layui-form-mid layui-word-aux">未付款订单多久时间后自动关闭，为0或不填表示订单不自动关闭</div>
+                        </div>
+                        <div class="layui-form-mid">分钟</div>
+                    </div>
+                    <!-- 订单允许取消时长 -->
+                    <div class="layui-form-item">
+                        <label for="customer_cancel_duration" class="layui-form-label">订单允许取消时长：</label>
+                        <div class="layui-input-inline">
+                            <input type="number" min="0" id="customer_cancel_duration" value="{$detail.customer_cancel_duration ?? 0}"
+                                   name="customer_cancel_duration" class="layui-input" autocomplete="off"
+                                   onkeyup="value=value.replace(/[^\d]/g,'')">
+                            <div class="layui-form-mid layui-word-aux">待发货订单多长时间内允许客户主动取消订单，设置0不允许取消订单</div>
+                        </div>
+                        <div class="layui-form-mid">分钟</div>
+                    </div>
+                    <!-- 订单售后退款时长 -->
+                    <div class="layui-form-item">
+                        <label for="after_sale_duration" class="layui-form-label">订单售后退款时长：</label>
+                        <div class="layui-input-inline">
+                            <input type="number" min="0" id="after_sale_duration" value="{$detail.after_sale_duration ?? 0}"
+                                   name="after_sale_duration" class="layui-input" autocomplete="off"
+                                   onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')">
+                            <div class="layui-form-mid layui-word-aux">用户确认收货后在n天内可以发起售后申请，设置0天不允许申请售后</div>
+                        </div>
+                        <div class="layui-form-mid">天</div>
+                    </div>
+
+                    <!-- 订单自动完成时长 -->
+                    <div class="layui-form-item">
+                        <label for="automatic_finish_duration" class="layui-form-label">订单自动完成时长：</label>
+                        <div class="layui-input-inline">
+                            <input type="number" min="0" id="automatic_finish_duration" value="{$detail.automatic_finish_duration ?? 0}"
+                                   name="automatic_finish_duration" class="layui-input" autocomplete="off"
+                                   onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')">
+                            <div class="layui-form-mid layui-word-aux">已发货订单，如果在期间未确认收货，系统自动完成收货，设置0天不自动收货</div>
+                        </div>
+                        <div class="layui-form-mid">天</div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">保存设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function () {
+        let form = layui.form;
+
+        // 监听表单提交
+        form.on("submit(addForm)", function(data) {
+            layer.confirm("确定保存当前配置吗?", function(index) {
+                wait.ajax({
+                    url: "{:url('setting.Trade/set')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1000});
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1000});
+                    }
+                });
+                layer.close(index);
+            });
+        });
+    });
+</script>
+{/block}

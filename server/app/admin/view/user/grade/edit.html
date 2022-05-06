@@ -1,0 +1,139 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-item .layui-form-label { width: 86px; }
+    .layui-form-item .layui-input-block { margin-left: 116px; }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 等级名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>等级名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" value="{$detail.name}" class="layui-input" autocomplete="off" lay-verify="required">
+                <div class="layui-form-mid layui-word-aux">例如：青铜会员、黄金会员、铂金会员、钻石会员</div>
+            </div>
+        </div>
+        <!-- 等级权重 -->
+        <div class="layui-form-item">
+            <label for="weight" class="layui-form-label"><span class="asterisk">*</span>等级权重：</label>
+            <div class="layui-input-block">
+                <select id="weight" name="weight" lay-verify="required|number">
+                    {volist name="grade" id="level"}
+                        {if $detail.weight === $level}
+                            <option value="{$level}" selected>{$level}</option>
+                        {else}
+                            <option value="{$level}">{$level}</option>
+                        {/if}
+                    {/volist}
+                </select>
+                <div class="layui-form-mid layui-word-aux">会员等级的权重，数字越大 等级越高</div>
+            </div>
+        </div>
+        <!-- 等级图标 -->
+        <div class="layui-form-item">
+            <label for="weight" class="layui-form-label"><span class="asterisk">*</span>等级图标：</label>
+            <div class="layui-input-block">
+                <div class="wait-upload-drag">
+                    {if $detail.icon and $detail.icon != ""}
+                        <div class="thumbnail">
+                            <img src="{$detail.icon}" alt="等级图标">
+                            <input type="hidden" name="icon" value="{$detail.icon}">
+                            <i class="del-upload-btn">x</i>
+                        </div>
+                    {/if}
+                    <img class="add-upload-elem icon" src="__STATIC__/images/ic_up_photo.png" alt="img" {if $detail.icon!==""}style="display:none;"{/if}>
+                </div>
+            </div>
+        </div>
+        <!-- 等级背景图 -->
+        <div class="layui-form-item">
+            <label for="weight" class="layui-form-label"><span class="asterisk">*</span>等级背景图：</label>
+            <div class="layui-input-block">
+                <div class="wait-upload-drag">
+                    {if $detail.background and $detail.background != ""}
+                        <div class="thumbnail">
+                            <img src="{$detail.background}" alt="等级背景图">
+                            <input type="hidden" name="background" value="{$detail.background}">
+                            <i class="del-upload-btn">x</i>
+                        </div>
+                    {/if}
+                    <img class="add-upload-elem background" src="__STATIC__/images/ic_up_photo.png" alt="img" {if $detail.background!==""}style="display:none;"{/if}>
+                </div>
+            </div>
+        </div>
+        <!-- 等级权益 -->
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label"><span class="asterisk">*</span>等级权益：</label>
+            <div class="layui-input-block">
+                <div class="layui-form-pane">
+                    <label for="equity" class="layui-form-label" style="width:98px;color:#909399;">折扣率</label>
+                    <div class="layui-input-block" style="margin-left:98px;">
+                        <input type="number" min="0" max="10" id="equity" name="equity" value="{$detail.equity}"
+                               class="layui-input" autocomplete="off" lay-verify="required" style="width:120px;">
+                    </div>
+                </div>
+                <div class="layui-form-mid layui-word-aux">折扣率范围0-10，9.5代表9.5折，10代表不折扣</div>
+            </div>
+        </div>
+        <!-- 升级条件 -->
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label"><span class="asterisk">*</span>升级条件：</label>
+            <div class="layui-input-block">
+                <div class="layui-form-pane">
+                    <label for="total_growth_value" class="layui-form-label" style="width:110px; color:#909399;">用户成长值数</label>
+                    <div class="layui-input-block" style="margin-left:98px;">
+                        <input type="number" id="total_growth_value" name="total_growth_value"
+                               value="{$detail.upgrade.total_growth_value ?? 0}"
+                               class="layui-input" autocomplete="off" style="width:120px;"
+                               onkeyup="value=value.replace(/[^\d]/g,'')">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">以上升级条件为空或值小于等于0，则表示不需要此条件也可升级</div>
+                </div>
+            </div>
+        </div>
+        <!-- 等级状态 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>等级状态：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_disable" value="0" title="启用" {if $detail.is_disable==0}checked{/if}>
+                <input type="radio" name="is_disable" value="1" title="禁用" {if $detail.is_disable==1}checked{/if}>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    // 图标上传事件
+    wait.delUploadFile();
+    $(document).on("click", ".add-upload-elem.icon", function () {
+        wait.imageUpload({
+            that: $(this),
+            field: "icon",
+            limit: 1
+        });
+    });
+
+    // 背景上传事件
+    $(document).on("click", ".add-upload-elem.background", function () {
+        wait.imageUpload({
+            that: $(this),
+            field: "background",
+            limit: 1
+        });
+    });
+</script>
+{/block}

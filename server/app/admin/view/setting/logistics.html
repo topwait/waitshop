@@ -1,0 +1,104 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-item .layui-input-inline { width: 270px; }
+</style>
+{/block}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <div class="layui-card-header">物流配置</div>
+        <div class="layui-card-body">
+            <div class="layui-form-item">
+                <label class="layui-form-label">查询方式</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="way" lay-filter="way" value="kd100" title="快递100" {if $config.way=='kd100'}checked{/if}>
+                    <input type="radio" name="way" lay-filter="way" value="kdniao" title="快递鸟" {if $config.way=='kdniao'}checked{/if}>
+                </div>
+            </div>
+
+            <!-- 快递100 -->
+            <div class="kd100" {if $config.way!=='kd100'}style="display:none;"{/if}>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">授权Key：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="kd100_appkey" value="{$config.kd100.appkey ?? ''}" placeholder="请输入APPKEY" autocomplete="off" class="layui-input">
+                        <div class=" layui-form-mid layui-word-aux">快递100分配的授权KEY</div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">Customer:</label>
+                    <div class="layui-input-inline" >
+                        <input type="text" name="kd100_customer" value="{$config.kd100.customer ?? ''}" placeholder="请输入CUSTOMER" autocomplete="off" class="layui-input">
+                        <div class="layui-form-mid layui-word-aux">快递100分配的customer</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快递鸟 -->
+            <div class="kdniao" {if $config.way!=='kdniao'}style="display:none;"{/if}>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">APPKEY:</label>
+                    <div class="layui-input-inline" >
+                        <input type="text" name="kdniao_appkey" value="{$config.kdniao.appkey ?? ''}" placeholder="请输入APPKEY" autocomplete="off" class="layui-input">
+                        <div class="layui-form-mid layui-word-aux">快递鸟分配的电商加密私钥</div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">EBussinessID:</label>
+                    <div class="layui-input-inline" >
+                        <input type="text" name="kdniao_ebussinessid" value="{$config.kdniao.ebussinessid ?? ''}" placeholder="请输入EBussinessID" autocomplete="off" class="layui-input">
+                        <div class="layui-form-mid layui-word-aux">快递鸟分配的电商EBussinessID</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">保存设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function () {
+        let $ = layui.jquery;
+        let form = layui.form;
+
+        // 提交表单
+        form.on("submit(addForm)", function(data){
+            layer.confirm("确定保存当前配置吗?", function(index) {
+                wait.ajax({
+                    url: "{:url('setting.Logistics/set')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1000});
+                    }
+                });
+                layer.close(index);
+            });
+        });
+
+        // 选择物流方式
+        form.on("radio(way)", function (data) {
+            console.log(data)
+            if (data.value === "kd100") {
+                $(".kdniao").hide();
+                $(".kd100").show();
+            } else {
+                $(".kd100").hide();
+                $(".kdniao").show();
+            }
+        });
+    });
+</script>
+{/block}

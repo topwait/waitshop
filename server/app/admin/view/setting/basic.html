@@ -1,0 +1,312 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-label {width: 130px;}
+
+    .mallLogo .thumbnail {width:172px; height:48px;}
+    .mallLogo .add-upload-elem {width:172px; height:48px;}
+
+    .mallAvatar .thumbnail {width:80px; height:80px;}
+    .mallAvatar .add-upload-elem {width:80px; height:80px;}
+
+    .backstageSideLogo .thumbnail {width:120px; height:50px;}
+    .backstageSideLogo .add-upload-elem {width:120px; height:50px;}
+
+    .backstageWebFavicon .thumbnail {width:64px; height:64px;}
+    .backstageWebFavicon .add-upload-elem {width:64px; height:64px;}
+</style>
+{/block}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-col-md12 layui-form">
+        <!-- 商城信息 -->
+        <div class="layui-card">
+            <div class="layui-card-header">商城信息</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <label for="backstage_login_title" class="layui-form-label"><span class="asterisk">*</span>后台登录标题:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="text" id="backstage_login_title" name="backstage_login_title" value="{$detail.backstage.backstage_login_title}" class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">管理后台登录表单头部的标题名称</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="backstage_web_favicon" class="layui-form-label"><span class="asterisk">*</span>浏览器favicon:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <div class="wait-upload-drag backstageWebFavicon" lay-verType="tips" lay-verify="image">
+                                {if $detail.backstage.backstage_web_favicon}
+                                <div class="thumbnail">
+                                    <img src="{$detail.backstage.backstage_web_favicon}" alt="浏览器favicon">
+                                    <input type="hidden" id="backstage_web_favicon" name="image" value="{$detail.backstage.backstage_web_favicon}">
+                                    <i class="del-upload-btn">x</i>
+                                </div>
+                                {/if}
+                                <img class="add-upload-elem backstage_web_favicon" src="__STATIC__/images/backstage_web_favicon.ico" alt="img" {if $detail.backstage.backstage_web_favicon!==""}style="display:none;"{/if}>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">浏览器标签favicon.ic, 建议: 宽64px*宽64px</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="backstage_side_logo" class="layui-form-label"><span class="asterisk">*</span>后台菜单logo:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <div class="wait-upload-drag backstageSideLogo" lay-verType="tips" lay-verify="image">
+                                {if $detail.backstage.backstage_side_logo}
+                                <div class="thumbnail">
+                                    <img src="{$detail.backstage.backstage_side_logo}" alt="后台菜单logo">
+                                    <input type="hidden" id="backstage_side_logo" name="image" value="{$detail.backstage.backstage_side_logo}">
+                                    <i class="del-upload-btn">x</i>
+                                </div>
+                                {/if}
+                                <img class="add-upload-elem backstage_side_logo" src="__STATIC__/images/backstage_side_logo.png" alt="img" {if $detail.backstage.backstage_side_logo!==""}style="display:none;"{/if}>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">后台侧边登录菜单logo, 建议: 宽120px*宽50px</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="mall_logo" class="layui-form-label"><span class="asterisk">*</span>商城登录logo:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <div class="wait-upload-drag mallLogo" lay-verType="tips" lay-verify="image">
+                                {if $detail.backstage.mall_logo}
+                                <div class="thumbnail">
+                                    <img src="{$detail.backstage.mall_logo}" alt="商城登录logo">
+                                    <input type="hidden" id="mall_logo" name="image" value="{$detail.backstage.mall_logo}">
+                                    <i class="del-upload-btn">x</i>
+                                </div>
+                                {/if}
+                                <img class="add-upload-elem mall_logo" src="__STATIC__/images/mall_logo.png" alt="img" {if $detail.backstage.mall_logo!==""}style="display:none;"{/if}>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">移动端登录页logo, 建议：宽172px*宽48px</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="mall_avatar" class="layui-form-label"><span class="asterisk">*</span>商城默认头像:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <div class="wait-upload-drag mallAvatar" lay-verType="tips" lay-verify="image">
+                                {if $detail.backstage.mall_avatar}
+                                <div class="thumbnail">
+                                    <img src="{$detail.backstage.mall_avatar}" alt="商城登录logo">
+                                    <input type="hidden" id="mall_avatar" name="image" value="{$detail.backstage.mall_avatar}">
+                                    <i class="del-upload-btn">x</i>
+                                </div>
+                                {/if}
+                                <img class="add-upload-elem mall_avatar" src="__STATIC__/images/default_avatar.png" alt="img" {if $detail.backstage.mall_avatar!==""}style="display:none;"{/if}>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">用户的默认头像, 建议：宽100px*宽100px</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 登录设置 -->
+        <div class="layui-card">
+            <div class="layui-card-header">登录设置</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="asterisk">*</span>强制绑定手机:</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="force_mobile" value="1" title="开启" {if $detail.login.force_mobile==1}checked{/if}>
+                        <input type="radio" name="force_mobile" value="0" title="关闭" {if $detail.login.force_mobile==0}checked{/if}>
+                        <div class="layui-form-mid layui-word-aux" style="white-space:nowrap;">是否需要让用户注册时强制绑定手机</div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="asterisk">*</span>通用登录方式:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="checkbox" name="login_way[]" value="1" title="账号密码登录" lay-skin="primary" {if in_array(1, $detail.login.login_way)}checked{/if}>
+                            <input type="checkbox" name="login_way[]" value="2" title="手机短信登录" lay-skin="primary" {if in_array(2, $detail.login.login_way)}checked{/if}>
+                            <div class="layui-form-mid layui-word-aux">非微信环境下使用的登录方式, 至少勾选一项</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 热门搜索 -->
+        <div class="layui-card">
+            <div class="layui-card-header">热门搜索</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="asterisk">*</span>热门词模式:</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="search-type" value="1" title="固定模式" {if ($detail.search.type ?? 1)==1}checked{/if}>
+                        <input type="radio" name="search-type" value="2" title="自动模式" {if ($detail.search.type ?? 1)==2}checked{/if}>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="search-keyword" class="layui-form-label"><span class="asterisk">*</span>热门关键词:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <textarea id="search-keyword" name="search-keyword" placeholder="请输入一个或多个关键词" class="layui-textarea">{$detail.search.keyword ?? ''}</textarea>
+                            <div class="layui-form-mid layui-word-aux">英文逗号隔开如: T恤男,iphone13,平板电脑</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 联系方式 -->
+        <div class="layui-card">
+            <div class="layui-card-header">联系方式</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <label for="mall_contact_name" class="layui-form-label"><span class="asterisk">*</span>联系人:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="text" id="mall_contact_name" name="mall_contact_name" value="{$detail.contact.mall_contact_name}" class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">商城联系人：有订单产生时，短信通知商城联系人</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="mall_contact_mobile" class="layui-form-label"><span class="asterisk">*</span>手机号码:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="text" id="mall_contact_mobile" name="mall_contact_mobile" value="{$detail.contact.mall_contact_mobile}" class="layui-input">
+                            <div class="layui-form-mid layui-word-aux">商城联系电话：有订单产生时，短信通知商城店长</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 退货地址 -->
+        <div class="layui-card">
+            <div class="layui-card-header">退货地址</div>
+            <div class="layui-card-body">
+                <div class="layui-form-item">
+                    <label for="return_contact_name" class="layui-form-label"><span class="asterisk">*</span>联系人:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="text" id="return_contact_name" name="return_contact_name" value="{$detail.return.return_contact_name}" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="return_contact_mobile" class="layui-form-label"><span class="asterisk">*</span>联系电话:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <input type="text" id="return_contact_mobile" name="return_contact_mobile" value="{$detail.return.return_contact_mobile}" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="asterisk">*</span>所在地区:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-input-inline" style="width:113px;">
+                            <select name="return_province" id="province" lay-filter="province"></select>
+                        </div>
+                        <div class="layui-input-inline" style="width:113px;">
+                            <select name="return_city" id="city" lay-filter="city"></select>
+                        </div>
+                        <div class="layui-input-inline" style="width:113px;">
+                            <select name="return_district" id="district"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="return_address" class="layui-form-label"><span class="asterisk">*</span>详细地址:</label>
+                    <div class="layui-input-block">
+                        <div class="layui-col-md4">
+                            <textarea id="return_address" name="return_address" class="layui-textarea">{$detail.return.return_address}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 保存按钮 -->
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">保存设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/js/area.js"></script>
+<script>
+    layui.config({
+        base: "__STATIC__/js/"
+    }).extend({
+        waitArea: "waitArea/waitArea"
+    }).use(["form", "waitArea"], function() {
+        let form = layui.form;
+        let waitArea = layui.waitArea;
+
+        // 地址选择
+        waitArea.init("province", "city", "district", "return_province", "return_city", "return_district",
+            "{$detail.return.return_province}", "{$detail.return.return_city}", "{$detail.return.return_district}");
+
+        // 提交表单
+        form.on("submit(addForm)", function(data){
+            layer.confirm("确定保存当前配置吗?", function(index) {
+                wait.ajax({
+                    url: "{:url('setting.Basic/set')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1000});
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1000});
+                    }
+                });
+                layer.close(index);
+            });
+        });
+
+        // 添加浏览器favicon
+        wait.delUploadFile();
+        $(document).on("click", ".add-upload-elem.backstage_web_favicon", function () {
+            wait.imageUpload({
+                that: $(this),
+                filed: "backstage_web_favicon",
+                limit: 1
+            });
+        });
+
+        // 添加后台菜单logo
+        wait.delUploadFile();
+        $(document).on("click", ".add-upload-elem.backstage_side_logo", function () {
+            wait.imageUpload({
+                that: $(this),
+                filed: "backstage_side_logo",
+                limit: 1
+            });
+        });
+
+        // 添加商城登录logo
+        wait.delUploadFile();
+        $(document).on("click", ".add-upload-elem.mall_logo", function () {
+            wait.imageUpload({
+                that: $(this),
+                filed: "mall_logo",
+                limit: 1
+            });
+        });
+
+        // 添加商城默认头像
+        wait.delUploadFile();
+        $(document).on("click", ".add-upload-elem.mall_avatar", function () {
+            wait.imageUpload({
+                that: $(this),
+                filed: "mall_avatar",
+                limit: 1
+            });
+        });
+
+    });
+</script>
+{/block}

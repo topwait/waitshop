@@ -1,0 +1,92 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .voucher {position: relative; display: none; width: 100px;height: 101px;border: 1px dashed rgb(226, 226, 226);}
+    .voucher img {width: 100%;height: 100%;}
+    .voucher:hover .del-upload-btn { visibility: visible;  }
+    .voucher .del-upload-btn:hover { background: #000; }
+    .voucher .del-upload-btn {
+        visibility: hidden; display: flex; align-items: center; justify-content: center;position: absolute;
+        z-index: 100; top: -11px; right: -9px; width: 20px; height: 20px;cursor: pointer; font-size: 14px;
+        font-style:normal; color: #FFFFFF; border-radius: 50%; background: hsla(0, 0%, 60%, .6);
+    }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 转账操作 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>转账操作：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="转账成功">
+                <input type="radio" name="status" value="2" title="转账失败">
+            </div>
+        </div>
+        <!-- 转账凭证 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>转账凭证：</label>
+            <div class="layui-input-block">
+                <div class="layui-upload-drag" id="upload" style="padding: 14px 23px;">
+                    <i class="layui-icon layui-icon-upload"></i>
+                    <p>上传凭证</p>
+                </div>
+                <div class="voucher">
+                    <i class="del-upload-btn">x</i>
+                    <img src="" alt="img">
+                    <input type="hidden" name="voucher" value="">
+                </div>
+            </div>
+        </div>
+        <!-- 审核备注 -->
+        <div class="layui-form-item">
+            <label for="remark" class="layui-form-label"><span class="asterisk">*</span>转账备注：</label>
+            <div class="layui-input-block">
+                <textarea id="remark" name="remark" placeholder="请输入内容" class="layui-textarea"
+                          lay-verType="tips" lay-verify="required"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use('upload', function(){
+        let upload = layui.upload;
+
+        // 上传凭证
+        upload.render({
+            elem: "#upload"
+            ,url: "{:url('Upload/other')}"
+            ,field: "iFile"
+            ,size: 10240
+            ,exts: "jpg|png|gif|bmp|jpeg"
+            ,done: function(res){
+                $(".voucher img").attr("src", res.data.image);
+                $(".voucher input").val(res.data.uri);
+                $(".voucher").show();
+                $("#upload").hide();
+            }
+        });
+
+        // 删除凭证
+        $(document).on("click", ".del-upload-btn", function () {
+            $(".voucher img").attr("");
+            $(".voucher input").val("");
+            $("#upload").show();
+            $(".voucher").hide();
+        })
+
+    });
+</script>
+{/block}

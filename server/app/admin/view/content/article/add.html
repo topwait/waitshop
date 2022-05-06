@@ -1,0 +1,128 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 文章分类 -->
+        <div class="layui-form-item">
+            <label for="category_id" class="layui-form-label"><span class="asterisk">*</span>文章分类：</label>
+            <div class="layui-input-block">
+                <select id="category_id" name="category_id" lay-verify="required|number">
+                    {volist name="categoryList" id="vo"}
+                        <option value="{$vo.id}">{$vo.name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <!-- 文章标题 -->
+        <div class="layui-form-item">
+            <label for="title" class="layui-form-label"><span class="asterisk">*</span>文章标题：</label>
+            <div class="layui-input-block">
+                <input type="text" id="title" name="title" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 文章排序 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label"><span class="asterisk">*</span>文章排序：</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" id="sort" name="sort" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 文章封面 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>文章封面：</label>
+            <div class="layui-input-block">
+                <div class="wait-upload-drag">
+                    <img class="add-upload-elem" src="__STATIC__/images/ic_up_photo.png" alt="选择封面图">
+                </div>
+            </div>
+        </div>
+        <!-- 商城公告 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>商城公告：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_notice" value="1" title="是" checked>
+                <input type="radio" name="is_notice" value="0" title="否">
+            </div>
+        </div>
+        <!-- 是否显示 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>是否显示：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_show" value="1" title="显示" checked>
+                <input type="radio" name="is_show" value="0" title="隐藏">
+            </div>
+        </div>
+        <!-- 文章简介 -->
+        <div class="layui-form-item">
+            <label for="intro" class="layui-form-label">文章简介：</label>
+            <div class="layui-input-block">
+                <textarea id="intro" name="intro" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <!-- 文章内容 -->
+        <div class="layui-form-item">
+            <label for="textarea" class="layui-form-label">文章内容：</label>
+            <div class="layui-input-block">
+                <textarea id="textarea" name="content"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/js/tinymce/tinymce.min.js"></script>
+<script src="__STATIC__/js/tinymce/jquery.tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: '#textarea',
+        language: 'zh_CN',
+        menubar: false,
+        height: "500",
+        convert_urls: false,
+        plugins: `code  preview fullpage searchreplace autolink
+            directionality visualblocks visualchars fullscreen image link media template
+            codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists
+            wordcount imagetools textpattern help emoticons table searchreplace fullscreen autosave
+            autolink insertdatetime pagebreak paste image media preview print visualblocks wordcount codesample`,
+        toolbar: [
+            `code
+                    | bold italic underline strikethrough forecolor backcolor subscript superscript
+                    | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent
+                    | emoticons charmap wordcount | fullscreen`,
+            `formatselect
+                    | fontselect | fontsizeselect | table hr blockquote codesample link | image media
+                    | anchor removeformat print | searchreplace`
+        ],
+        file_picker_callback: function(callback) {
+            wait.imageUpload({
+                that: $(this),
+                field: "image",
+                limit: 1
+            }).then((res) => {
+                callback(res[0], {alt: "My alt describe"});
+            });
+        }
+    });
+</script>
+
+<script>
+    // 添加上传图片
+    wait.delUploadFile();
+    $(document).on("click", ".add-upload-elem", function () {
+        wait.imageUpload({
+            that: $(this),
+            field: "image",
+            limit: 1
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,72 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <!-- 搜索栏 -->
+    <form class="layui-form" style="padding: 10px 0;">
+        <div class="layui-form-item" style="margin-bottom: 0;">
+            <div class="layui-input-inline">
+                <input type="text" id="keyword" name="keyword" autocomplete="off"
+                       class="layui-input" placeholder="请输入用户昵称/编号">
+            </div>
+            <div class="layui-input-inline" style="padding-top: 4px;">
+                <a class="layui-btn layui-btn-sm" lay-submit lay-filter="search">查询</a>
+                <a class="layui-btn layui-btn-sm layui-btn-primary" lay-submit lay-filter="clear-search">重置</a>
+            </div>
+        </div>
+    </form>
+
+    <!-- 表格栏-->
+    <div class="wait-table-cell">
+        <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+        <script type="text/html" id="table-avatar">
+            <img src="{{d.avatar}}" alt="头像" style="float:left;width:50px;height:50px;">
+        </script>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table", "form"], function() {
+        let table = layui.table;
+        let form = layui.form;
+
+        // 加载数据表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('Data/user')}"
+            ,toolbar: false
+            ,cols: [[
+                {type:"{$type ?? 'checkbox'}"}
+                ,{field:"id", title:"ID", width:60, align:"center"}
+                ,{field:"avatar", title:"头像", width:80, align:"center", templet:"#table-avatar"}
+                ,{field:"sn", title:"用户编号", width:100, align:"center"}
+                ,{field:"nickname", title:"用户昵称", width:100, align:"center"}
+                ,{field:"mobile", title:"联系电话", width:100, align:"center"}
+                ,{field:"money", title:"用户余额", width:100, align:"center"}
+                ,{field:"grade_id", title:"用户等级", width:100, align:"center"}
+                ,{field:"total_order_amount", title:"累计消费金额", align:"center"}
+            ]]
+        });
+
+        // 监听搜索
+        form.on("submit(search)", function(data) {
+            table.reload("tpl-data-table", {
+                where: data.field,
+                page: { curr: 1 }
+            });
+        });
+
+        // 清空搜索
+        form.on("submit(clear-search)", function() {
+            $("#keyword").val("");
+            form.render("select");
+            table.reload("wait-table-lists", {
+                where: [],
+                page: { curr: 1 }
+            });
+        });
+    });
+</script>
+{/block}

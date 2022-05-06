@@ -1,0 +1,183 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 头部栏 -->
+        <div class="layui-card-header">店员管理</div>
+
+        <!-- 表格栏 -->
+        <div class="layui-card-body wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">新增店员</button>
+                </div>
+            </script>
+            <script type="text/html" id="table-logo">
+                <img src="{{d.logo}}" alt="logo" style="width:50px; height: 50px;">
+            </script>
+            <script type="text/html" id="table-status">
+                {{#  if(d.status === 1){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 正常</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 停用</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="table-userInfo">
+                <img src="{{d.user.avatar}}" alt="头像" style="height:60px; width:60px; margin-right:10px;">
+                <div class="layui-input-inline">
+                    <p class="wait-lh-22">编号：{{d.user.sn || '无'}}</p>
+                    <p class="wait-lh-22">昵称：{{d.user.nickname || '无'}}</p>
+                    <p class="wait-lh-22">电话：{{d.user.mobile || '无'}}</p>
+                </div>
+            </script>
+            <script type="text/html" id="table-shopInfo">
+                <img src="{{d.store.logo}}" alt="logo" style="height:60px; width:60px; margin-right:10px;">
+                <div class="layui-input-inline">
+                    <p class="wait-lh-22">编号：{{d.store.id}}</p>
+                    <p class="wait-lh-22">店名：{{d.store.name}}</p>
+                    <p class="wait-lh-22">电话：{{d.store.mobile}}</p>
+                </div>
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                {{#  if(d.status === 1){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="stop">停用</button>{{#  } }}
+                {{#  if(d.status === 0){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="start">启用</button>{{#  } }}
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('store.Clerk/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", width:60, align:"center"},
+                {field:"userInfo", title:"用户信息", width:240, templet:"#table-userInfo"},
+                {field:"shopInfo", title:"所属门店", width:300, templet:"#table-shopInfo"},
+                {field:"nickname", title:"店员姓名", width:100},
+                {field:"mobile", title:"店员电话", width:120},
+                {field:"status", title:"状态", width:100, align:"center", templet:"#table-status"},
+                {field:"create_time", title:"创建时间", width:160, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:180, align:"center"},
+            ]]
+        });
+
+        // 绑定事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增店员",
+                    url: "{:url('store.Clerk/add')}",
+                    area: ["600px", "600px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('store.Clerk/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    layer.close(index);
+                                    table.reload("wait-table-lists", {
+                                        where: [],
+                                        page: { curr: 1 }
+                                    });
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑店员",
+                    url: "{:url('store.Clerk/edit')}?id="+obj.data.id,
+                    area: ["600px", "90%"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('store.Clerk/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    layer.close(index);
+                                    table.reload("wait-table-lists");
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定删除店员吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('store.Clerk/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            stop: function (obj) {
+                layer.confirm("确定停用该店员吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('store.Clerk/stop')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            start: function (obj) {
+                layer.confirm("确定启用该店员吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('store.Clerk/start')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+{/block}

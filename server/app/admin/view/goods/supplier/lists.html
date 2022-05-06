@@ -1,0 +1,119 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <!-- 表格栏-->
+        <div class="layui-card-body">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">添加供应商</button>
+                </div>
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('goods.Supplier/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", width:60},
+                {field:"name", title:"供货商", width:200},
+                {field:"nickname", title:"联系人", width:100, align:"center"},
+                {field:"mobile", title:"联系电话", width:150, align:"center"},
+                {field:"address", title:"联系地址", width:250},
+                {field:"remarks", title:"备注信息", width:250},
+                {field:"sort", title:"排序", width:100, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:120, align:"center"},
+            ]]
+        });
+
+        // 逻辑事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增供应商",
+                    url: "{:url('goods.Supplier/add')}",
+                    area: ["550px", "520px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('goods.Supplier/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists", {
+                                        where: {type: 1},
+                                        page: { curr: 1 }
+                                    });
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "新增供应商",
+                    url: "{:url('goods.Supplier/edit')}?id="+obj.data.id,
+                    area: ["550px", "520px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field["id"] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('goods.Supplier/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists", {
+                                        where: {type: 1},
+                                        page: { curr: 1 }
+                                    });
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定删除该供应商吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('goods.Supplier/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+{/block}

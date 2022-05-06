@@ -1,0 +1,122 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 内容栏 -->
+        <div class="layui-card-body wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">新增文章分类</button>
+                </div>
+            </script>
+            <script type="text/html" id="table-disable">
+                {{#  if(d.is_disable == 0){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 启用</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 禁用</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('content.ArticleCategory/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", width:80, align:"center"},
+                {field:"name", title:"分类名称", width:150},
+                {field:"sort", title:"排序", width:80, align:"center"},
+                {field:"disable", title:"状态", width:100, align:"center", templet:"#table-disable"},
+                {field:"create_time", title:"创建时间", width:170, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:150, align:"center"},
+            ]]
+        });
+
+        // 绑定事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增文章分类",
+                    url: "{:url('content.ArticleCategory/add')}",
+                    area: ["500px", "360px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('content.ArticleCategory/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists", {
+                                        where: [],
+                                        page: { curr: 1 }
+                                    });
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑文章分类",
+                    url: "{:url('content.ArticleCategory/edit')}?id=" + obj.data.id,
+                    area: ["500px", "360px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field["id"] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('content.ArticleCategory/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists");
+                                    layer.close(index);
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定要删除此文章分类吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('content.ArticleCategory/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+        });
+
+    });
+</script>
+{/block}

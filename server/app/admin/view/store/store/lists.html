@@ -1,0 +1,212 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 搜索栏 -->
+        <form class="layui-form" style="padding-top: 22px;">
+            <div class="layui-form-item" style="margin-bottom: 5px;">
+                <div class="layui-inline">
+                    <label for="name" class="layui-form-label">门店名称:</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="name" name="name" placeholder="请输入门店名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label for="status" class="layui-form-label">门店状态:</label>
+                    <div class="layui-input-block">
+                        <select id="status" name="status">
+                            <option value="">全部</option>
+                            <option value="1">启用</option>
+                            <option value="0">停用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-sm" lay-submit lay-filter="search">查询</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary" lay-submit lay-filter="clear-search">清空查询</a>
+                </div>
+            </div>
+        </form>
+
+        <!-- 表格栏 -->
+        <div class="layui-card-body wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">新增门店</button>
+                </div>
+            </script>
+            <script type="text/html" id="table-logo">
+                <img src="{{d.logo}}" alt="logo" style="width:50px; height: 50px;">
+            </script>
+            <script type="text/html" id="table-status">
+                {{#  if(d.status === 1){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 正常</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 停用</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                {{#  if(d.status === 1){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="stop">停用</button>{{#  } }}
+                {{#  if(d.status === 0){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="start">启用</button>{{#  } }}
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table", "form"], function() {
+        let table = layui.table;
+        let form = layui.form;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('store.Store/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", width:60, align:"center"},
+                {field:"name", title:"门店名称", width:200},
+                {field:"logo", title:"门店logo", width:100, align:"center", templet:"#table-logo"},
+                {field:"contacts", title:"联系人", width:120, align:"center"},
+                {field:"mobile", title:"联系电话", width:120, align:"center"},
+                {field:"address", title:"门店地址", width:220},
+                {field:"business_hours", title:"营业时间", width:150, align:"center"},
+                {field:"status", title:"门店状态", width:100, align:"center", templet:"#table-status"},
+                {field:"create_time", title:"创建时间", width:160, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:150, align:"center"},
+            ]]
+        });
+
+        // 绑定事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增门店",
+                    url: "{:url('store.Store/add')}",
+                    area: ["800px", "90%"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('store.Store/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    layer.close(index);
+                                    table.reload("wait-table-lists", {
+                                        where: [],
+                                        page: { curr: 1 }
+                                    });
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑门店",
+                    url: "{:url('store.Store/edit')}?id="+obj.data.id,
+                    area: ["800px", "90%"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('store.Store/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    layer.close(index);
+                                    table.reload("wait-table-lists");
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定删除该门店吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('store.Store/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            stop: function (obj) {
+                layer.confirm("确定停用该门店吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('store.Store/stop')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            start: function (obj) {
+                layer.confirm("确定启用该门店吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('store.Store/start')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+        // 监听搜索
+        form.on("submit(search)", function(data) {
+            table.reload("wait-table-lists", {
+                where: data.field,
+                page: { curr: 1 }
+            });
+        });
+
+        // 清空搜索
+        form.on("submit(clear-search)", function() {
+            $("#name").val("");
+            $("#status").val("");
+            form.render("select");
+            table.reload("wait-table-lists", {
+                where: [],
+                page: { curr: 1 }
+            });
+        });
+    });
+</script>
+{/block}

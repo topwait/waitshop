@@ -1,0 +1,123 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 搜索栏 -->
+        <form class="layui-form" style="padding-top: 22px;">
+            <div class="layui-form-item" style="margin-bottom: 5px;">
+                <div class="layui-inline">
+                    <label for="shop_id" class="layui-form-label">所属门店:</label>
+                    <div class="layui-input-block">
+                        <select id="shop_id" name="shop_id">
+                            <option value="">全部</option>
+                            {volist name="storeList" id="vo"}
+                                <option value="{$vo.id}">{$vo.name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label for="staff" class="layui-form-label">核销员工:</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="staff" name="staff" placeholder="请输入核销员工名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label for="order_sn" class="layui-form-label">订单编号:</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="order_sn" name="order_sn" placeholder="请输入订单编号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-sm" lay-submit lay-filter="search">查询</a>
+                    <a class="layui-btn layui-btn-sm layui-btn-primary" lay-submit lay-filter="clear-search">清空查询</a>
+                </div>
+            </div>
+        </form>
+
+        <!-- 表格栏 -->
+        <div class="layui-card-body wait-table-cell">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">查看详细</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table", "form"], function() {
+        let table = layui.table;
+        let form = layui.form;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('store.Verify/lists')}"
+            ,toolbar: false
+            ,cols: [[
+                {field:"id", title:"ID", width:60, align:"center"},
+                {field:"shop", title:"核销门店", width:200},
+                {field:"staff", title:"核销员工", width:100, align:"center"},
+                {field:"order_sn", title:"订单编号", width:150, align:"center"},
+                {field:"order_type", title:"订单类型", width:100, align:"center"},
+                {field:"create_time", title:"创建时间", width:160, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:100, align:"center"},
+            ]]
+        });
+
+        // 绑定事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增门店",
+                    url: "{:url('store.Store/add')}",
+                    area: ["800px", "90%"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('shop.Store/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    layer.close(index);
+                                    table.reload("wait-table-lists", {
+                                        where: [],
+                                        page: { curr: 1 }
+                                    });
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+
+        // 监听搜索
+        form.on("submit(search)", function(data) {
+            table.reload("wait-table-lists", {
+                where: data.field,
+                page: { curr: 1 }
+            });
+        });
+
+        // 清空搜索
+        form.on("submit(clear-search)", function() {
+            $("#staff").val("");
+            $("#order_sn").val("");
+            form.render("select");
+            table.reload("wait-table-lists", {
+                where: [],
+                page: { curr: 1 }
+            });
+        });
+    });
+</script>
+{/block}

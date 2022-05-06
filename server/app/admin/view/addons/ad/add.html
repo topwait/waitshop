@@ -1,0 +1,88 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 轮播名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>轮播名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" lay-verType="tips" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 所在位置 -->
+        <div class="layui-form-item">
+            <label for="position" class="layui-form-label"><span class="asterisk">*</span>所在位置：</label>
+            <div class="layui-input-block">
+                <select id="position" name="position" lay-verType="tips" lay-verify="required|number">
+                    {foreach $position as $key=>$val}
+                    <option value="{$key}">{$val}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <!-- 跳转类型 -->
+        <div class="layui-form-item">
+            <label for="link_type" class="layui-form-label">跳转类型：</label>
+            <div class="layui-input-block">
+                <select id="link_type" name="link_type" lay-verType="tips">
+                    {foreach $linkType as $key=>$val}
+                    <option value="{$key}">{$val}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <!-- 跳转链接 -->
+        <div class="layui-form-item">
+            <label for="link_url" class="layui-form-label">跳转链接：</label>
+            <div class="layui-input-block">
+                <input type="text" id="link_url" name="link_url" placeholder="请输入跳转链接" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 轮播排序 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label"><span class="asterisk">*</span>轮播排序：</label>
+            <div class="layui-input-block">
+                <input type="number" id="sort" name="sort" value="100" placeholder="数字越小越靠前" lay-verType="tips" lay-verify="required|number" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!-- 展示图片 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="line-height: 64px;"><span class="asterisk">*</span>展示图片：</label>
+            <div class="layui-input-block">
+                <div class="wait-upload-drag">
+                    <img class="add-upload-elem" src="__STATIC__/images/ic_up_photo.png" alt="img">
+                </div>
+            </div>
+        </div>
+        <!-- 显示状态 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>显示状态：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_show" value="1" title="显示" checked>
+                <input type="radio" name="is_show" value="0" title="隐藏">
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    wait.delUploadFile();
+    $(document).on("click", ".add-upload-elem", function () {
+        wait.imageUpload({
+            that: $(this),
+            filed: "image",
+            limit: 1
+        });
+    });
+</script>
+{/block}

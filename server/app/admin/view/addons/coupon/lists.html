@@ -1,0 +1,194 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="wait-tips">
+                <p>1、已发布的优惠券不允许任意编辑以及删除。</p>
+                <p>2、已发布的优惠券支持任意关闭，但关闭不影响已领取的用户。</p>
+                <p>3、关闭后的优惠券不允许再次重新开始，但您可以重新创建发布。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-card">
+        <!-- 头部栏 -->
+        <div class="layui-card-header" style="border: none;">
+            <div class="layui-tab layui-tab-brief" lay-filter="wait-switch-tab">
+                <ul class="layui-tab-title">
+                    <li data-id="1" class="layui-this">待发布({$statistics.stay})</li>
+                    <li data-id="2">进行中({$statistics.conduct})</li>
+                    <li data-id="3">已关闭({$statistics.close})</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 内容栏 -->
+        <div class="layui-card-body">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">新增优惠券</button>
+                </div>
+            </script>
+            <script type="text/html" id="operate">
+                {{#  if(d.status === 0){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="publish">发布</button>{{#  } }}
+                {{#  if(d.status === 1){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="close">关闭</button>{{#  } }}
+                {{#  if(d.status === 0 || d.status === 1){ }}<button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>{{#  } }}
+                {{#  if(d.status === 0 || d.status === 2){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>{{#  } }}
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table", "element"], function() {
+        let table   = layui.table;
+        let element = layui.element;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('addons.Coupon/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", width:60, align:"center"},
+                {field:"name", title:"优惠券名称", width:150},
+                {field:"type", title:"类型", width:80, align:"center"},
+                {field:"min_price", title:"最低消费", width:100, align:"center"},
+                {field:"get_method", title:"领取方式", width:100, align:"center"},
+                {field:"use_goods_type", title:"限制商品", width:150, align:"center"},
+                {field:"use_expire_time", title:"有效期", width:150, align:"center"},
+                {field:"total_num", title:"发放总数量", width:100, align:"center"},
+                {field:"receive_count", title:"已领取数量", width:100, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:160, align:"center"},
+            ]]
+        });
+
+        // 绑定事件
+        let active = wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增优惠券",
+                    url: "{:url('addons.Coupon/add')}",
+                    area: ["700px", "600px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('addons.Coupon/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists", {
+                                        where: [],
+                                        page: { curr: 1 }
+                                    });
+                                }
+                                layer.close(index)
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑优惠券",
+                    url: "{:url('addons.Coupon/edit')}?id="+obj.data.id,
+                    area: ["700px", "600px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('addons.Coupon/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists");
+                                }
+                                layer.close(index)
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定要删除优惠券吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('addons.Coupon/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            active.statistics();
+                            table.reload("wait-table-lists");
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            publish: function (obj) {
+                layer.confirm("确定要发布优惠券吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('addons.Coupon/publish')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            active.statistics();
+                            table.reload("wait-table-lists");
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            close: function (obj) {
+                layer.confirm("确定要关闭优惠券吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('addons.Coupon/close')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            active.statistics();
+                            table.reload("wait-table-lists");
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            statistics: function () {
+                wait.ajax({
+                    url: "{:url('addons.Coupon/statistics')}",
+                    type: "GET",
+                    data: {}
+                }).then((res) => {
+                    let data = res.data;
+                    $(".layui-tab-title li[data-id=1]").html(`待发布(${data['stay'] ?? 0})`);
+                    $(".layui-tab-title li[data-id=2]").html(`进行中(${data['conduct'] ?? 0})`);
+                    $(".layui-tab-title li[data-id=3]").html(`已关闭(${data['close'] ?? 0})`);
+                })
+            }
+        });
+
+        // 监听选项卡
+        element.on("tab(wait-switch-tab)", function(){
+            active.statistics();
+            let type = parseInt(this.getAttribute("data-id"));
+            table.reload("wait-table-lists", {
+                where: {type: type},
+                page: { curr: 1 }
+            });
+        });
+
+    });
+</script>
+{/block}

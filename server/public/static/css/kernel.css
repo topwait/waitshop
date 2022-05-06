@@ -1,0 +1,92 @@
+/**================【WaitShop全局样式】================**/
+html,body { margin: 0; padding: 0; font-size: 12px; background-color: #f5f7f9; }
+body,a,dl,dt,dd,li,img { cursor: url('../images/cursor.cur'), auto !important; }
+
+/**================【WaitShop框架相关样式】================**/
+/** 头部样式 **/
+.tpl-header { position: fixed; top: 0; left: 0; z-index: 1000; width: 100%; height: 50px; border-bottom: 1px solid #f6f6f6; box-sizing: border-box; background-color: #fff; }
+.tpl-header a,
+.tpl-header a cite { color: #333 !important; }
+.tpl-header a:hover { color: #000 !important; }
+.tpl-header .layui-nav { background: 0 0; }
+.tpl-header .layui-nav .layui-nav-item { height: 50px; line-height: 50px; }
+.tpl-header .layui-nav .layui-nav-item .layui-icon{ position: relative; top: 1px; font-size: 16px; }
+.tpl-header .layui-layout-left { padding: 0 10px; left: 120px; } 
+.tpl-header .layui-layout-left a { padding: 0; }
+.tpl-header .layui-layout-left .layui-nav-item { margin: 0 20px; }
+.tpl-header .layui-layout-right .layui-nav-more { border-top-color: #666 }
+.tpl-header .layui-layout-right .layui-nav-mored { border-color: transparent; border-bottom-color: #666; }
+.tpl-header .layui-layout-right .user-info.layui-nav-child { top: 50px !important; }
+.tpl-header .layui-nav .layui-this:after,
+.tpl-header .layui-nav-bar { top: 0 !important; bottom: auto; height: 3px; background-color: #fff; background-color: rgba(255,255,255,.3); }
+.tpl-header .layui-nav-bar { height: 2px; background-color: #20222A; }
+
+/** 一级菜单 **/
+.tpl-sidebar { position: fixed; top: 0; left: 0; bottom: 0; z-index: 1000; height: 100%; overflow: auto; background-color: #20222a; }
+.tpl-sidebar::-webkit-scrollbar { width: 0; }
+.tpl-sidebar .logo { position: fixed; top: 0; left: 0; width: 120px; height: 50px; line-height: 50px; text-align: center; background-color: #20222a; }
+.tpl-sidebar .logo span { font-size: 16px; color: #fff; }
+.tpl-sidebar ul { width: 120px; margin-top: 50px;}
+.tpl-sidebar .tpl-menu-item { padding: 2px 0; }
+.tpl-sidebar .tpl-menu-item > a { display: block; height: 44px; line-height: 44px; padding: 0 15px; color: rgba(255, 255, 255, 0.7); border-left: 3px solid transparent; transition: 0.1s cubic-bezier(0.145, 0.045, 0.355, 1); -webkit-transition: 0.1s cubic-bezier(0.145, 0.045, 0.355, 1); }
+.tpl-sidebar .tpl-menu-item > a > i { display: inline-block; margin-right: 5px; font-size: 16px; }
+.tpl-sidebar .tpl-menu-item > a > cite { font-size: 15px; }
+.tpl-sidebar .tpl-menu-item > a.active { color: #fff; background: #009688; }
+.tpl-sidebar .tpl-menu-item > a:hover { color: #fff; border-left: #009688 3px solid; }
+/**二级菜单**/
+.tpl-sidebar .tpl-menu-item .tpl-second-menu::-webkit-scrollbar { width: 0; }
+.tpl-sidebar .tpl-menu-item .tpl-second-menu { position: fixed; bottom: 0; top: 50px; left: 120px; width: 120px; overflow-y: auto; display: none; box-shadow: 1px 0 1px rgba(0,0,0,.05); background: #fff;}
+.tpl-sidebar .tpl-menu-item .tpl-second-menu.activate { display: block; }
+.tpl-sidebar .tpl-menu-item .tpl-second-menu dt { height: 50px; line-height: 50px; padding-bottom: 10px; font-size: 14px; }
+.tpl-sidebar .tpl-menu-item .tpl-second-menu dt strong { display: block; padding-left: 20px; font-weight:normal; border-bottom: 1px solid #eee;}
+.tpl-sidebar .tpl-menu-item .tpl-second-menu dd { display: block; width: 100%;  line-height: 40px; }
+.tpl-sidebar .tpl-menu-item .tpl-second-menu dd a { position: relative; display: block; color: #666; font-size: 14px; padding-left: 24px; }
+.tpl-sidebar .tpl-menu-item .tpl-second-menu dd > a > i { position: absolute; left: 8px; top: 1px; display: inline-block; transition: all 0.3s ease-in-out; font-size: 12px; }
+.tpl-sidebar .tpl-menu-item .tpl-second-menu dd a.active { background: #f5f5f5; }
+.tpl-sidebar .tpl-menu-item .tpl-second-menu dd a:hover { background: #f5f5f5; }
+.tpl-sidebar .tpl-menu-item .tpl-second-menu dd a[href="javascript:"] { color: #666; }
+.tpl-sidebar .tpl-menu-item .tpl-second-menu dd a[href="javascript:"]:hover { background:#fff; }
+
+/* 侧边收缩模式 */
+.tpl-side-shrink .tpl-sidebar .logo { left: 0; width: 60px; background-size: 20px; background: #20222a url(../images/logo.png) no-repeat center;}
+.tpl-side-shrink .tpl-sidebar .logo span { display: none; }
+.tpl-side-shrink .tpl-sidebar .logo img { display: none; }
+.tpl-side-shrink .tpl-header .layui-layout-left { left: 60px; }
+.tpl-side-shrink .tpl-sidebar { left: 0; width: 60px; }
+.tpl-side-shrink .tpl-sidebar ul { position: static; width: 60px; }
+.tpl-side-shrink .tpl-sidebar .tpl-menu-item > a { padding-right: 0; }
+.tpl-side-shrink .tpl-sidebar .tpl-menu-item > a cite { display: none; padding: 8px 0; }
+.tpl-side-shrink .tpl-sidebar .tpl-menu-item .tpl-second-menu.activate { display: block; left: 60px; }
+
+/** 主体区域 **/
+.tpl-body { position: fixed; top: 50px; left: 120px; right: 0; bottom: 0; z-index: 900; min-width: 300px; }
+.tpl-body iframe { width: 100%; height: 100%; border: 0; }
+
+/** 辅助遮罩 **/
+.tpl-body-shade { position: fixed;display: none;left: 0;right: 0;top: 0;bottom: 0;background-color: rgba(0,0,0,.3);z-index: 900; }
+.tpl-body-shade.activate { display: block; }
+
+/** 展开内容 **/
+.tpl-sidebar.develop-sidebar { left: 0; }
+.tpl-sidebar.develop-sidebar .logo { left: 0; }
+.tpl-header > .layui-layout-left.develop-sidebar { left: 120px; }
+.tpl-side-shrink .tpl-sidebar.develop-sidebar { display: block; }
+
+/** 小屏幕 **/
+@media screen and (max-width: 768px){
+    /*主框架部分*/
+    .tpl-sidebar, .tpl-sidebar > .logo, .tpl-sidebar .tpl-second-menu { left: -120px; }
+    .tpl-body { left: 0 !important; }
+    .tpl-header > .layui-layout-left { left: 0; }
+    .tpl-header > .layui-layout-left li:nth-child(2) { display: none; }
+    .tpl-sidebar .tpl-menu-item .tpl-second-menu.activate { display: none; }
+    .tpl-side-shrink .tpl-sidebar { display: none; }
+    .tpl-side-shrink .tpl-header .layui-layout-left { left: 0; }
+
+    /*layui部分*/
+    .layui-form-item .layui-input-inline { margin-left: 0; }
+    .layui-card .layui-card-header { padding: 5px; }
+    .layui-tab-title.layui-tab-more { z-index: 1000; background: #FFF; }
+}
+
+

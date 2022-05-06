@@ -1,0 +1,128 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <div class="layui-card-header">广告管理</div>
+        <div class="layui-card-body wait-table-cell">
+            <!-- 表格栏-->
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">新增广告</button>
+                </div>
+            </script>
+            <script type="text/html" id="table-show">
+                {{#  if(d.is_show === 1){ }}
+                    <span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 显示</span>
+                {{# } else { }}
+                    <span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 隐藏</span>
+                {{#  } }}
+            </script>
+            <script type="text/html" id="table-image">
+                <img src="{{d.image}}" alt="图" style="max-width:100px; height:50px;">
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('addons.Ad/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", width:80, align:"center"},
+                {field:"position", title:"所在位置", width:120, align:"center"},
+                {field:"name", title:"广告名称", width:160},
+                {field:"image", title:"展示图片", width:150, align:"center", templet:"#table-image"},
+                {field:"link_type", title:"跳转类型", width:100, align:"center"},
+                {field:"link_url", title:"跳转链接", width:200, align:"center"},
+                {field:"sort", title:"排序", width:80, align:"center"},
+                {field:"is_show", title:"状态", width:80, align:"center", templet:"#table-show"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:120, align:"center"},
+            ]]
+        });
+
+        // 逻辑事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "新增广告",
+                    url: "{:url('addons.Ad/add')}",
+                    area: ["550px", "550px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('addons.Ad/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists", {
+                                        where: {},
+                                        page: { curr: 1 }
+                                    });
+                                }
+                                layer.close(index)
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑广告",
+                    url: "{:url('addons.Ad/edit')}?id="+obj.data.id,
+                    area: ["550px", "550px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field["id"] = obj.data["id"];
+                            wait.ajax({
+                                url: "{:url('addons.Ad/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload("wait-table-lists", {
+                                        where: {},
+                                        page: { curr: 1 }
+                                    });
+                                }
+                                layer.close(index)
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定删除广告吗？", function(index) {
+                    wait.ajax({
+                        url: "{:url('addons.Ad/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            obj.del();
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+    });
+</script>
+{/block}

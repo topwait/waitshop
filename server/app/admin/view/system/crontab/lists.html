@@ -1,0 +1,167 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <!-- 头部栏 -->
+        <div class="layui-card-header">计划任务</div>
+
+        <!-- 表格栏 -->
+        <div class="layui-card-body">
+            <table id="wait-table-lists" lay-filter="wait-table-lists"></table>
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="add">添加计划任务</button>
+                </div>
+            </script>
+            <script type="text/html" id="table-status">
+                {{#  if(d.status === 1){ }}<span class="text-success"><i class="layui-icon layui-icon-circle-dot"></i> 运行中</span>{{#  } }}
+                {{#  if(d.status === 2){ }}<span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 已停止</span>{{#  } }}
+                {{#  if(d.status === 3){ }}<span class="text-warning"><i class="layui-icon layui-icon-circle-dot"></i> 异常</span>{{#  } }}
+            </script>
+            <script type="text/html" id="operate">
+                <button type="button" class="layui-btn layui-btn-xs" lay-event="edit">编辑</button>
+                {{#  if(d.status === 1){ }}
+                    <button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="stop">停止</button>
+                {{#  } }}
+                {{#  if(d.status === 2 || d.status === 3){ }}
+                    <button type="button" class="layui-btn layui-btn-xs layui-btn-warm" lay-event="run">启动</button>
+                {{#  } }}
+                <button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</button>
+            </script>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function() {
+        let table = layui.table;
+
+        // 渲染表格
+        wait.table({
+            elem: "#wait-table-lists"
+            ,url: "{:url('system.Crontab/lists')}"
+            ,cols: [[
+                {field:"id", title:"ID", width:60, align:"center"},
+                {field:"name", title:"计划名称", width:140},
+                {field:"command", title:"命令", width:140},
+                {field:"params", title:"参数", width:100},
+                {field:"rules", title:"规则", width:100},
+                {field:"error", title:"错误原因", width:180},
+                {field:"status", title:"状态", width:100, align:"center", templet:"#table-status"},
+                {field:"exe_time", title:"时长", width:100, align:"center"},
+                {field:"max_time", title:"最大时长", width:100, align:"center"},
+                {field:"last_time", title:"最后执行时间", width:160, align:"center"},
+                {fixed:"right", title:"操作", toolbar:"#operate", width:180, align:"center"},
+            ]]
+        });
+
+        // 绑定事件
+        wait.BindEvents({
+            add: function () {
+                wait.popup({
+                    title: "添加计划任务",
+                    url: "{:url('system.Crontab/add')}",
+                    area: ["500px", "500px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            wait.ajax({
+                                url: "{:url('system.Crontab/add')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload('wait-table-lists', {
+                                        where: {},
+                                        page: { curr: 1 }
+                                    });
+                                    layer.close(index)
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            edit: function (obj) {
+                wait.popup({
+                    title: "编辑计划任务",
+                    url: "{:url('system.Crontab/edit')}?id="+obj.data.id,
+                    area: ["500px", "500px"],
+                    success: function (layero, index) {
+                        layero.layui.form.on("submit(addForm)", function(data){
+                            data.field['id'] = obj.data.id;
+                            wait.ajax({
+                                url: "{:url('system.Crontab/edit')}",
+                                type: "POST",
+                                data: data.field
+                            }).then((res) => {
+                                if (res.code === 0) {
+                                    layer.msg(res.msg, {icon: 1, time: 1000});
+                                    table.reload('wait-table-lists');
+                                    layer.close(index)
+                                } else {
+                                    layer.msg(res.msg, {icon: 2, time: 1000});
+                                }
+                            });
+                        });
+                    }
+                });
+            },
+            del: function (obj) {
+                layer.confirm("确定删除该任务吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('system.Crontab/del')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload('wait-table-lists');
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            stop: function (obj) {
+                layer.confirm("确定要停止运行吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('system.Crontab/stop')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload('wait-table-lists');
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            },
+            run: function (obj) {
+                layer.confirm("确定要启动任务吗?", function(index) {
+                    wait.ajax({
+                        url: "{:url('system.Crontab/run')}",
+                        type: "POST",
+                        data: {id: obj.data.id}
+                    }).then((res) => {
+                        if (res.code === 0) {
+                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            table.reload('wait-table-lists');
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+{/block}

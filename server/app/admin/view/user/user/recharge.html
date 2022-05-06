@@ -1,0 +1,138 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content" style="padding-top:0;">
+        <div class="layui-tab layui-tab-brief" lay-filter="wait-tab-filter">
+            <ul class="layui-tab-title">
+                <li lay-type="money" class="layui-this">充值余额</li>
+                <li lay-type="integral">充值积分</li>
+            </ul>
+            <div class="layui-tab-content" style="padding-left: 0;">
+                <input id="type" type="hidden" name="type" value="money">
+                <!-- 1、充值余额 -->
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">当前余额：</label>
+                        <div class="layui-input-block">
+                            <div class="layui-form-mid" style="color:red;">￥{$detail.money}</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">充值方式：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="balance" value="inc" title="增加" checked>
+                            <input type="radio" name="balance" value="dec" title="减少">
+                            <input type="radio" name="balance" value="final" title="最终金额">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="money" class="layui-form-label">变更金额：</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="id" value="{$detail.id}">
+                            <input type="number" min="0" id="money" name="money" placeholder="请输入要变更的金额" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="money">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="remark" class="layui-form-label">备注信息：</label>
+                        <div class="layui-input-block">
+                            <textarea id="remark" name="remark" placeholder="请输入备注信息" class="layui-textarea" lay-verType="tips" lay-verify="remark"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2、充值积分 -->
+                <div class="layui-tab-item">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">当前积分：</label>
+                        <div class="layui-input-block">
+                            <div class="layui-form-mid" style="color:red;">{$detail.integral}</div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">充值方式：</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="integral" value="inc" title="增加" checked>
+                            <input type="radio" name="integral" value="dec" title="减少">
+                            <input type="radio" name="integral" value="final" title="最终金额">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="points" class="layui-form-label">变更金额：</label>
+                        <div class="layui-input-block">
+                            <input type="number" min="0" id="points" name="points" placeholder="请输入要变更的数量" class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="points">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="remarks" class="layui-form-label">备注信息：</label>
+                        <div class="layui-input-block">
+                            <textarea id="remarks" name="remarks" placeholder="请输入备注信息" class="layui-textarea" lay-verType="tips" lay-verify="remarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form", "element"], function () {
+        let $ = layui.$;
+        let form = layui.form;
+        let element = layui.element;
+
+        // 切换选项卡
+        element.on("tab(wait-tab-filter)", function(){
+            let type = this.getAttribute("lay-type");
+            $("#type").val(type);
+        });
+
+        // 验证数据
+        form.verify({
+            money: function (value) {
+                let type = $(".layui-tab-title li.layui-this").attr("lay-type");
+                if (type === "money") {
+                    if (!value || value === "") {
+                        return "请填写变更金额";
+                    }
+                }
+            },
+            remark: function (value) {
+                let type = $(".layui-tab-title li.layui-this").attr("lay-type");
+                if (type === "money") {
+                    if (!value || value === "") {
+                        return "请填写变更金额说明";
+                    }
+                }
+            },
+            points: function (value) {
+                let type = $(".layui-tab-title li.layui-this").attr("lay-type");
+                if (type === "integral") {
+                    if (!value || value === "") {
+                        return "请填写变更积分";
+                    }
+                }
+            },
+            remarks: function (value) {
+                let type = $(".layui-tab-title li.layui-this").attr("lay-type");
+                if (type === "integral") {
+                    if (!value || value === "") {
+                        return "请填写变更积分说明";
+                    }
+                }
+            }
+        })
+
+    });
+</script>
+{/block}

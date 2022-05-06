@@ -1,0 +1,83 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card">
+        <div class="layui-card-body layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width:100px;"><span class="asterisk">*</span>开启充值功能：</label>
+                <div class="layui-input-inline">
+                    <input type="radio" name="is_open" value="1" title="开启" {if ($detail.is_open ?? 0)==1}checked{/if}>
+                    <input type="radio" name="is_open" value="0" title="关闭" {if ($detail.is_open ?? 0)==0}checked{/if}>
+                    <div class="layui-form-mid layui-word-aux" style="white-space:nowrap;">
+                        开启或关闭充值功能，关闭后商城会隐藏充值功能入口
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="min_recharge" class="layui-form-label" style="width:100px;"><span class="asterisk">*</span>最低充值金额：</label>
+                <div class="layui-input-inline">
+                    <input type="number" min="0" name="min_recharge" id="min_recharge" value="{$detail.min_recharge ?? 0}" class="layui-input" autocomplete="off">
+                    <div class="layui-form-mid layui-word-aux" style="white-space:nowrap;">
+                        自定义充值最低充值金额要求，不填或填0表示没有限制
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="max_recharge" class="layui-form-label" style="width:100px;"><span class="asterisk">*</span>最低充值金额：</label>
+                <div class="layui-input-inline">
+                    <input type="number" min="0" name="max_recharge" id="max_recharge" value="{$detail.max_recharge ?? 0}" class="layui-input" autocomplete="off">
+                    <div class="layui-form-mid layui-word-aux" style="white-space:nowrap;">
+                        自定义充值最高充值金额要求，不填或填0表示没有限制
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="give_integral" class="layui-form-label" style="width:100px;"><span class="asterisk">*</span>赠送积分数：</label>
+                <div class="layui-input-inline">
+                    <input type="number" min="0" name="give_integral" id="give_integral" value="{$detail.give_integral ?? 0}" class="layui-input" autocomplete="off">
+                    <div class="layui-form-mid layui-word-aux" style="white-space:nowrap;">
+                        每充值1元赠送积分数量，计算少于1积分则不赠送
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="give_growth" class="layui-form-label" style="width:100px;"><span class="asterisk">*</span>赠送成长值：</label>
+                <div class="layui-input-inline">
+                    <input type="number" min="0" name="give_growth" id="give_growth" value="{$detail.give_growth ?? 0}" class="layui-input" autocomplete="off">
+                    <div class="layui-form-mid layui-word-aux" style="white-space:nowrap;">
+                        每充值1元赠送成长值数，计算少于1成长则不赠送
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="addForm">提交保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function() {
+        let form = layui.form;
+
+        form.on("submit(addForm)", function(data){
+            wait.ajax({
+                url: "{:url('addons.Recharge/setting')}",
+                type: "POST",
+                data: data.field
+            }).then((res) => {
+                if (res.code === 0) {
+                    layer.msg(res.msg, {icon: 1, time: 1000});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

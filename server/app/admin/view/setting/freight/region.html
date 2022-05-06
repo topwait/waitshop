@@ -1,0 +1,88 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 全国地区树 -->
+        <div id="region"></div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    let inst = null;
+    let treeData = JSON.parse('{$region|raw}');
+
+    layui.use(["tree"], function () {
+        let tree = layui.tree;
+        inst = tree.render({
+            elem: "#region"
+            ,id: "region"
+            ,showCheckbox: true
+            ,data: treeData
+        });
+
+        tree.setChecked("region", JSON.parse('{$checked|raw}'))
+    });
+
+    /**
+     * 获取: 选择节点数据
+     * @returns {{name: string, id: string}}
+     */
+    function getRegion() {
+        let region = inst.getChecked("region");
+
+        let id   = "";
+        let name = "";
+        region.forEach(function (item) {
+            if (item.children.length > 0) {
+                let count = getRegionLength(item.id);
+                if (item.children.length >= count) {
+                    id   += (item.id + ",")
+                    name += (item.title + ",")
+                } else {
+                    let subName = "";
+                    item.children.forEach(function (city) {
+                        id += (city.id + ",")
+                        subName += (city.title + ",")
+                    });
+                    subName = subName.slice(-1) === "," ? subName.substring(0,subName.length-1) : subName;
+                    name += item.title + " (<span style='font-size:12px;color:#999;'>"  + subName + "</span>) "
+                }
+            } else {
+                id   += (item.id + ",");
+                name += (item.title + ",")
+            }
+        });
+
+        return {
+            id: id.slice(-1) === "," ? id.substring(0,id.length-1) : id,
+            name: name.slice(-1) === "," ? name.substring(0,name.length-1) : name
+        }
+    }
+
+    /**
+     * 获取省有多少个市长度
+     * @param id
+     * @returns {number}
+     */
+    function getRegionLength(id) {
+        let count = 0;
+        treeData.forEach(function (item) {
+            if (item.id === id) {
+                count = item.children.length;
+            }
+        });
+        return count;
+    }
+
+</script>
+{/block}

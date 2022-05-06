@@ -1,0 +1,339 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form container">
+    <div class="order-detail-panel">
+        <div class="panel-sidebar">
+            <dl>
+                <dt>订单信息</dt>
+                <dd>
+                    <span>订单编号：</span>
+                    <span class="tip">{$detail.orders.order_sn}</span>
+                </dd>
+                <dd>
+                    <span>支付流水：</span>
+                    <span class="tip">{$detail.orders.transaction_id ?: '无'}</span>
+                </dd>
+                <dd>
+                    <span>支付方式：</span>
+                    <span class="tip">{$detail.orders.pay_way}</span>
+                </dd>
+                <dd>
+                    <span>订单类型：</span>
+                    <span class="tip">{$detail.orders.order_type}</span>
+                </dd>
+                <dd>
+                    <span>订单状态：</span>
+                    <span class="tip">{$detail.orders.order_status}</span>
+                </dd>
+                <dd>
+                    <span style="font-weight:bold;">售后状态：</span>
+                    <span class="tip" style="font-weight:bold; color:green;">{$detail.status_text}</span>
+                </dd>
+                <dd>
+                    <span>订单总额：</span>
+                    <span class="tip">{$detail.orders.total_amount}元</span>
+                </dd>
+                <dd>
+                    <span>积分抵扣：</span>
+                    <span class="tip">{$detail.orders.integral_amount}元</span>
+                </dd>
+                <dd>
+                    <span>优惠金额：</span>
+                    <span class="tip">{$detail.orders.discount_amount}元</span>
+                </dd>
+                <dd>
+                    <span>实付金额：</span>
+                    <span class="tip" style="color:red;">{$detail.orders.paid_amount}元</span>
+                </dd>
+            </dl>
+
+            <dl>
+                <dt>物流信息</dt>
+                <dd>
+                    <span>发货方式：</span>
+                    <span class="tip">{$detail.orders.delivery_type_text}</span>
+                </dd>
+                {if $detail.orders.delivery_type === 1}
+                <dd>
+                    <span>快递公司：</span>
+                    <span class="tip">{$detail.orders.express|default="未知"}</span>
+                </dd>
+                <dd>
+                    <span>快递单号：</span>
+                    <span class="tip">{$detail.orders.delivery.waybill_no|default="未知"}</span>
+                </dd>
+                {/if}
+            </dl>
+        </div>
+        <div class="panel-main">
+            <!-- 售后信息 -->
+            <div class="panel-main-information">
+                <h3>售后信息</h3>
+                <div class="information-content">
+                    <dl>
+                        <dd>
+                            <span>售后单号：</span>
+                            <span class="tip">{$detail.sn}</span>
+                        </dd>
+                        <dd>
+                            <span>退款方式：</span>
+                            <span class="tip" style="font-weight:bold;">{$detail.refund_type_text}</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dd>
+                            <span>退款金额：</span>
+                            <span class="tip">{$detail.refund_price}</span>
+                        </dd>
+                        <dd>
+                            <span>退款原因：</span>
+                            <span class="tip">{$detail.refund_reason}</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dd>
+                            <span>申请用户：</span>
+                            <span class="tip">{$detail.user.nickname}</span>
+                        </dd>
+                        <dd>
+                            <span>申请时间：</span>
+                            <span class="tip">{$detail.create_time}</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- 退回信息 -->
+            <div class="panel-main-information">
+                <h3>退回信息</h3>
+                <div class="information-content">
+                    <dl>
+                        <dd>
+                            <span>物流公司：</span>
+                            <span class="tip">{$detail.express_name ?: '无'}</span>
+                        </dd>
+                        <dd>
+                            <span>快递单号：</span>
+                            <span class="tip">{$detail.express_no ?: '无'}</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dd>
+                            <span>快递凭证：</span>
+                            {if $detail.express_image}
+                                <span class="tip">
+                                    <a class="layui-btn layui-btn-primary layui-btn-xs" href="{$detail.express_image}" target="_blank">
+                                        查看凭证
+                                    </a>
+                                </span>
+                            {else}
+                                无
+                            {/if}
+                        </dd>
+                        <dd>
+                            <span>退货描述：</span>
+                            <span class="tip">{$detail.refund_remark ?: '无'}</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- 退款操作 -->
+            {if $detail.status === 1} <!--待审核-->
+                <div style="margin-top:20px;">
+                    <button type="button" class="layui-btn layui-btn-sm agreeBtn">同意申请</button>
+                    <button type="button" class="layui-btn layui-btn-sm layui-btn-danger refuseBtn">驳回申请</button>
+                </div>
+            {/if}
+            {if $detail.status === 4} <!--待收货-->
+                <div style="margin-top:20px;">
+                    <button type="button" class="layui-btn layui-btn-sm takeGoodsBtn">确认收货</button>
+                    <button type="button" class="layui-btn layui-btn-sm layui-btn-danger refuseGoodsBtn">拒绝收货</button>
+                </div>
+            {/if}
+            {if $detail.status === 6} <!--待退款-->
+                <div style="margin-top:20px;">
+                    <button type="button" class="layui-btn layui-btn-sm refundBtn">确认退款</button>
+                    <button type="button" class="layui-btn layui-btn-sm layui-btn-danger refuseBtn">拒绝退款</button>
+                </div>
+            {/if}
+
+            <!-- 退款商品 -->
+            <table class="layui-table">
+                <colgroup>
+                    <col width="60">
+                    <col width="290">
+                    <col width="150">
+                    <col width="120">
+                    <col width="100">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>商品信息</th>
+                        <th>商品价格</th>
+                        <th>规格属性</th>
+                        <th>购买数量</th>
+                        <th>合计</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{$detail.orderGoods.id}</td>
+                        <td>
+                            <img src="{$detail.orderGoods.image}" alt="{$detail.orderGoods.snapshot.goods_id}" style="height:50px; width:50px; margin-right: 10px;">
+                            <div class="layui-input-inline" style="width:185px;">
+                                <p class="wait-line-3" title="{$detail.orderGoods.name}" style="line-height:18px; ">
+                                    {$detail.orderGoods.name}
+                                </p>
+                            </div>
+                        </td>
+                        <td>
+                            <p>现售价：{$detail.orderGoods.snapshot.sell_price}元</p>
+                            <p>市场价：{$detail.orderGoods.snapshot.market_price}元</p>
+                            <p>成本价：{$detail.orderGoods.snapshot.cost_price}元</p>
+                        </td>
+                        <td>{$detail.orderGoods.spec_value_str}</td>
+                        <td>x{$detail.orderGoods.count}</td>
+                        <td>{$detail.orderGoods.total_price}元</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td><span style="font-weight:bold; color:blue;">退货：{$detail.refund_num}</span></td>
+                        <td><span style="font-weight:bold; color:red;">退款金额：{$detail.refund_price}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- 售后日志 -->
+            <ul class="layui-timeline" style="margin-top:10px;">
+                {volist name="logList" id="vo"}
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">{$vo.operate}</h3>
+                        <p style="font-size:12px; color:#999;">操作内容：{$vo.content}</p>
+                        <p style="font-size:12px; color:#999;">备注信息：{$vo.remarks ?: '无'}</p>
+                        <p>{$vo.create_time}</p>
+                    </div>
+                </li>
+                {/volist}
+            </ul>
+
+        </div>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["table"], function () {
+
+        // 同意申请
+        $(document).on("click", ".agreeBtn", function () {
+            layer.prompt({title: '同意申请：备注信息', formType: 2}, function(text, index){
+                layer.close(index);
+                wait.ajax({
+                    url: "{:url('order.AfterSale/agree')}",
+                    type: "POST",
+                    data: {id: "{$detail.id}", reason: text}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1500});
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1500});
+                    }
+                });
+            });
+        });
+
+        // 拒绝申请
+        $(document).on("click", ".refuseBtn", function () {
+            layer.prompt({title: '拒绝: 拒绝理由', formType: 2}, function(text, index){
+                layer.close(index);
+                wait.ajax({
+                    url: "{:url('order.AfterSale/refuse')}",
+                    type: "POST",
+                    data: {id: "{$detail.id}", reason: text}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                        location.reload();
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1500});
+                    }
+                });
+            });
+        });
+
+        // 确认收货
+        $(document).on("click", ".takeGoodsBtn", function () {
+            layer.prompt({title: '确认收货', formType: 2}, function(text, index){
+                layer.close(index);
+                wait.ajax({
+                    url: "{:url('order.AfterSale/takeGoods')}",
+                    type: "POST",
+                    data: {id: "{$detail.id}", reason: text}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                        location.reload();
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1500});
+                    }
+                });
+            });
+        });
+
+        // 确认收货
+        $(document).on("click", ".refuseGoodsBtn", function () {
+            layer.prompt({title: '拒绝收货', formType: 2}, function(text, index){
+                layer.close(index);
+                wait.ajax({
+                    url: "{:url('order.AfterSale/refuseGoods')}",
+                    type: "POST",
+                    data: {id: "{$detail.id}", reason: text}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                        location.reload();
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1500});
+                    }
+                });
+            });
+        });
+
+        // 确认退款
+        $(document).on("click", ".refundBtn", function () {
+            layer.prompt({title: '同意退款', formType: 2}, function(text, index){
+                layer.close(index);
+                wait.ajax({
+                    url: "{:url('order.AfterSale/confirmRefund')}",
+                    type: "POST",
+                    data: {id: "{$detail.id}", reason: text}
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1500});
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1500});
+                    }
+                });
+            });
+        });
+    });
+</script>
+{/block}

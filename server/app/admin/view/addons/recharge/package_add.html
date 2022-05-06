@@ -1,0 +1,47 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 充值金额 -->
+        <div class="layui-form-item">
+            <label for="money" class="layui-form-label"><span class="asterisk">*</span>充值金额：</label>
+            <div class="layui-input-block">
+                <input type="number" id="money" name="money" class="layui-input" autocomplete="off" lay-verify="required"
+                       onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')">
+            </div>
+        </div>
+        <!-- 赠送金额 -->
+        <div class="layui-form-item">
+            <label for="give_money" class="layui-form-label"><span class="asterisk">*</span>赠送金额：</label>
+            <div class="layui-input-block">
+                <input type="number" id="give_money" name="give_money" autocomplete="off" class="layui-input" lay-verify="required"
+                       onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')">
+            </div>
+        </div>
+        <!-- 排序 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label"><span class="asterisk">*</span>套餐排序：</label>
+            <div class="layui-input-block">
+                <input type="text" id="sort" name="sort" lay-verify="required|number" autocomplete="off" class="layui-input"
+                       onkeyup="value=value.replace(/[^\d]/g,'')">
+            </div>
+        </div>
+        <!-- 显示 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>是否显示：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="is_show" value="1" title="是" checked>
+                <input type="radio" name="is_show" value="0" title="否">
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}

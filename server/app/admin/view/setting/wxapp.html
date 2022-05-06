@@ -1,0 +1,104 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-elem-field .layui-field-box { padding-top: 20px; }
+    .layui-form-item .layui-input-inline { width: 410px; }
+</style>
+{/block}
+
+{block name="body"}
+<div class="container">
+    <div class="layui-card layui-form">
+        <!-- 渠道设置 -->
+        <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title">
+                <li class="layui-this">微信小程序</li>
+                <li>微信公众号</li>
+                <!--<li>H5</li>-->
+                <!--<li>PC</li>-->
+            </ul>
+            <div class="layui-tab-content">
+                <!-- 1、微信小程序 -->
+                <div class="layui-tab-item layui-show">
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend>开发者ID</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label for="mnp_appId" class="layui-form-label"><span class="asterisk">*</span>AppID：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="mnp_appId" value="{$mnp.app_id}" id="mnp_appId" class="layui-input" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="mnp_appSecret" class="layui-form-label"><span class="asterisk">*</span>AppSecret：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="mnp_appSecret" value="{$mnp.app_secret}" id="mnp_appSecret" class="layui-input" autocomplete="off">
+                                    <div class="layui-form-mid layui-word-aux">扫码登录微信小程序平台：开发 > 基本配置 > 开发者ID</div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <!-- 2、微信公众号 -->
+                <div class="layui-tab-item">
+                    <fieldset class="layui-elem-field layui-field-title">
+                        <legend>微信公众号</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label for="oa_appId" class="layui-form-label"><span class="asterisk">*</span>AppID：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="oa_appId" value="{$oa.app_id}" id="oa_appId" class="layui-input" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="oa_appSecret" class="layui-form-label"><span class="asterisk">*</span>AppSecret：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="oa_appSecret" value="{$oa.app_secret}" id="oa_appSecret" class="layui-input" autocomplete="off">
+                                    <div class="layui-form-mid layui-word-aux">登录微信公众平台，点击开发>基本配置>公众号开发信息</div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <!-- 3、H5 -->
+                <!-- <div class="layui-tab-item">H5</div>-->
+                <!-- 4、PC -->
+                <!-- <div class="layui-tab-item">PC</div>-->
+                <!-- 5、保存 -->
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="addForm">保存配置</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form"], function () {
+        let form = layui.form;
+
+        // 提交表单
+        form.on("submit(addForm)", function(data){
+            layer.confirm("确定保存当前配置吗?", function(index) {
+                wait.ajax({
+                    url: "{:url('setting.Wxapp/set')}",
+                    type: "POST",
+                    data: data.field
+                }).then((res) => {
+                    if (res.code === 0) {
+                        layer.msg(res.msg, {icon: 1, time: 1000});
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1000});
+                    }
+                });
+                layer.close(index);
+            });
+        });
+    });
+</script>
+{/block}

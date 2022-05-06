@@ -1,0 +1,176 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    .layui-form-item .map{
+        width: 600px;
+        height: 400px;
+        margin-left: 100px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 门店名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>门店名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" value="{$detail.name}" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 门店logo -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>门店logo：</label>
+            <div class="layui-input-block">
+                <div class="wait-upload-drag">
+                    {if $detail.logo and $detail.logo != ""}
+                    <div class="thumbnail">
+                        <img src="{$detail.logo}" alt="logo">
+                        <input type="hidden" name="logo" value="{$detail.logo}">
+                        <i class="del-upload-btn">x</i>
+                    </div>
+                    {/if}
+                    <img class="add-upload-elem" src="__STATIC__/images/ic_up_photo.png" alt="img"
+                         {if $detail.logo!==""}style="display:none;"{/if}>
+                </div>
+            </div>
+        </div>
+        <!-- 负责人名 -->
+        <div class="layui-form-item">
+            <label for="contacts" class="layui-form-label"><span class="asterisk">*</span>负责人名：</label>
+            <div class="layui-input-block">
+                <input type="text" id="contacts" name="contacts" value="{$detail.contacts}" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 联系电话 -->
+        <div class="layui-form-item">
+            <label for="mobile" class="layui-form-label"><span class="asterisk">*</span>联系电话：</label>
+            <div class="layui-input-block">
+                <input type="text" id="mobile" name="mobile" value="{$detail.mobile}" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 营业时间 -->
+        <div class="layui-form-item">
+            <label for="business_hours" class="layui-form-label"><span class="asterisk">*</span>营业时间：</label>
+            <div class="layui-input-block">
+                <input type="text" id="business_hours" name="business_hours" value="{$detail.business_hours}"
+                       class="layui-input" autocomplete="off" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 门店排序 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label">门店排序：</label>
+            <div class="layui-input-block">
+                <input type="number" id="sort" name="sort" value="{$detail.sort}" class="layui-input"
+                       autocomplete="off" lay-verType="tips" lay-verify="required|number">
+            </div>
+        </div>
+        <!-- 门店简介 -->
+        <div class="layui-form-item">
+            <label for="intro" class="layui-form-label">门店简介：</label>
+            <div class="layui-input-block">
+                <textarea id="intro" name="intro" class="layui-textarea">{$detail.intro}</textarea>
+            </div>
+        </div>
+        <!-- 门店状态 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>门店状态：</label>
+            <div class="layui-input-block">
+                <input type="radio" name="status" value="1" title="启用" {if $detail.status==1}checked{/if}>
+                <input type="radio" name="status" value="0" title="停用" {if $detail.status==0}checked{/if}>
+            </div>
+        </div>
+        <!-- 门店地址 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>门店地址：</label>
+            <div class="layui-input-block">
+                <div class="layui-input-inline" style="width:120px;">
+                    <select name="province_id" id="province" lay-filter="province"></select>
+                </div>
+                <div class="layui-input-inline" style="width:120px;">
+                    <select name="city_id" id="city" lay-filter="city"></select>
+                </div>
+                <div class="layui-input-inline" style="width:120px;">
+                    <select name="district_id" id="district"></select>
+                </div>
+                <div class="layui-input-inline">
+                    <input type="text" name="address" id="address" value="{$detail.address}" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <!-- 经纬度 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>地图定位：</label>
+            <div class="layui-input-block">
+                <div class="layui-inline" >
+                    <div class="layui-input-inline" style="width:120px;margin-right:5px;">
+                        <input type="text" name="longitude" disabled readonly value="{$detail.longitude}" autocomplete="off" class="layui-input layui-disabled">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">经度</div>
+                </div>
+                <div class="layui-inline" style="margin-right:0;">
+                    <div class="layui-input-inline" style="width:120px;margin-right:5px;">
+                        <input type="text" name="latitude" disabled readonly value="{$detail.latitude}" autocomplete="off" class="layui-input layui-disabled">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">纬度</div>
+                </div>
+                <div class="layui-inline">
+                    <a class="layui-btn" id="searchMap">搜索地图</a>
+                </div>
+            </div>
+        </div>
+        <!-- 百度地图 -->
+        <div class="layui-form-item ">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block" style="margin-left:10px;">
+                <div class="map" id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/js/area.js"></script>
+<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=Gp4OABGZayUb3SFlaPoEamLeL8ilqX6F"></script>
+<script>
+    layui.config({
+        base: "__STATIC__/js/"
+    }).extend({
+        waitArea: "waitArea/waitArea",
+        waitMap: "waitMap/waitMap"
+    }).use(["form", "waitArea", "waitMap"], function() {
+        let likeArea = layui.waitArea;
+        let likeMap = layui.waitMap;
+
+        // 百度地图
+        likeMap.init("{$detail.longitude}", "{$detail.latitude}");
+        likeArea.init("province", "city", "district", "province_id", "city_id", "district_id",
+            "{$detail.province_id}", "{$detail.city_id}", "{$detail.district_id}");
+
+        // 上传图片
+        wait.delUploadFile();
+        $(document).on("click", ".add-upload-elem", function () {
+            wait.imageUpload({
+                that: $(this),
+                field: "logo",
+                limit: 1
+            });
+        });
+    });
+</script>
+{/block}

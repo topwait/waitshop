@@ -1,0 +1,88 @@
+{extend name="public/layout" /}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <!-- 名称 -->
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label"><span class="asterisk">*</span>名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" autocomplete="off" value="{$detail.name}"
+                       class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+
+        <!-- 排序 -->
+        <div class="layui-form-item">
+            <label for="sort" class="layui-form-label"><span class="asterisk">*</span>排序：</label>
+            <div class="layui-input-block">
+                <input type="number" min="0" id="sort" name="sort" autocomplete="off" value="{$detail.sort}"
+                       class="layui-input" lay-verType="tips" lay-verify="required">
+            </div>
+        </div>
+        <!-- 选中图标 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>选中图标：</label>
+            <div class="layui-input-block">
+                <div class="wait-upload-drag">
+                    {if $detail.selected_icon and $detail.selected_icon != ""}
+                        <div class="thumbnail">
+                            <img src="{$detail.selected_icon}" alt="图标">
+                            <input type="hidden" name="selected_icon" value="{$detail.selected_icon}">
+                            <i class="del-upload-btn">x</i>
+                        </div>
+                    {/if}
+                    <img class="add-upload-elem ok" src="__STATIC__/images/ic_up_photo.png" alt="img" {if $detail.selected_icon!==""}style="display:none;"{/if}>
+                </div>
+            </div>
+        </div>
+        <!-- 未选图标 -->
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="asterisk">*</span>未选图标：</label>
+            <div class="layui-input-block">
+                <div class="wait-upload-drag">
+                    {if $detail.unselected_icon and $detail.unselected_icon != ""}
+                    <div class="thumbnail">
+                        <img src="{$detail.unselected_icon}" alt="图标">
+                        <input type="hidden" name="unselected_icon" value="{$detail.unselected_icon}">
+                        <i class="del-upload-btn">x</i>
+                    </div>
+                    {/if}
+                    <img class="add-upload-elem un" src="__STATIC__/images/ic_up_photo.png" alt="img" {if $detail.unselected_icon!==""}style="display:none;"{/if}>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    // 选中图标
+    wait.delUploadFile();
+    $(document).on("click", ".add-upload-elem.ok", function () {
+        wait.imageUpload({
+            that: $(this),
+            field: "selected_icon",
+            limit: 1
+        });
+    });
+
+    // 未选图标
+    wait.delUploadFile();
+    $(document).on("click", ".add-upload-elem.un", function () {
+        wait.imageUpload({
+            that: $(this),
+            field: "unselected_icon",
+            limit: 1
+        });
+    });
+</script>
+{/block}

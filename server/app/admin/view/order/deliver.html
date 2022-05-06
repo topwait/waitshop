@@ -1,0 +1,92 @@
+{extend name="public/layout" /}
+
+{block name="style"}
+<style>
+    ::-webkit-scrollbar { display: none; scrollbar-width: none; -ms-overflow-style: none; }
+    .layui-form-item dl.layui-anim.layui-anim-upbit { max-height: 185px; }
+    .layui-form-item .layui-form-label { padding: 9px 0; }
+    .layui-form-item .layui-input-block { margin-left: 90px; }
+</style>
+{/block}
+
+{block name="body"}
+<form class="layui-form">
+    <!-- 主体内容 -->
+    <div class="wait-body-content">
+        <div class="layui-form-item">
+            <label class="layui-form-label">配送方式</label>
+            <div class="layui-input-block">
+                <input type="radio" name="delivery_type" value="1" title="快递配送" checked lay-filter="delivery_type">
+                <input type="radio" name="delivery_type" value="0" title="无需快递" lay-filter="delivery_type">
+            </div>
+        </div>
+        <div class="express" lay-data="1">
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择快递</label>
+                <div class="layui-input-block">
+                    <select name="express_id" lay-verify="express">
+                        {volist name="express" id="vo"}
+                            <option value="{$vo.id}">{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">快递单号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="waybill_no" required lay-verify="sn"
+                           placeholder="请输入快递单号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="wait-body-footer">
+        <a class="layui-layer-btn0" lay-submit lay-filter="addForm">确定</a>
+        <a class="layui-layer-btn1" id="closePopupWindow">取消</a>
+    </div>
+</form>
+{/block}
+
+{block name="js"}
+<script>
+    layui.use(["form", "element"], function () {
+        let $ = layui.$;
+        let form = layui.form;
+
+        /**
+         * 切换发货类型
+         */
+        form.on("radio(delivery_type)", function(data){
+            if (data.value === '0') {
+                $(".express").hide();
+                $("div.express").attr("lay-data", 0);
+            } else {
+                $(".express").show();
+                $("div.express").attr("lay-data", 1);
+            }
+        });
+
+        // 验证数据
+        form.verify({
+            express: function (value) {
+                let type = $("div.express").attr("lay-data");
+                if (type === "1") {
+                    if (!value || value === "") {
+                        return "请选择快递公司";
+                    }
+                }
+            },
+            waybill_no: function (value) {
+                let type = $("div.express").attr("1");
+                if (type === "1") {
+                    if (!value || value === "") {
+                        return "请填写快递单号";
+                    }
+                }
+            }
+        });
+    });
+</script>
+{/block}
