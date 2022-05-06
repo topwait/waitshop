@@ -340,7 +340,7 @@ export async function silentLogin() {
  * 去登录
  */
 export const toLogin = trottle(() => {
-	//#ifdef  MP
+	//#ifdef MP
 		silentLogin()
 	// #endif
 	//#ifndef MP

@@ -32,7 +32,7 @@ use think\response\Json;
  */
 class User extends Api
 {
-    public $notNeedLogin = ['design', 'center'];
+    public $notNeedLogin = ['design'];
 
     /**
      * 装修设计
