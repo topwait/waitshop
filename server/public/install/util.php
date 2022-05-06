@@ -27,11 +27,7 @@ class Util
      */
     public function makeLock()
     {
-        try {
-            return file_put_contents(APP_ROOT . '/install.lock', '');
-        } catch (Exception $e) {
-            return false;
-        }
+        return file_put_contents(APP_ROOT . '/install.lock', '');
     }
 
     /**
