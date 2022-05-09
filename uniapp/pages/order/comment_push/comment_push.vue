@@ -102,8 +102,6 @@
 						this.$nextTick(() => {
 							this.isFirstLoading = false
 						})
-					} else {
-						this.$showToast('loading comment error')
 					}
 				})
 			},

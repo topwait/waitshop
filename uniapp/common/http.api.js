@@ -24,6 +24,7 @@ const install = (Vue, vm) => {
 		apiRegister:    (params = {}) => vm.$u.post("Login/register", params),
 		apiLogin:       (params = {}) => vm.$u.post("Login/login", params),
 		apiWxPhone:     (params = {}) => vm.$u.post("Login/getWxPhone", params),
+		apiBindMobile:  (params = {}) => vm.$u.post("Login/bindMobile", params),
 		apiSendSms:     (params = {}) => vm.$u.post("Sms/send", params),
 		
 		// 用户相关接口

@@ -22,8 +22,10 @@
 						<text class="u-margin-right-10">{{userInfo.mobile}}</text>
 						<u-icon name="lock" size="28" color="#999"></u-icon>
 					</view>
-					<u-button v-else @click="onBindMobile" 
+					<u-button v-else
 						:plain="true" type="error" 
+						open-type="getPhoneNumber" 
+						@getphonenumber="onBindMobile" 
 						hover-class="none" size="mini" 
 						shape="circle">绑定手机号
 					</u-button>
@@ -142,8 +144,36 @@
 			/**
 			 * 绑定手机号
 			 */
-			onBindMobile() {
-				// todo
+			async onBindMobile(e) {
+				if (e.detail.errMsg !== 'getPhoneNumber:ok') {
+					this.$showToast(e.detail.errMsg)
+					return
+				}
+
+				const code = await getWxCode()
+				const phoneNumber = await this.$u.api.apiWxPhone({
+					encryptedData: e.detail.encryptedData,
+					iv: e.detail.iv,
+					code: this.wxCode,
+				}).then(result => {
+					if (result.code === 0) {
+						return result.data.phoneNumber
+					}
+					return ''
+				})
+				
+				if (phoneNumber === '') {
+					return this.$showToast('获取手机号异常')
+				} else {
+					this.$u.api.apiBindMobile({mobile: phoneNumber}).then(result => {
+						if (result.code === 0) {
+							this.$showSuccess(result.msg)
+							this.getUserInfo()
+						} else {
+							this.$showToast(result.msg)
+						}
+					})
+				}
 			},
 			
 			/**

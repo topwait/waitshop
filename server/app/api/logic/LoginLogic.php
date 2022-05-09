@@ -316,6 +316,28 @@ class LoginLogic extends Logic
     }
 
     /**
+     * 绑定手机号
+     *
+     * @param string $mobile
+     * @param int $userId
+     * @return bool
+     */
+    public static function bindMobile(string $mobile, int $userId)
+    {
+        try {
+            User::update([
+                'mobile'      => $mobile,
+                'update_time' => time()
+            ], ['id'=>$userId]);
+
+            return true;
+        } catch (Exception $e) {
+            static::$error = $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
      * 根据微信返回信息查询当前用户id
      *
      * @author windy
