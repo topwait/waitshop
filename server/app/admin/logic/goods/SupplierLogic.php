@@ -39,7 +39,7 @@ class SupplierLogic extends Logic
      * @throws @\think\db\exception\DbException
      * @throws @\think\db\exception\ModelNotFoundException
      */
-    public static function all()
+    public static function all(): array
     {
         $model = new GoodsSupplier;
         return $model->field(true)
