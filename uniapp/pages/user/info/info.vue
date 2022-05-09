@@ -57,6 +57,9 @@
 				</view>
 			</view>
 		</u-popup>
+		
+		<!-- 版权部件 -->
+		<wait-copyright v-if="!isFirstLoading"></wait-copyright>
 
 	</view>
 </template>
