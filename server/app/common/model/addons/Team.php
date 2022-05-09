@@ -50,7 +50,6 @@ class Team extends Models
         'status'          => 'int',    //状态[1=未开始, 2=进行中, 3=已结束, 4=手动结束]
         'is_automatic'    => 'int',    //自动成团[0=否, 1=是]
         'is_coupon'       => 'int',    //用优惠券[0=否, 1=是]
-        'is_distribution' => 'int',    //参与分销[0=否, 1=是]
         'is_delete'       => 'int',    //是否删除[0=否, 1=是]
         'effective_time'  => 'int',    //成团有效期, 单位: 分钟
         'start_time'      => 'int',    //活动开始时间
