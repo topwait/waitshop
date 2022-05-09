@@ -127,10 +127,9 @@ class TeamActivityLogic extends Logic
                 throw new Exception("结束时间最少保留20分钟");
             }
 
-            $status = TeamEnum::TEAM_SYS_END;
-            if ($datetime[0] <= time() && $datetime[1] >= time()) {
+            if ($datetime[0] <= time()) {
                 $status = TeamEnum::TEAM_CONDUCT_IN;
-            } elseif ($datetime[0] > time() && $datetime[1] > time()) {
+            } else {
                 $status = TeamEnum::TEAM_NOT_STARTED;
             }
 
