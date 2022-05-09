@@ -23,7 +23,7 @@
 					<u-field label-width="160" label="真实姓名" v-model="withdraw.real_name" placeholder="请输入真实姓名"></u-field>
 					<u-field label-width="160" label="备注" v-model="withdraw.apply_remark" placeholder="(选填)"></u-field>
 					<view class="u-margin-top-20">
-						<wait-uploader tips="微信收款码" v-model="withdraw.money_qr_code"></wait-uploader>
+						<wait-uploader dir="withdraw" tips="微信收款码" v-model="withdraw.money_qr_code"></wait-uploader>
 					</view>
 				</view>
 			</template>
@@ -35,7 +35,7 @@
 					<u-field label-width="160" label="真实姓名" v-model="withdraw.real_name" placeholder="请输入真实姓名"></u-field>
 					<u-field label-width="160" label="备注" v-model="withdraw.apply_remark" placeholder="(选填)"></u-field>
 					<view class="u-margin-top-20">
-						<wait-uploader tips="支付宝收款码" v-model="withdraw.money_qr_code"></wait-uploader>
+						<wait-uploader dir="withdraw" tips="支付宝收款码" v-model="withdraw.money_qr_code"></wait-uploader>
 					</view>
 				</view>
 			</template>
