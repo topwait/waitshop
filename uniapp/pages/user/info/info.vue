@@ -154,10 +154,10 @@
 				uni.chooseImage({
 				    success: (chooseImageRes) => {
 				        const tempFilePaths = chooseImageRes.tempFilePaths;
-						uploadFile(tempFilePaths[0]).then(result => {
+						uploadFile(tempFilePaths[0], 'avatar').then(result => {
 							if (result.code === 0) {
 								that.form.avatar = result.data.image
-								that.onEditFun('avatar')
+								that.onEdit('avatar')
 							} else {
 								that.$showToast(result.msg)
 							}

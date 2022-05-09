@@ -1,6 +1,6 @@
 <script>
 	import {mapMutations, mapActions} from 'vuex'
-	import {strToParams, setTabBar, tabBarList, toLogin} from '@/utils/tools'
+	import {strToParams, setTabBar, tabBarList, silentLogin} from '@/utils/tools'
 	export default {
 		globalData: {
 			navHeight: ""
@@ -15,8 +15,7 @@
 		onShow: function(options) {
 			this.bindInviteCode(options)
 			//#ifdef MP
-				console.log('来了')
-				toLogin()
+				silentLogin()
 			// #endif
 		},
 		onHide: function() {

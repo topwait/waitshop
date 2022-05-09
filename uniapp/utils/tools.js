@@ -94,17 +94,17 @@ export const showToast = msg => {
 
 /**
  * 文件上传
- * 
- * @author windy
- * @param {Object} path 上传的文件路径
  */
-export const uploadFile = (path) => {
+export const uploadFile = (path, dir) => {
 	return new Promise((resolve, reject) => {
 		uni.uploadFile({
+			name: 'iFile',
 			url: baseURL + '/Upload/image',
 			filePath: path,
-			name: 'iFile',
-			header: { token: store.state.isLogin },
+			header: {token: store.state.isLogin},
+			formData: {
+				'dir': dir
+			},
 			fileType: 'image',
 			success: res => {
 				let data = JSON.parse(res.data);
