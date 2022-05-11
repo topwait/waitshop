@@ -32,6 +32,7 @@ class LogGrowthEnum
     const REGISTER_INC_GROWTH = 103; //注册赠送成长值
     const SIGN_INC_GROWTH     = 104; //签到奖励成长值
     const PAY_INC_GROWTH      = 105; //下单奖励成长值
+    const REFUND_DEC_GROWTH   = 106; //退款退还成长值
 
     /**
      * 获取日志描述
@@ -49,6 +50,7 @@ class LogGrowthEnum
             self::REGISTER_INC_GROWTH  => '注册赠送成长值',
             self::SIGN_INC_GROWTH      => '签到奖励成长值',
             self::PAY_INC_GROWTH       => '下单奖励成长值',
+            self::REFUND_DEC_GROWTH    => '退款退还成长值',
         ];
         if ($status === true) {
             return $desc;

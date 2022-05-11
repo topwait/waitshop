@@ -18,11 +18,15 @@
 namespace app\common\service;
 
 
+use app\common\enum\LogGrowthEnum;
+use app\common\enum\LogIntegralEnum;
 use app\common\enum\LogWalletEnum;
 use app\common\enum\OrderEnum;
 use app\common\enum\OrderLogEnum;
 use app\common\model\goods\Goods;
 use app\common\model\goods\GoodsSku;
+use app\common\model\log\LogGrowth;
+use app\common\model\log\LogIntegral;
 use app\common\model\log\LogOrder;
 use app\common\model\log\LogWallet;
 use app\common\model\addons\CouponList;
@@ -115,7 +119,7 @@ class OrderService
     {
         $order = (new Order())->field('id,user_id,order_sn,pay_way,paid_amount,transaction_id')->findOrEmpty($orderId)->toArray();
         switch ($order['pay_way']) {
-            case OrderEnum::PAY_WAY_BALANCE:
+            case OrderEnum::PAY_WAY_BALANCE: // 余额支付处理
                 User::update([
                     'money'       => ['inc', $refundAmount],
                     'update_time' => time()
@@ -123,7 +127,7 @@ class OrderService
 
                 LogWallet::add(LogWalletEnum::CANCEL_ORDER_REFUND, $refundAmount, $order['user_id'], $adminId, $order['id'], $order['order_sn']);
                 break;
-            case OrderEnum::PAY_WAY_MNP:
+            case OrderEnum::PAY_WAY_MNP:   // 微信支付处理
                 WeChatPayService::refund([
                     'transaction_id' => $order['transaction_id'],
                     'refund_sn'      => make_order_no(),
@@ -131,8 +135,48 @@ class OrderService
                     'refund_fee'     => $refundAmount * 100
                 ]);
                 break;
-            case OrderEnum::PAY_WAY_ALI:
+            case OrderEnum::PAY_WAY_ALI: // 支付宝支付处理
                 break;
+        }
+
+        // 退回下单赠送的积分
+        $integral = (new LogIntegral())
+            ->where(['source_id'=>$order['id']])
+            ->where(['change_type'=>1])
+            ->where(['source_type'=>LogIntegralEnum::PAY_INC_INTEGRAL])
+            ->order('id desc')
+            ->value('change_amount') ?? 0;
+        if ($integral > 0) {
+            User::update([
+                'integral'    => ['dec', $integral],
+                'update_time' => time()
+            ], ['id'=>$order['user_id']]);
+            LogIntegral::reduce(
+                LogIntegralEnum::REFUND_DEC_INTEGRAL,
+                $integral,
+                $order['user_id'], 0, $order['id'],
+                $order['order_sn'], '退款退赠积分'
+            );
+        }
+
+        // 退回下单赠送的成长
+        $growth = (new LogGrowth())
+                ->where(['source_id'=>$order['id']])
+                ->where(['change_type'=>1])
+                ->where(['source_type'=>LogGrowthEnum::PAY_INC_GROWTH])
+                ->order('id desc')
+                ->value('change_amount') ?? 0;
+        if ($growth > 0) {
+            User::update([
+                'growth_value' => ['dec', $integral],
+                'update_time'  => time()
+            ], ['id'=>$order['user_id']]);
+            LogGrowth::reduce(
+                LogGrowthEnum::REFUND_DEC_GROWTH,
+                $growth,
+                $order['user_id'], 0, $order['id'],
+                $order['order_sn'], '退款退赠成长'
+            );
         }
     }
 }

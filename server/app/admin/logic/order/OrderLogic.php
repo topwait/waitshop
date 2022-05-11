@@ -75,10 +75,10 @@ class OrderLogic extends Logic
 
         // 处理数据
         foreach ($lists['data'] as &$item) {
-            $item['order_type_text']    = OrderEnum::getOrderTypeDesc($item['order_type']);
             $item['order_status_text']  = OrderEnum::getOrderStatusDesc($item['order_status']);
             $item['pay_status_text']    = OrderEnum::getPayStatusDesc($item['order_status']);
             $item['pay_way_text']       = OrderEnum::getPayWayDesc($item['pay_way']);
+            $item['order_type_text']    = OrderEnum::getOrderTypeDesc($item['order_type']);
             $item['delivery_type_text'] = OrderEnum::getDeliverTypeDesc($item['delivery_type']);
             if (!empty($item['address_snap'])) {
                 $item['address_snap']['address'] = Region::getAddress([
