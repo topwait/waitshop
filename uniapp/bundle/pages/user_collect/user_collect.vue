@@ -8,7 +8,7 @@
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback" :down="downOption" :up="upOption">
 			<view class="index-collect-wdiget">
 				<view class="collect-item" v-for="(item, index) in collectList" :key="index" 
-					@click="$toPage('/pages/goods/detail/detail?id='+item.id)">
+					@click="$toPage('/pages/goods/detail/detail?goods_id='+item.goods_id)">
 					<u-image width="160rpx" height="160rpx" :lazy-load="true" :src="item.image"></u-image>
 					<view class="product-info">
 						<view class="u-font-md u-color-normal u-line-2">{{item.name}}</view>
