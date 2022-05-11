@@ -14,6 +14,7 @@
 // +----------------------------------------------------------------------
 // | Author: WaitShop Team <2474369941@qq.com>
 // +----------------------------------------------------------------------
+
 namespace app\admin\logic\auth;
 
 
@@ -132,6 +133,7 @@ class RuleLogic extends Logic
         try {
             if ($post['id'] == $post['pid']) {
                 static::$error = '父级不能是自己';
+                return false;
             }
 
             $icon = "";
