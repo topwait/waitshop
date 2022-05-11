@@ -20,6 +20,7 @@ namespace app\admin\logic\auth;
 
 use app\common\basics\Logic;
 use app\common\model\auth\Admin;
+use app\common\utils\TokenUtils;
 use Exception;
 
 /**
@@ -107,13 +108,15 @@ class AdminLogic extends Logic
     public static function add(array $post) :bool
     {
         try {
-             $post['password'] = encrypt_password($post['password']);
+             $salt = TokenUtils::getRandChar(6);
+             $post['password'] = encrypt_password($post['password'], $salt);
              Admin::create([
                 'username'   => $post['username'],
                 'nickname'   => $post['nickname'],
                 'password'   => $post['password'],
                 'avatar'     => $post['avatar'],
                 'email'      => $post['email'],
+                'salt'       => $salt,
                 'role_id'    => $post['role_id'],
                 'is_disable' => $post['is_disable'],
                 'is_delete'  => 0
@@ -136,10 +139,13 @@ class AdminLogic extends Logic
     public static function edit(array $post) :bool
     {
         try {
+            $salt = TokenUtils::getRandChar(6);
             if (!empty($post['password']) and $post['password']) {
-                $post['password'] = encrypt_password($post['password']);
+                $post['password'] = encrypt_password($post['password'], $salt);
             } else {
-                $post['password'] = self::detail($post['id'])['password'];
+                $admin = self::detail($post['id']);
+                $post['password'] = $admin['password'];
+                $salt = $admin['salt'];
             }
 
             Admin::update([
@@ -148,6 +154,7 @@ class AdminLogic extends Logic
                 'password'   => $post['password'],
                 'avatar'     => $post['avatar'] ?? '',
                 'email'      => $post['email'],
+                'salt'       => $salt,
                 'role_id'    => $post['role_id'],
                 'is_disable' => $post['is_disable']
             ], ['id'=>(int)$post['id']]);
