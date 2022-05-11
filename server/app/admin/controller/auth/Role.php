@@ -50,7 +50,7 @@ class Role extends Backend
     }
 
     /**
-     * 新增角色
+     * 角色新增
      *
      * @author windy
      * @return View|Json
@@ -72,7 +72,7 @@ class Role extends Backend
     }
 
     /**
-     * 编辑角色
+     * 角色编辑
      *
      * @author windy
      * @return View|Json
@@ -97,7 +97,7 @@ class Role extends Backend
     }
 
     /**
-     * 删除角色
+     * 角色删除
      *
      * @author windy
      * @return Json

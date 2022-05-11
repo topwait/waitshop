@@ -23,14 +23,14 @@ use app\common\model\auth\AdminRule;
 use Exception;
 
 /**
- * 权限规则-逻辑层
+ * 系统菜单-逻辑层
  * Class RuleLogic
  * @package app\admin\logic\auth
  */
 class RuleLogic extends Logic
 {
     /**
-     * 树形权限规则(HTML)
+     * 树形菜单(HTML)
      *
      * @author windy
      * @return array
@@ -41,7 +41,7 @@ class RuleLogic extends Logic
     }
 
     /**
-     * 树形权限规格(JSON)
+     * 树形菜单(JSON)
      *
      * @author windy
      * @return array
@@ -53,7 +53,7 @@ class RuleLogic extends Logic
     }
 
     /**
-     * 所有权限规则
+     * 所有菜单
      *
      * @author windy
      * @return array
@@ -70,7 +70,7 @@ class RuleLogic extends Logic
     }
 
     /**
-     * 权限规则详情
+     * 菜单详情
      *
      * @author windy
      * @param int $id
@@ -83,7 +83,7 @@ class RuleLogic extends Logic
     }
 
     /**
-     * 新增权限规则
+     * 菜单新增
      *
      * @author windy
      * @param array $post
@@ -92,13 +92,25 @@ class RuleLogic extends Logic
     public static function add(array $post): bool
     {
         try {
+            if (intval($post['pid']) > 0) {
+                $model = new AdminRule();
+                $rule = $model->field('id')->findOrEmpty(intval($post['pid']));
+                if (!$rule) {
+                    static::$error = '父级不可用';
+                    return false;
+                }
+            }
+
             AdminRule::create([
-                'pid'       => $post['pid'],
-                'title'     => $post['title'],
-                'icon'      => $post['icon'] ?? '',
-                'uri'       => $post['uri'],
-                'sort'      => $post['sort'],
-                'is_menu'   => $post['is_menu']
+                'pid'         => $post['pid'],
+                'title'       => $post['title'],
+                'icon'        => $post['icon'] ?? '',
+                'uri'         => $post['uri'],
+                'sort'        => $post['sort'],
+                'is_menu'     => $post['is_menu'],
+                'is_disable'  => $post['is_disable'],
+                'create_time' => time(),
+                'update_time' => time()
             ]);
 
             return true;
@@ -109,7 +121,7 @@ class RuleLogic extends Logic
     }
 
     /**
-     * 编辑权限规则
+     * 菜单编辑
      *
      * @author windy
      * @param array $post
@@ -118,18 +130,24 @@ class RuleLogic extends Logic
     public static function edit(array $post): bool
     {
         try {
+            if ($post['id'] == $post['pid']) {
+                static::$error = '父级不能是自己';
+            }
+
             $icon = "";
             if (!empty($post['icon']) && $post['icon'] != 'layui-icon layui-icon-circle-dot') {
                 $icon = $post['icon'];
             }
 
             AdminRule::update([
-                'pid'       => $post['pid'],
-                'title'     => $post['title'],
-                'icon'      => $icon,
-                'uri'       => $post['uri'],
-                'sort'      => $post['sort'],
-                'is_menu'   => $post['is_menu']
+                'pid'         => $post['pid'],
+                'title'       => $post['title'],
+                'icon'        => $icon,
+                'uri'         => $post['uri'],
+                'sort'        => $post['sort'],
+                'is_menu'     => $post['is_menu'],
+                'is_disable'  => $post['is_disable'],
+                'update_time' => time()
             ], ['id'=>(int)$post['id']]);
 
             return true;
@@ -140,7 +158,7 @@ class RuleLogic extends Logic
     }
 
     /**
-     * 删除权限规则
+     * 菜单删除
      *
      * @author windy
      * @param int $id

@@ -50,7 +50,7 @@ class Admin extends Backend
     }
 
     /**
-     * 基本信息
+     * 管理员信息
      *
      * @author windy
      * @return View|Json
@@ -73,7 +73,7 @@ class Admin extends Backend
     }
 
     /**
-     * 新增管理员
+     * 管理员新增
      *
      * @author windy
      * @return View|Json
@@ -95,7 +95,7 @@ class Admin extends Backend
     }
 
     /**
-     * 编辑管理员
+     * 管理员编辑
      *
      * @author windy
      * @return View|Json
@@ -118,7 +118,7 @@ class Admin extends Backend
     }
 
     /**
-     * 删除管理员
+     * 管理员删除
      *
      * @author windy
      * @return Json
