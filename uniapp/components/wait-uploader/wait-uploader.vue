@@ -11,7 +11,7 @@
 			:custom-btn="true" 
 			:width="previewSize" 
 			:height="previewSize"
-			:form-data{'dir': dir}
+			:form-data="{'dir': dir}"
 			ref="upload">
 			
 			<view slot="addBtn" class="uplader-upload" hover-class="slot-btn__hover" hover-stay-time="150">

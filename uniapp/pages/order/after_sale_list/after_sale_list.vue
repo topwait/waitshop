@@ -30,7 +30,7 @@
 					<view class="tips">申请状态：{{item.status_text}}</view>
 					<view class="button-group" v-if="item.status !== 2">
 						<view class="button-item" v-if="item.status === 1" @click="onRevoke(item.id)">撤销申请</view>
-						<view class="button-item" v-if="item.status === 3">重新申请</view>
+						<!-- <view class="button-item" v-if="item.status === 3">重新申请</view> -->
 					</view>
 				</view>
 			</mescroll-body>

@@ -117,8 +117,8 @@
 			 * 返回首页
 			 */
 			goHome() {
-				uni.redirectTo({
-					url: '/pages/index/index',
+				uni.switchTab({
+					url: '/pages/index/index'
 				})
 			}
 		}
