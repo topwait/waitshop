@@ -121,7 +121,7 @@ class OrderService
                     'update_time' => time()
                 ], ['id'=>$order['user_id']]);
 
-                LogWallet::add(LogWalletEnum::cancel_order_refund, $refundAmount, $order['user_id'], $adminId, $order['id'], $order['order_sn']);
+                LogWallet::add(LogWalletEnum::CANCEL_ORDER_REFUND, $refundAmount, $order['user_id'], $adminId, $order['id'], $order['order_sn']);
                 break;
             case OrderEnum::PAY_WAY_MNP:
                 WeChatPayService::refund([

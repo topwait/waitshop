@@ -26,11 +26,12 @@ namespace app\common\enum;
 class LogGrowthEnum
 {
     // 日志枚举类型
-    const admin_add_growth    = 100; //系统增加成长值
-    const admin_reduce_growth = 101; //系统扣减成长值
-    const recharge_inc_growth = 102; //充值赠送成长值
-    const register_inc_growth = 103; //注册赠送成长值
-    const sign_inc_growth     = 104; //签到奖励成长值
+    const ADMIN_INC_GROWTH    = 100; //系统增加成长值
+    const ADMIN_DEC_GROWTH    = 101; //系统扣减成长值
+    const RECHARGE_INC_GROWTH = 102; //充值赠送成长值
+    const REGISTER_INC_GROWTH = 103; //注册赠送成长值
+    const SIGN_INC_GROWTH     = 104; //签到奖励成长值
+    const PAY_INC_GROWTH      = 105; //下单奖励成长值
 
     /**
      * 获取日志描述
@@ -42,11 +43,12 @@ class LogGrowthEnum
     public static function getLogDesc($status = true)
     {
         $desc = [
-            self::admin_add_growth     => '系统增加成长值',
-            self::admin_reduce_growth  => '系统扣减成长值',
-            self::recharge_inc_growth  => '充值赠送成长值',
-            self::register_inc_growth  => '注册赠送成长值',
-            self::sign_inc_growth      => '签到奖励成长值',
+            self::ADMIN_INC_GROWTH     => '系统增加成长值',
+            self::ADMIN_DEC_GROWTH     => '系统扣减成长值',
+            self::RECHARGE_INC_GROWTH  => '充值赠送成长值',
+            self::REGISTER_INC_GROWTH  => '注册赠送成长值',
+            self::SIGN_INC_GROWTH      => '签到奖励成长值',
+            self::PAY_INC_GROWTH       => '下单奖励成长值',
         ];
         if ($status === true) {
             return $desc;

@@ -26,16 +26,16 @@ namespace app\common\enum;
 class LogWalletEnum
 {
     // 日志枚举类型
-    const admin_add_money            = 100; //系统增加余额
-    const admin_reduce_money         = 101; //系统扣减余额
-    const recharge_money             = 102; //用户充值余额
-    const balance_pay_order          = 103; //下单扣减余额
-    const cancel_order_refund        = 104; //取消订单退回
-    const after_sale_refund          = 105; //售后退回余额
-    const distribution_inc_earnings  = 106; //分销订单结算增加佣金
-    const withdraw_reduce_earnings   = 107; //提现扣减佣金(申请中)
-    const withdraw_rollback_earnings = 108; //提现回滚佣金(失败了)
-    const withdraw_increase_money    = 109; //提现增加余额(成功了)
+    const ADMIN_INC_MONEY            = 100; //系统增加余额
+    const ADMIN_DEC_MONEY            = 101; //系统扣减余额
+    const RECHARGE_MONEY             = 102; //用户充值余额
+    const PAY_DEC_MONEY              = 103; //支付扣减余额
+    const CANCEL_ORDER_REFUND        = 104; //取消订单退回余额
+    const AFTER_SALE_REFUND          = 105; //售后订单退回余额
+    const DISTRIBUTION_INC_EARNINGS  = 106; //分销订单结算增加佣金
+    const WITHDRAW_DEC_EARNINGS      = 107; //提现扣减佣金(申请中)
+    const WITHDRAW_ROLLBACK_EARNINGS = 108; //提现回滚佣金(失败了)
+    const WITHDRAW_INCREASE_EARNINGS = 109; //提现增加余额(成功了)
 
     /**
      * 获取日志描述
@@ -47,17 +47,17 @@ class LogWalletEnum
     public static function getLogDesc($status = true)
     {
         $desc = [
-            self::admin_add_money            => '系统增加余额',
-            self::admin_reduce_money         => '系统扣减余额',
-            self::recharge_money             => '用户充值余额',
-            self::balance_pay_order          => '下单扣减余额',
-            self::cancel_order_refund        => '取消订单退回',
-            self::after_sale_refund          => '售后退回余额',
-            self::distribution_inc_earnings  => '订单结算获得佣金',
+            self::ADMIN_INC_MONEY            => '系统增加余额',
+            self::ADMIN_DEC_MONEY            => '系统扣减余额',
+            self::RECHARGE_MONEY             => '用户充值余额',
+            self::PAY_DEC_MONEY              => '下单扣减余额',
+            self::CANCEL_ORDER_REFUND        => '取消订单退回',
+            self::AFTER_SALE_REFUND          => '售后退回余额',
+            self::DISTRIBUTION_INC_EARNINGS  => '订单结算佣金',
 
-            self::withdraw_reduce_earnings   => '提现扣减佣金',
-            self::withdraw_rollback_earnings => '提现回滚佣金',
-            self::withdraw_increase_money    => '提现增加余额',
+            self::WITHDRAW_DEC_EARNINGS      => '提现扣减佣金',
+            self::WITHDRAW_ROLLBACK_EARNINGS => '提现回滚佣金',
+            self::WITHDRAW_INCREASE_EARNINGS => '提现增加余额',
 
         ];
         if ($status === true) {

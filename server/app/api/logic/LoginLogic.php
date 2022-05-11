@@ -428,7 +428,7 @@ class LoginLogic extends Logic
         // 记录赠送积分
         if ($rewardIntegral) {
             LogIntegral::add(
-                LogIntegralEnum::register_inc_integral,
+                LogIntegralEnum::REGISTER_INC_INTEGRAL,
                 $rewardIntegral, $userId,
                 0, 0, '',
                 '注册赠送积分'
@@ -438,7 +438,7 @@ class LoginLogic extends Logic
         // 记录增成长值
         if ($rewardGrowth) {
             LogGrowth::add(
-                LogGrowthEnum::register_inc_growth,
+                LogGrowthEnum::REGISTER_INC_GROWTH,
                 $rewardGrowth, $userId,
                 0, 0, '',
                 '注册赠成长值');

@@ -318,7 +318,7 @@ class DistributionLogic extends Logic
             ->field(['id,source_type,change_type,change_amount,create_time'])
             ->where([
                 'user_id'     => $userId,
-                'source_type' => LogWalletEnum::distribution_inc_earnings
+                'source_type' => LogWalletEnum::DISTRIBUTION_INC_EARNINGS
             ])
             ->paginate([
                 'page'      => $get['page'] ?? 1,
