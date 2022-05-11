@@ -44,7 +44,7 @@ class UserServer
         try {
             // 获取微信响应信息
             $response = self::getResponse($loginRes, $client);
-            $avatarUrl = download_file($response['avatarUrl'],'uploads/avatar/', 'png');
+            $avatarUrl = download_file($response['avatarUrl'],'uploads/user/avatar/', 'png');
 
             // 全员分销
             $isDistribution = ConfigUtils::get('distribution', 'apply_condition');
@@ -113,7 +113,7 @@ class UserServer
             // 更新用户信息
             if (empty($userInfo['avatar']) and $response['avatarUrl']) {
                 User::update([
-                    'avatar'      => download_file($response['avatarUrl'],'uploads/avatar/', 'png'),
+                    'avatar'      => download_file($response['avatarUrl'],'uploads/user/avatar/', 'png'),
                     'nickname'    => $response['nickName'] ?? '',
                     'update_time' => time()
                 ], ['id' => $userInfo['id']]);
