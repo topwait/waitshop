@@ -324,7 +324,7 @@
 				})
 				
 				this.choiceAll = isChoiceAll
-				this.totalPrice = totalPrice
+				this.totalPrice = totalPrice.toFixed(2)
 				this.choiceCount = choiceCount
 			},
 			
