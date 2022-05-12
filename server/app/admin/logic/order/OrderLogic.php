@@ -68,9 +68,9 @@ class OrderLogic extends Logic
             ->with(['user', 'orderGoods', 'delivery'])
             ->order('id', 'desc')
             ->paginate([
-                'page' => $post['page'] ?? 1,
+                'page'      => $post['page'] ?? 1,
                 'list_rows' => $post['limit'] ?? 20,
-                'var_page' => 'page',
+                'var_page'  => 'page',
             ])->toArray();
 
         // 处理数据
