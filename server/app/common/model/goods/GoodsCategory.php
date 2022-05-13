@@ -80,7 +80,7 @@ class GoodsCategory extends Models
             ->where(['id'=>$cid])
             ->findOrEmpty()
             ->toArray();
-dump($category);exit;
+
         $relation = str_replace('0,', ',', $category['relation']);
         return explode(',', trim($relation));
     }
