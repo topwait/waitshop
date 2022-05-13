@@ -229,12 +229,11 @@ class UserLogic extends Logic
                 }
 
                 // 校验验证码
-
                 if (empty($post['code']) || !$post['code']) {
                     throw new Exception('验证码不能为空');
                 }
                 $user = (new User())->field('id,mobile')->findOrEmpty($userId)->toArray();
-                if ($user['mobile'] == $post['mobile']) {
+                if ($user['mobile'] == $post['value']) {
                     throw new Exception('新号码不允许和旧号码相同');
                 }
                 $logSms = (new LogSms())->where([
