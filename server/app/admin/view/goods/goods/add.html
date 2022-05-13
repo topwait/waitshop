@@ -142,17 +142,17 @@
                                        value="0" autocomplete="off" class="layui-input">
                             </div>
                         </div>
-                        <div class="layui-inline">
-                            <label for="freight_id" class="layui-form-label"><span class="asterisk">*</span>运费模板：</label>
-                            <div class="layui-input-inline">
-                                <select id="freight_id" name="freight_id" lay-verify="must|negative" switch-tab="2" verify-msg="请选择运费模板">
-                                    <option value="">请选择运费模板</option>
-                                    <option value="0">全国包邮</option>
-                                    {volist name="freight" id="vo"}
-                                        <option value="{$vo.id}">{$vo.name}</option>
-                                    {/volist}
-                                </select>
-                            </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="freight_id" class="layui-form-label"><span class="asterisk">*</span>运费模板：</label>
+                        <div class="layui-input-block">
+                            <select id="freight_id" name="freight_id" lay-verify="must|negative" switch-tab="2" verify-msg="请选择运费模板">
+                                <option value="">请选择运费模板</option>
+                                <option value="0">全国包邮</option>
+                                {volist name="freight" id="vo"}
+                                <option value="{$vo.id}">{$vo.name}</option>
+                                {/volist}
+                            </select>
                         </div>
                     </div>
                     <div class="layui-form-item">
