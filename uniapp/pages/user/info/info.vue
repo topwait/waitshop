@@ -58,6 +58,9 @@
 			</view>
 		</u-popup>
 		
+		<!-- 按钮部件 -->
+		<view class="button button--logout" @click="onLogout">退出登录</view>
+		
 		<!-- 版权部件 -->
 		<wait-copyright v-if="!isFirstLoading"></wait-copyright>
 
@@ -81,6 +84,7 @@
 	// | Author: WaitShop Team <2474369941@qq.com>
 	// +----------------------------------------------------------------------
 	import {uploadFile} from "@/utils/tools"
+	import {mapState, mapMutations} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -103,6 +107,8 @@
 			this.getUserInfo()
 		},
 		methods: {
+			...mapMutations(['LOGOUT']),
+			
 			/**
 			 * 获取用户信息
 			 */
@@ -197,6 +203,27 @@
 						})
 				    }
 				})
+			},
+			
+			/**
+			 * 退出登录
+			 */
+			onLogout() {
+				const that = this
+				uni.showModal({
+				    title: '提示',
+				    content: '您确定要退出登录吗？',
+					confirmColor: '#FF5058',
+				    success: function (res) {
+						that.LOGOUT()
+						that.$showSuccess('退出成功')
+						setTimeout(function(){
+							uni.switchTab({
+								url: '/pages/index/index'
+							})
+						}, 800)
+				    }
+				})
 			}
 		}
 	}
@@ -213,5 +240,17 @@
 			font-size: 28rpx;
 			padding: 22rpx;
 		}
+	}
+
+	.button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 30rpx 60rpx;
+		height: 80rpx;
+		text-align: center;
+		border-radius: 37px;
+		color: #999;
+		background-color: #eee;
 	}
 </style>
