@@ -20,6 +20,7 @@ namespace app\admin\logic\order;
 
 use app\common\basics\Logic;
 use app\common\enum\OrderEnum;
+use app\common\enum\TeamEnum;
 use app\common\model\Express;
 use app\common\model\order\Order;
 use app\common\model\order\OrderDelivery;
@@ -86,6 +87,11 @@ class OrderLogic extends Logic
                     'city'     => $item['address_snap']['city'],
                     'district' => $item['address_snap']['district']]
                 ) . $item['address_snap']['address'];
+            }
+
+            if ($item['team_found_status']===1) {
+                $item['order_status_text']  = TeamEnum::getFoundStatusDesc($item['team_found_status']);
+
             }
         }
 
