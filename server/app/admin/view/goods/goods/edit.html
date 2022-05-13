@@ -189,7 +189,7 @@
                     </div>
                     <div class="layui-form-item">
                         <label for="freight_id" class="layui-form-label"><span class="asterisk">*</span>运费模板：</label>
-                        <div class="layui-input-block">
+                        <div class="layui-input-inline">
                             <select id="freight_id" name="freight_id" lay-verify="must|negative">
                                 <option value="">请选择运费模板</option>
                                 <option value="0" {if $detail.base.freight_id==0}selected{/if}>全国包邮</option>
