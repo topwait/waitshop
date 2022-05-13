@@ -157,8 +157,7 @@
             <!-- 操作按钮 -->
             <script type="text/html" id="operate">
                 <div class="order-table-button">
-                    {{# if(d.team_found_id === 0) }}
-
+                    {{# if(d.team_found_id === 0){ }}
                         {{#  if(d.order_status === 1){ }}
                             {{#  if(d.delivery_type === 1){ }}<button type="button" class="layui-btn layui-btn-xs" lay-event="deliver">立即发货</button>{{#  } }}
                             {{#  if(d.delivery_type === 2){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-normal" lay-event="pickUp">提货核销</button>{{#  } }}
@@ -166,7 +165,6 @@
                         {{#  } }}
                         {{#  if(d.order_status === 0){ }}<button type="button" class="layui-btn layui-btn-xs layui-btn-danger" lay-event="close">关闭订单</button>{{#  } }}
                     {{#  } }}
-
                     <button type="button" class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">订单详情</button>
                 </div>
             </script>
