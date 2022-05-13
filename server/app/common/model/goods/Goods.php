@@ -149,20 +149,6 @@ class Goods extends Models
             array_push($categoryArr, $item);
         }
 
-
-//        if ($data['first_category_id'] > 0) {
-//            $first = $categoryModel->where(['id'=>(int)$data['first_category_id']])->findOrEmpty();
-//            array_push($categoryArr, $first);
-//        }
-//        if ($data['second_category_id'] > 0) {
-//            $second = $categoryModel->where(['id'=>(int)$data['second_category_id']])->findOrEmpty();
-//            array_push($categoryArr, $second);
-//        }
-//        if ($data['third_category_id'] > 0) {
-//            $third = $categoryModel->where(['id'=>(int)$data['third_category_id']])->findOrEmpty();
-//            array_push($categoryArr, $third);
-//        }
-
         return $categoryArr;
     }
 

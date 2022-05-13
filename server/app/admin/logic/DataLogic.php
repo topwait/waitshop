@@ -85,8 +85,7 @@ class DataLogic extends Logic
         // 执行查询
         $model = new Goods();
         $lists = $model->field([
-            'id,name,image,min_price,market_price,sales_volume,sort,update_time',
-            'first_category_id,second_category_id,third_category_id'
+            'id,category_id,name,image,min_price,market_price,sales_volume,sort,update_time'
         ])->where(self::$searchWhere)
             ->where($where)
             ->where('is_show', '=', isset($get['status']) ? $get['status'] : 1)
