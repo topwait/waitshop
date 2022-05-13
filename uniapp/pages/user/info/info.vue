@@ -77,7 +77,7 @@
 				<view class="form">
 					<u-field :value="userInfo.mobile" label="原手机号"></u-field>
 					<u-field v-model="form.mobile" label="新手机号" placeholder="请输入新的手机号"></u-field>
-					<u-field label="验证码" placeholder="请输入">
+					<u-field v-model="form.mobile" label="验证码" placeholder="请输入">
 						<u-form-item slot="right" :border-bottom="false">
 							<u-verification-code :seconds="seconds" ref="uCode" @change="onChangeSms"></u-verification-code>
 							<u-button @click="onSendSms('changeMobile')"
