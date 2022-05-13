@@ -231,7 +231,7 @@ class UserLogic extends Logic
                 // 校验验证码
                 $user = (new User())->field('id,mobile')->findOrEmpty($userId)->toArray();
                 $logSms = (new LogSms())->where([
-                    'code'   => $post['code'],
+                    'code'   => trim($post['code'] ?? ''),
                     'mobile' => trim($post['value']),
                     'scene'  => $user['mobile'] ? NoticeEnum::SMS_CHANGE_MOBILE_NOTICE : NoticeEnum::SMS_BIND_MOBILE_NOTICE
                 ])->findOrEmpty()->toArray();
