@@ -59,7 +59,9 @@
 		</u-popup>
 		
 		<!-- 按钮部件 -->
+		<!-- #ifndef MP -->
 		<view class="button button--logout" @click="onLogout">退出登录</view>
+		<!-- #endif -->
 		
 		<!-- 版权部件 -->
 		<wait-copyright v-if="!isFirstLoading"></wait-copyright>
