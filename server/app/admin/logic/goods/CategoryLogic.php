@@ -23,6 +23,7 @@ use app\common\model\goods\Goods;
 use app\common\utils\ArrayUtils;
 use app\common\model\goods\GoodsCategory;
 use Exception;
+use think\facade\Db;
 
 /**
  * 商品分类-逻辑层
@@ -137,6 +138,7 @@ class CategoryLogic extends Logic
      */
     public static function edit(array $post): bool
     {
+        Db::startTrans();
         try {
             if ($post['pid'] == $post['id']) {
                 throw new Exception('上级不能是自己');
@@ -189,7 +191,7 @@ class CategoryLogic extends Logic
             $replaceLevel = null;
             $relation = null;
             if (intval($post['pid']) === 0) {
-                $replaceLevel = $parentCategory['level'] - 1;
+                $replaceLevel = $category['level'] - 1;
                 $relation = "0," . $category['id'];
             } else {
                 $replaceLevel = $category['level'] - ($parentCategory['level'] + 1);
@@ -203,8 +205,10 @@ class CategoryLogic extends Logic
                     'update_time' => time()
                 ]);
 
+            Db::commit();
             return true;
         } catch (Exception $e) {
+            Db::rollback();
             static::$error = $e->getMessage();
             return false;
         }
