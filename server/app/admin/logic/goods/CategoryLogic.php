@@ -166,7 +166,7 @@ class CategoryLogic extends Logic
             }
 
             $category = $model
-                ->field('id,name,relation')
+                ->field('id,name,level,relation')
                 ->where(['id'=>intval($post['id'])])
                 ->where(['is_delete'=>0])
                 ->findOrEmpty()
