@@ -12,5 +12,5 @@ Route::get('/', function () {
 
 // 手机路由
 Route::rule('mobile/:any', function () {
-    return view(app()->getRootPath().'public/h5/index.html');
+    return view(app()->getRootPath().'public/mobile/index.html');
 })->pattern(['any' => '\w+']);
