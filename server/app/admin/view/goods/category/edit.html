@@ -11,10 +11,12 @@
                 <select id="pid" name="pid" lay-verType="tips" lay-verify="required|number">
                     <option value="0">顶级分类</option>
                     {volist name="treeCategory" id="vo"}
-                        {if $vo.id == $detail.pid}
-                        <option value="{$vo.id}" selected>{$vo.html} {$vo.name}</option>
-                        {else}
-                        <option value="{$vo.id}">{$vo.html} {$vo.name}</option>
+                        {if in_array($vo.id, $childrenIds)}
+                            {if $vo.id == $detail.pid}
+                            <option value="{$vo.id}" selected>{$vo.html} {$vo.name}</option>
+                            {else}
+                            <option value="{$vo.id}">{$vo.html} {$vo.name}</option>
+                            {/if}
                         {/if}
                     {/volist}
                 </select>

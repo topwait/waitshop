@@ -79,6 +79,7 @@ class GoodsCategory extends Models
         $model = new self();
         return $model->field('id,name')
             ->where("find_in_set(".$cid.",relation)")
+            ->order('level asc')
             ->column('id');
     }
 }

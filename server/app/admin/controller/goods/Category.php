@@ -22,6 +22,7 @@ use app\admin\logic\goods\CategoryLogic;
 use app\admin\validate\ChangeValidate;
 use app\admin\validate\goods\CategoryValidate;
 use app\common\basics\Backend;
+use app\common\model\goods\GoodsCategory;
 use app\common\utils\JsonUtils;
 use think\response\Json;
 use think\response\View;
@@ -89,6 +90,7 @@ class Category extends Backend
         }
 
         return view('goods/category/edit', [
+            'childrenIds'  => GoodsCategory::getChildrenIds($this->getData('id')),
             'treeCategory' => CategoryLogic::getTreeHtmlCategory(),
             'detail'       => CategoryLogic::detail($this->getData('id'))
         ]);
