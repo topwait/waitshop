@@ -19,13 +19,29 @@
 				</u-cell-item>
 				<u-cell-item title="手机" :arrow="false">
 					<view v-if="userInfo.mobile">
-						<text class="u-margin-right-10">{{userInfo.mobile}}</text>
-						<u-icon name="lock" size="28" color="#999"></u-icon>
+						<text class="u-margin-right-20">{{userInfo.mobile}}</text>
+						<!-- #ifdef MP-WEIXIN -->
+							<u-button
+								:plain="true" type="error" 
+								open-type="getPhoneNumber" 
+								@getphonenumber="onBindMobile" 
+								hover-class="none" size="mini" 
+								shape="circle">更换手机号
+							</u-button>
+						<!-- #endif -->
+						<!-- #ifndef MP-WEIXIN -->
+							<u-button
+								:plain="true" type="error" 
+								@click="onBindPhone" 
+								hover-class="none" size="mini" 
+								shape="circle">更换手机号
+							</u-button>
+						<!-- #endif -->
 					</view>
 					<u-button v-else
 						:plain="true" type="error" 
 						open-type="getPhoneNumber" 
-						@getphonenumber="onBindMobile" 
+						@getphonenumber="onBindMobile"
 						hover-class="none" size="mini" 
 						shape="circle">绑定手机号
 					</u-button>
@@ -44,10 +60,33 @@
 		
 		<!-- 弹窗部件 -->
 		<u-popup v-model="showPopup" mode="center" border-radius="12" :closeable="true">
-			<view class="popup-form-widget">
+			<view class="popup-form-widget" v-if="form.type==='nickname'">
 				<view class="title">修改用户名</view>
 				<view class="form">
 					<u-field v-model="form.nickname" label="新昵称" placeholder="请输入新的昵称"></u-field>
+				</view>
+				<view class="u-padding-tb-40">
+					<u-button type="error" size="medium" 
+						:custom-style="{width: '100%'}" 
+						@click="onEdit(form.type)">确定
+					</u-button>
+				</view>
+			</view>
+			<view class="popup-form-widget" v-if="form.type==='mobile'">
+				<view class="title">更换手机号</view>
+				<view class="form">
+					<u-field :value="userInfo.mobile" label="原手机号"></u-field>
+					<u-field v-model="newMobile" label="新手机号" placeholder="请输入新的手机号"></u-field>
+					<u-field label="验证码" placeholder="请输入">
+						<u-form-item slot="right" :border-bottom="false">
+							<u-verification-code :seconds="10" ref="uCode" @change="onChangeSms"></u-verification-code>
+							<u-button @click="onSendSms"
+								:plain="true" type="error" 
+								hover-class="none" size="mini" 
+								shape="circle">{{smsTips}}
+							</u-button>
+						</u-form-item>
+					</u-field>
 				</view>
 				<view class="u-padding-tb-40">
 					<u-button type="error" size="medium" 
@@ -96,12 +135,19 @@
 				userInfo: {},
 				// 是否弹窗
 				showPopup: false,
+				// 验证码提示
+				smsTips: '',
+				// 验证码倒计时
+				seconds: 60,
+				// 新手机号
+				newMobile: '',
 				// 表单数据
 				form: {
 					type: '',
 					avatar: '',
 					nickname: '',
-					mobile: ''
+					mobile: '',
+					code: ''
 				}
 			}
 		},
@@ -110,7 +156,7 @@
 		},
 		methods: {
 			...mapMutations(['LOGOUT']),
-			
+
 			/**
 			 * 获取用户信息
 			 */
@@ -139,7 +185,7 @@
 			 * 编辑数据
 			 */
 			onEdit(type) {		
-				const param = {key: type, value: this.form[type]}
+				const param = {key: type, value: this.form[type], code: this.code}
 				this.$u.api.apiUserSet(param).then(result => {
 					if (result.code === 0) {
 						this.showPopup = false
@@ -153,7 +199,7 @@
 			},
 			
 			/**
-			 * 绑定手机号
+			 * 微信绑定手机号
 			 */
 			async onBindMobile(e) {
 				if (e.detail.errMsg !== 'getPhoneNumber:ok') {
@@ -172,7 +218,7 @@
 					}
 					return ''
 				})
-				
+		
 				if (phoneNumber === '') {
 					return this.$showToast('获取手机号异常')
 				} else {
@@ -185,6 +231,14 @@
 						}
 					})
 				}
+			},
+			
+			/**
+			 * 收到绑定手机号
+			 */
+			onBindPhone() {
+				this.showPopup = true
+				this.form.type = 'mobile'
 			},
 			
 			/**
@@ -226,6 +280,36 @@
 						}, 800)
 				    }
 				})
+			},
+
+			/**
+			 * 发送短信验证码(更换手机号)
+			 */
+			onSendSms() {
+				if (this.newMobile == '') return this.$u.toast('手机号不能为空')
+				if (this.newMobile.length != 11) return this.$u.toast('手机号输入有误')
+				if (this.userInfo.mobile === this.newMobile) return this.$u.toast('不能与原手机号一样')
+				if(this.$refs.uCode.canGetCode) {
+					uni.showLoading({title: '正在获取验证码'})
+					this.$u.api.apiSendSms({mobile:this.newMobile, scene:110}).then(result => {
+						uni.hideLoading();
+						if (result.code === 0) {
+							this.$u.toast('验证码已发送')
+							this.$refs.uCode.start()
+						} else {
+							this.$u.toast(result.msg)
+						}
+					})
+				} else {
+					this.$u.toast('倒计时结束后再发送')
+				}
+			},
+
+			/**
+			 * 改变验证码提示
+			 */
+			onChangeSms(text) {
+				this.smsTips = text
 			}
 		}
 	}
