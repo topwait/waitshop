@@ -237,7 +237,7 @@ class UserLogic extends Logic
                     throw new Exception('新号码不允许和旧号码相同');
                 }
                 $logSms = (new LogSms())->where([
-                    'code'   => trim($post['code'] ?? ''),
+                    'code'   => trim($post['code']),
                     'mobile' => trim($post['value']),
                     'scene'  => $user['mobile'] ? NoticeEnum::SMS_CHANGE_MOBILE_NOTICE : NoticeEnum::SMS_BIND_MOBILE_NOTICE
                 ])->findOrEmpty()->toArray();
