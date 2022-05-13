@@ -47,7 +47,7 @@ class GoodsCategoryLogic extends Logic
     }
 
     /**
-     * 顶级商品分类列表
+     * 分类列表
      *
      * @author windy
      * @return array
@@ -67,7 +67,7 @@ class GoodsCategoryLogic extends Logic
     }
 
     /**
-     * 分类列表数据
+     * 分类商品
      *
      * @author windy
      * @param array $get
@@ -77,14 +77,10 @@ class GoodsCategoryLogic extends Logic
      */
     public static function goods(array $get, int $userId=0): array
     {
-        $childrenIds = (new GoodsCategory())
-            ->field('id')
-            ->where("find_in_set(".intval($get['cid'] ?? 0).",relation)")
-            ->column('id');
-
+        $childrenIds = GoodsCategory::getChildrenIds(intval($get['cid'] ?? 0));
         $lists = (new Goods)->field(['id,name,image,market_price,min_price'])
             ->where([
-                ['first_category_id|second_category_id|third_category_id', 'in', $childrenIds],
+                ['category_id', 'in', $childrenIds],
                 ['is_delete', '=', 0],
                 ['is_show', '=', 1],
                 ['stock', '>', 0]

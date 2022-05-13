@@ -22,6 +22,7 @@ use app\common\basics\Logic;
 use app\common\enum\TeamEnum;
 use app\common\model\addons\Team;
 use app\common\model\goods\Goods;
+use app\common\model\goods\GoodsCategory;
 use app\common\model\user\User;
 
 /**
@@ -72,9 +73,14 @@ class DataLogic extends Logic
     {
         // 查询条件
         self::setSearch([
-           '%like%' => ['name'],
-           '=' => ['category@first_category_id|second_category_id|third_category_id']
+           '%like%' => ['name']
         ]);
+
+        // 分类搜索
+        $where = [];
+        if (!empty($get['category']) && $get['category']) {
+            $where[] = ['category_id', 'in', GoodsCategory::getChildrenIds($get['category'])];
+        }
 
         // 执行查询
         $model = new Goods();
@@ -82,6 +88,7 @@ class DataLogic extends Logic
             'id,name,image,min_price,market_price,sales_volume,sort,update_time',
             'first_category_id,second_category_id,third_category_id'
         ])->where(self::$searchWhere)
+            ->where($where)
             ->where('is_show', '=', isset($get['status']) ? $get['status'] : 1)
             ->order('id', 'desc')
             ->order('sort', 'desc')

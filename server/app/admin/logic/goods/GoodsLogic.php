@@ -193,9 +193,6 @@ class GoodsLogic extends Logic
             $goods = Goods::create([
                 'name'               => $post['name'],
                 'category_id'        => $post['category'][count($post['category']) - 1],
-                'first_category_id'  => $post['category'][0] ?? 0,
-                'second_category_id' => $post['category'][1] ?? 0,
-                'third_category_id'  => $post['category'][2] ?? 0,
                 'brand_id'           => $post['brand_id'] ?? 0,
                 'supplier_id'        => $post['supplier_id'] ?? 0,
                 'freight_id'         => $post['freight_id'] ?? 0,
@@ -259,9 +256,6 @@ class GoodsLogic extends Logic
             Goods::update([
                 'name'               => $post['name'],
                 'category_id'        => $post['category'][count($post['category']) - 1],
-                'first_category_id'  => empty($post['category'][0]) ? 0 : $post['category'][0],
-                'second_category_id' => empty($post['category'][1]) ? 0 : $post['category'][1],
-                'third_category_id'  => empty($post['category'][2]) ? 0 : $post['category'][2],
                 'brand_id'           => $post['brand_id'] ?? 0,
                 'supplier_id'        => $post['supplier_id'] ?? 0,
                 'freight_id'         => $post['freight_id'] ?? 0,
