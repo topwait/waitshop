@@ -306,7 +306,7 @@
 			width: 545rpx;
 			height: 514rpx;
 			background-size: 100% 100%;
-			background-image: url(../../static/lottery/prize_bg.png);
+			background-image: url("/bundle/static/lottery/prize_bg.png");
 		}
 		.result-reward {
 			display: flex;
