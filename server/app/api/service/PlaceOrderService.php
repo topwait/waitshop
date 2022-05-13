@@ -531,7 +531,7 @@ class PlaceOrderService
                     'spec_value_ids' => $sku['spec_value_ids'],
                     'goods_image'    => UrlUtils::getRelativeUrl($sku['goods']['image']),
                     'spec_image'     => UrlUtils::getRelativeUrl($sku['image']),
-                    'give_integral'  => $sku['goods']['give_integral'] ?? 0,
+                    'give_integral'  => ($sku['goods']['give_integral'] ?? 0) * $product['count'],
                     'market_price'   => $sku['market_price'],
                     'sell_price'     => $sku['sell_price'],
                     'cost_price'     => $sku['cost_price'],

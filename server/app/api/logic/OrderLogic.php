@@ -441,7 +441,7 @@ class OrderLogic extends Logic
                 User::update([
                     'integral'    => ['inc', $totalGiveIntegral],
                     'update_time' => time()
-                ], ['id'=>$orderGoods[0]['order_id']]);
+                ], ['id'=>$orderGoods[0]['user_id']]);
                 LogIntegral::add(
                     LogIntegralEnum::GOODS_INC_INTEGRAL,
                     $totalGiveIntegral,
