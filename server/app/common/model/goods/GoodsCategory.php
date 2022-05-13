@@ -81,8 +81,15 @@ class GoodsCategory extends Models
             ->findOrEmpty()
             ->toArray();
 
-        $relation = str_replace('0,', '', $category['relation']);
-        return explode(',', trim($relation));
+        $array = [];
+        $relation = explode(',', trim($category['relation']));
+        foreach ($relation as $id) {
+            if (intval($id) !== 0) {
+                array_push($array, intval($id));
+            }
+        }
+
+        return $array;
     }
 
 
