@@ -78,8 +78,9 @@
     "h5" : {
         "router" : {
             "mode" : "hash",
-            "base" : "./"
+            "base" : "/mobile/"
         },
+        "publicPath" : "/mobile/",
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {
