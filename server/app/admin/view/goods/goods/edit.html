@@ -179,6 +179,14 @@
                             </div>
                         </div>
                         <div class="layui-inline">
+                            <label class="layui-form-label">赠送积分：</label>
+                            <div class="layui-input-inline">
+                                <input type="number" min="0" id="give_integral" name="give_integral" value="{$detail.base.give_integral}"
+                                       switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写赠送积分数"
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
                             <label for="freight_id" class="layui-form-label"><span class="asterisk">*</span>运费模板：</label>
                             <div class="layui-input-inline">
                                 <select id="freight_id" name="freight_id" lay-verify="must|negative">

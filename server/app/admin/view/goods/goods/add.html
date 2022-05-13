@@ -111,7 +111,7 @@
                         <div class="layui-inline">
                             <label for="sales_volume" class="layui-form-label">预设销量：</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="sales_volume" name="sales_volume" value="0"
+                                <input type="number" min="0" id="sales_volume" name="sales_volume" value="0"
                                        switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写预设销量"
                                        autocomplete="off" class="layui-input">
                             </div>
@@ -119,7 +119,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">商品排序：</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="sort" name="sort" value="0"
+                                <input type="number" min="0" id="sort" name="sort" value="0"
                                        switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写排序号"
                                        autocomplete="off" class="layui-input">
                             </div>
@@ -129,8 +129,16 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">库存预警：</label>
                             <div class="layui-input-inline">
-                                <input type="text" id="stock_warn" name="stock_warn"
+                                <input type="number" min="0" id="stock_warn" name="stock_warn"
                                        switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写库存预警数"
+                                       value="0" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">赠送积分：</label>
+                            <div class="layui-input-inline">
+                                <input type="number" min="0" id="give_integral" name="give_integral"
+                                       switch-tab="2" lay-verType="tips" lay-verify="must|negative" verify-msg="请填写赠送积分数"
                                        value="0" autocomplete="off" class="layui-input">
                             </div>
                         </div>
