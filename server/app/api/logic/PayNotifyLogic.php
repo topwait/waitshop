@@ -143,7 +143,7 @@ class PayNotifyLogic extends Logic
             $logIntegral = (new LogIntegral())->field('id')
                 ->where('create_time', '>=', TimeUtils::today()[0])
                 ->where('create_time', '<=', TimeUtils::today()[1])
-                ->where(['source_id'=>$order['id']])
+                ->where('user_id', '=', $user['id'])
                 ->where(['source_type'=>LogIntegralEnum::PAY_INC_INTEGRAL])
                 ->findOrEmpty();
             if ($logIntegral->isEmpty()) {
@@ -165,7 +165,7 @@ class PayNotifyLogic extends Logic
             $logGrowth = (new LogGrowth())->field('id')
                 ->where('create_time', '>=', TimeUtils::today()[0])
                 ->where('create_time', '<=', TimeUtils::today()[1])
-                ->where(['source_id'=>$order['id']])
+                ->where('user_id', '=', $user['id'])
                 ->where(['source_type'=>LogGrowthEnum::PAY_INC_GROWTH])
                 ->findOrEmpty();
             if ($logGrowth->isEmpty()) {
