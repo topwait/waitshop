@@ -163,7 +163,7 @@ class GoodsLogic extends Logic
             $detail['base']['first_category_id']  = $category[0] ?? 0;
             $detail['base']['second_category_id'] = $category[1] ?? 0;
             $detail['base']['third_category_id']  = $category[2] ?? 0;
-dump($detail);exit;
+
             return $detail;
         } catch (Exception $e) {
             static::$error = $e->getMessage();

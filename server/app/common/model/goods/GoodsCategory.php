@@ -81,7 +81,7 @@ class GoodsCategory extends Models
             ->findOrEmpty()
             ->toArray();
 
-        $relation = str_replace('0,', ',', $category['relation']);
+        $relation = str_replace('0,', '', $category['relation']);
         return explode(',', trim($relation));
     }
 
