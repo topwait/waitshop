@@ -18,12 +18,15 @@
 namespace app\admin\logic\addons\team;
 
 
+use app\admin\logic\order\OrderLogic;
 use app\common\basics\Logic;
 use app\common\enum\OrderEnum;
 use app\common\enum\TeamEnum;
 use app\common\model\addons\TeamFound;
 use app\common\model\addons\TeamJoin;
 use app\common\utils\UrlUtils;
+use Exception;
+use think\facade\Db;
 
 /**
  * 拼团发起-逻辑层
@@ -126,5 +129,57 @@ class TeamFoundLogic extends Logic
         $detail['invalid_time'] = date('Y-m-d H:i:s', $detail['invalid_time']);
         $detail['status'] = TeamEnum::getFoundStatusDesc($detail['status']);
         return $detail;
+    }
+
+    /**
+     * 拼团结束
+     *
+     * @author windy
+     * @param int $id
+     * @return bool
+     */
+    public static function end(int $id)
+    {
+        Db::startTrans();
+        try {
+            $teamFound = (new TeamFound())->field(true)->findOrEmpty($id)->toArray();
+            if (!$teamFound) {
+                throw new Exception('拼团不存在');
+            }
+
+            if ($teamFound['status'] === TeamEnum::SUCCESS_STATUS) {
+                throw new Exception('拼团已成功,不能结束');
+            }
+
+            if ($teamFound['status'] === TeamEnum::FAIL_STATUS) {
+                throw new Exception('拼团已失败,不能结束');
+            }
+
+            $teamJoins = (new TeamJoin())
+                ->where('team_id', '=', $teamFound['team_id'])
+                ->where('found_id', '=', $teamFound['id'])
+                ->select()
+                ->toArray();
+
+            foreach ($teamJoins as $join) {
+                OrderLogic::cancel($join['order_id']);
+                TeamJoin::update([
+                    'status'      => TeamEnum::FAIL_STATUS,
+                    'update_time' => time()
+                ], ['id'=>$join['id']]);
+            }
+
+            TeamFound::update([
+                'status' => TeamEnum::FAIL_STATUS,
+                'invalid_time' => time()
+            ], ['id'=>$id]);
+
+            Db::commit();
+            return true;
+        } catch (Exception $e) {
+            Db::rollback();
+            static::$error = $e->getMessage();
+            return false;
+        }
     }
 }
