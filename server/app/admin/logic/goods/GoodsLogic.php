@@ -192,6 +192,7 @@ class GoodsLogic extends Logic
             // 添加商品基础信息
             $goods = Goods::create([
                 'name'               => $post['name'],
+                'category_id'        => $post['category'][count($post['category']) - 1],
                 'first_category_id'  => $post['category'][0] ?? 0,
                 'second_category_id' => $post['category'][1] ?? 0,
                 'third_category_id'  => $post['category'][2] ?? 0,
@@ -257,6 +258,7 @@ class GoodsLogic extends Logic
             // 编辑商品基础信息
             Goods::update([
                 'name'               => $post['name'],
+                'category_id'        => $post['category'][count($post['category']) - 1],
                 'first_category_id'  => empty($post['category'][0]) ? 0 : $post['category'][0],
                 'second_category_id' => empty($post['category'][1]) ? 0 : $post['category'][1],
                 'third_category_id'  => empty($post['category'][2]) ? 0 : $post['category'][2],
