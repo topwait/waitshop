@@ -32,7 +32,7 @@
 						<!-- #ifndef MP-WEIXIN -->
 							<u-button
 								:plain="true" type="error" 
-								@click="onBindPhone" 
+								@click="onShowPopup('mobile')" 
 								hover-class="none" size="mini" 
 								shape="circle">更换手机号
 							</u-button>
@@ -76,11 +76,11 @@
 				<view class="title">更换手机号</view>
 				<view class="form">
 					<u-field :value="userInfo.mobile" label="原手机号"></u-field>
-					<u-field v-model="newMobile" label="新手机号" placeholder="请输入新的手机号"></u-field>
+					<u-field v-model="form.mobile" label="新手机号" placeholder="请输入新的手机号"></u-field>
 					<u-field label="验证码" placeholder="请输入">
 						<u-form-item slot="right" :border-bottom="false">
-							<u-verification-code :seconds="10" ref="uCode" @change="onChangeSms"></u-verification-code>
-							<u-button @click="onSendSms"
+							<u-verification-code :seconds="seconds" ref="uCode" @change="onChangeSms"></u-verification-code>
+							<u-button @click="onSendSms('changeMobile')"
 								:plain="true" type="error" 
 								hover-class="none" size="mini" 
 								shape="circle">{{smsTips}}
@@ -139,8 +139,6 @@
 				smsTips: '',
 				// 验证码倒计时
 				seconds: 60,
-				// 新手机号
-				newMobile: '',
 				// 表单数据
 				form: {
 					type: '',
@@ -234,14 +232,6 @@
 			},
 			
 			/**
-			 * 收到绑定手机号
-			 */
-			onBindPhone() {
-				this.showPopup = true
-				this.form.type = 'mobile'
-			},
-			
-			/**
 			 * 上传头像
 			 */
 			onUploadAvatar() {
@@ -283,15 +273,29 @@
 			},
 
 			/**
-			 * 发送短信验证码(更换手机号)
+			 * 发送短信验证码
+			 * @param {String} type 类型
 			 */
-			onSendSms() {
-				if (this.newMobile == '') return this.$u.toast('手机号不能为空')
-				if (this.newMobile.length != 11) return this.$u.toast('手机号输入有误')
-				if (this.userInfo.mobile === this.newMobile) return this.$u.toast('不能与原手机号一样')
+			onSendSms(type) {
+				let sceneeNum = null
+				if (type === 'changeMobile') {
+					// 更改手机号
+					sceneeNum = 113
+					if (this.form.mobile == '') return this.$u.toast('新手机号不能为空')
+					if (this.form.mobile.length != 11) return this.$u.toast('新手机号输入有误')
+					if (this.userInfo.mobile === this.form.mobile) return this.$u.toast('不能与原手机号一样')
+				} else if (type === 'bindMobile') {
+					// 绑定手机号
+					sceneeNum = 112
+					if (this.form.mobile == '') return this.$u.toast('手机号不能为空')
+					if (this.form.mobile.length != 11) return this.$u.toast('手机号不能为空')
+				}
 				if(this.$refs.uCode.canGetCode) {
 					uni.showLoading({title: '正在获取验证码'})
-					this.$u.api.apiSendSms({mobile:this.newMobile, scene:110}).then(result => {
+					this.$u.api.apiSendSms({
+						mobile: this.form.mobile, 
+						scene: sceneeNum,
+					}).then(result => {
 						uni.hideLoading();
 						if (result.code === 0) {
 							this.$u.toast('验证码已发送')

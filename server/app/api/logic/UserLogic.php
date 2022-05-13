@@ -21,20 +21,21 @@ namespace app\api\logic;
 use app\common\basics\Logic;
 use app\common\enum\LinkEnum;
 use app\common\enum\LogWalletEnum;
-use app\common\enum\OrderEnum;
+use app\common\enum\NoticeEnum;
 use app\common\model\diy\DiyMe;
 use app\common\model\diy\DiyOrder;
 use app\common\model\log\LogIntegral;
+use app\common\model\log\LogSms;
 use app\common\model\log\LogWallet;
 use app\common\model\addons\CouponList;
 use app\common\model\addons\DistributionOrder;
-use app\common\model\order\Order;
 use app\common\model\store\StoreClerk;
 use app\common\model\user\User;
 use app\common\model\user\UserGrade;
 use app\common\utils\ConfigUtils;
 use app\common\utils\TimeUtils;
 use app\common\utils\UrlUtils;
+use think\facade\Db;
 use Exception;
 
 /**
@@ -206,6 +207,7 @@ class UserLogic extends Logic
      */
     public static function setUser(array $post, int $userId): bool
     {
+        Db::startTrans();
         try {
             if (empty($post['key'])) {
                 throw new Exception('更新字段异常');
@@ -216,13 +218,29 @@ class UserLogic extends Logic
             }
 
             if ($post['key'] == 'mobile') {
+                // 校验手机号
                 $m = (new User())
-                    ->where('mobile', '=', $post['value'])
+                    ->where('mobile', '=', trim($post['value']))
                     ->where('id', '<>', $userId)
                     ->findOrEmpty();
-                if ($m) {
+
+                if (!$m->isEmpty()) {
                     throw new Exception('该手机号已存在');
                 }
+
+                // 校验验证码
+                $user = (new User())->field('id,mobile')->findOrEmpty($userId)->toArray();
+                $logSms = (new LogSms())->where([
+                    'code'   => $post['code'],
+                    'mobile' => $post['mobile'],
+                    'scene'  => $user['mobile'] ? NoticeEnum::SMS_CHANGE_MOBILE_NOTICE : NoticeEnum::SMS_BIND_MOBILE_NOTICE
+                ])->findOrEmpty()->toArray();
+                if (!$logSms || $logSms['is_verify'] || strtotime($logSms['create_time']) + (60 * 15) < time()) {
+                    throw new Exception('验证码无效');
+                }
+
+                // 核销验证码
+                LogSms::update(['is_verify'=>1, 'update_time'=>time()], ['id'=>$logSms['id']]);
             }
 
             User::update([
@@ -230,8 +248,10 @@ class UserLogic extends Logic
                 'update_time' => time()
             ], ['id'=>$userId]);
 
+            Db::commit();
             return true;
         } catch (Exception $e) {
+            Db::rollback();
             static::$error = $e->getMessage();
             return false;
         }
