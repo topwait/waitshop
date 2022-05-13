@@ -235,7 +235,7 @@ class UserLogic extends Logic
                     'mobile' => trim($post['value']),
                     'scene'  => $user['mobile'] ? NoticeEnum::SMS_CHANGE_MOBILE_NOTICE : NoticeEnum::SMS_BIND_MOBILE_NOTICE
                 ])->findOrEmpty()->toArray();
-                dump($logSms);exit;
+                dump(trim($post['code']));exit;
                 if (!$logSms || $logSms['is_verify'] || strtotime($logSms['create_time']) + (60 * 15) < time()) {
                     throw new Exception('验证码无效');
                 }
