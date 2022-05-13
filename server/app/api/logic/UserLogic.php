@@ -230,6 +230,7 @@ class UserLogic extends Logic
 
                 // 校验验证码
                 $user = (new User())->field('id,mobile')->findOrEmpty($userId)->toArray();
+                dump($user);exit;
                 $logSms = (new LogSms())->where([
                     'code'   => trim($post['code'] ?? ''),
                     'mobile' => trim($post['value']),
