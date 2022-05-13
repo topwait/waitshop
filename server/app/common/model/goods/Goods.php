@@ -146,7 +146,7 @@ class Goods extends Models
             ->toArray();
 
         foreach ($categoryArray as $item) {
-            array_push($categoryArr, $item['name']);
+            array_push($categoryArr, $item);
         }
 
 
