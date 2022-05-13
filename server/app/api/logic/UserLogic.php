@@ -230,12 +230,12 @@ class UserLogic extends Logic
 
                 // 校验验证码
                 $user = (new User())->field('id,mobile')->findOrEmpty($userId)->toArray();
-                dump($user);exit;
                 $logSms = (new LogSms())->where([
                     'code'   => trim($post['code'] ?? ''),
                     'mobile' => trim($post['value']),
                     'scene'  => $user['mobile'] ? NoticeEnum::SMS_CHANGE_MOBILE_NOTICE : NoticeEnum::SMS_BIND_MOBILE_NOTICE
                 ])->findOrEmpty()->toArray();
+                dump($logSms);exit;
                 if (!$logSms || $logSms['is_verify'] || strtotime($logSms['create_time']) + (60 * 15) < time()) {
                     throw new Exception('验证码无效');
                 }
