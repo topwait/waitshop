@@ -91,7 +91,6 @@ class OrderLogic extends Logic
 
             if ($item['team_found_status']===1) {
                 $item['order_status_text']  = TeamEnum::getFoundStatusDesc($item['team_found_status']);
-
             }
         }
 
@@ -150,6 +149,11 @@ class OrderLogic extends Logic
         if ($detail['delivery_type'] == OrderEnum::DELIVER_TYPE_STORE) {
             $detail['store_name'] = (new Store())->where(['id'=>$detail['pick_up_store']])->value('name');
         }
+
+        if ($detail['team_found_status']===1) {
+            $item['order_status_text']  = TeamEnum::getFoundStatusDesc($item['team_found_status']);
+        }
+
         // 返回结果
         return $detail;
     }
