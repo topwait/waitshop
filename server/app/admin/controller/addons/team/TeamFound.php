@@ -85,7 +85,7 @@ class TeamFound extends Backend
     public function end()
     {
         if (request()->isAjax()) {
-            $result = TeamFoundLogic::end($this->postData());
+            $result = TeamFoundLogic::end($this->postData('id'));
             if ($result === false) {
                 return JsonUtils::error(TeamFoundLogic::getError());
             }
