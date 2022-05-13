@@ -30,6 +30,7 @@ class GoodsCategory extends Models
         'name'        => 'string',  //分类名称
         'image'       => 'string',  //图片地址
         'relation'    => 'string',  //关系链条
+        'level'       => 'int',     //层级排序
         'sort'        => 'int',     //排序编号
         'is_show'     => 'int',     //是否显示[0=否,1=是]
         'is_delete'   => 'int',     //是否删除[0=否,1=是]
@@ -64,5 +65,20 @@ class GoodsCategory extends Models
         } else {
             return UrlUtils::getAbsoluteUrl($value);
         }
+    }
+
+    /**
+     * 获取某id的子级ID链条
+     *
+     * @author windy
+     * @param int $cid
+     * @return array
+     */
+    public static function getChildrenIds(int $cid)
+    {
+        $model = new self();
+        return $model->field('id,name')
+            ->where("find_in_set(".$cid.",relation)")
+            ->column('id');
     }
 }
