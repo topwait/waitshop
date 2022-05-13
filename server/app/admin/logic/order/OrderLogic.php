@@ -151,7 +151,7 @@ class OrderLogic extends Logic
         }
 
         if ($detail['team_found_status']===1) {
-            $item['order_status_text']  = TeamEnum::getFoundStatusDesc($item['team_found_status']);
+            $detail['order_status_text']  = TeamEnum::getFoundStatusDesc($detail['team_found_status']);
         }
 
         // 返回结果
