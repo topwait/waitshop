@@ -349,7 +349,7 @@
 		height: 640rpx;
 		padding: 35rpx 40rpx;
 		background-size: 100% 100%;
-		background-image: url("/bundle/static/lottery/lottery_light.png");
+		background-image: url("../../static/lottery/lottery_light.png");
 		.lottery-item {
 			display: flex;
 			flex-direction: column;
@@ -358,8 +358,8 @@
 			width: 180rpx;
 			height: 180rpx;
 			background-size: 100% 100%;
-			background-image: url("/bundle/static/lottery/lottery_block.png");
-			&.draw {background-image: url("/bundle/static/lottery/lottery_button.png");}
+			background-image: url("../../static/lottery/lottery_block.png");
+			&.draw {background-image: url("../../static/lottery/lottery_button.png");}
 			&.active {opacity: 0.7;}
 			.image {width: 80rpx; height: 80rpx;}
 			.text {font-weight: bold; color: #743C3C; font-size: 22rpx; margin-top: 20rpx;}
