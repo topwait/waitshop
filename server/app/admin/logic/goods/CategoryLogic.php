@@ -186,7 +186,7 @@ class CategoryLogic extends Logic
             ], ['id'=>(int)$post['id']]);
 
             // 更新关系
-            $replaceLevel = 0;
+            $replaceLevel = null;
             $relation = null;
             if (intval($post['pid']) === 0) {
                 $replaceLevel = $parentCategory['level'] - 1;
