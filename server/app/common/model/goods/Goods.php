@@ -127,25 +127,41 @@ class Goods extends Models
      * @param $value
      * @param $data
      * @return array
+     * @throws @\think\db\exception\DataNotFoundException
+     * @throws @\think\db\exception\DbException
+     * @throws @\think\db\exception\ModelNotFoundException
      */
     public function getCategoryAttr($value, $data): array
     {
         unset($value);
         $categoryArr = [];
 
+        $parentIds = GoodsCategory::getParentIds($data['category_id']);
         $categoryModel = new GoodsCategory();
-        if ($data['first_category_id'] > 0) {
-            $first = $categoryModel->where(['id'=>(int)$data['first_category_id']])->findOrEmpty();
-            array_push($categoryArr, $first);
+        $categoryArray = $categoryModel
+            ->field('id,name')
+            ->whereIn('id', $parentIds)
+            ->order('level asc')
+            ->select()
+            ->toArray();
+
+        foreach ($categoryArray as $item) {
+            array_push($categoryArr, $item['name']);
         }
-        if ($data['second_category_id'] > 0) {
-            $second = $categoryModel->where(['id'=>(int)$data['second_category_id']])->findOrEmpty();
-            array_push($categoryArr, $second);
-        }
-        if ($data['third_category_id'] > 0) {
-            $third = $categoryModel->where(['id'=>(int)$data['third_category_id']])->findOrEmpty();
-            array_push($categoryArr, $third);
-        }
+
+
+//        if ($data['first_category_id'] > 0) {
+//            $first = $categoryModel->where(['id'=>(int)$data['first_category_id']])->findOrEmpty();
+//            array_push($categoryArr, $first);
+//        }
+//        if ($data['second_category_id'] > 0) {
+//            $second = $categoryModel->where(['id'=>(int)$data['second_category_id']])->findOrEmpty();
+//            array_push($categoryArr, $second);
+//        }
+//        if ($data['third_category_id'] > 0) {
+//            $third = $categoryModel->where(['id'=>(int)$data['third_category_id']])->findOrEmpty();
+//            array_push($categoryArr, $third);
+//        }
 
         return $categoryArr;
     }
