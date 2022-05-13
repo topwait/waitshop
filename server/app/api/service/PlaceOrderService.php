@@ -23,7 +23,6 @@ use app\api\logic\StoreLogic;
 use app\common\enum\CouponEnum;
 use app\common\enum\OrderEnum;
 use app\common\model\addons\CouponList;
-use app\common\model\addons\DistributionExtend;
 use app\common\model\addons\SeckillSku;
 use app\common\model\Cart;
 use app\common\model\goods\Goods;
@@ -33,7 +32,7 @@ use app\common\model\goods\GoodsSku;
 use app\common\model\Region;
 use app\common\utils\ConfigUtils;
 use app\common\utils\UrlUtils;
-use think\Exception;
+use Exception;
 use think\facade\Db;
 
 /**
@@ -56,7 +55,7 @@ class PlaceOrderService
      * @param array $oProducts
      * @param int $userId
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public static function check(array $post, array $oProducts, int $userId): array
     {
@@ -69,8 +68,8 @@ class PlaceOrderService
 
             // 2、验证订单状态
             return self::getOrderStatus();
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -79,7 +78,7 @@ class PlaceOrderService
      *
      * @author windy
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getAddress(): array
     {
@@ -88,7 +87,7 @@ class PlaceOrderService
             case OrderEnum::DELIVER_TYPE_EXPRESS:
                 $address = AddressLogic::getAddressById(self::$post['address_id'], self::$user_id);
                 if (!$address) {
-                    throw new \Exception('请选择收货地址');
+                    throw new Exception('请选择收货地址');
                 }
                 $data = [
                     'id'       => $address['id'],
@@ -111,8 +110,8 @@ class PlaceOrderService
                     'longitude' => self::$post['longitude'] ?? 0,
                     'latitude'  => self::$post['latitude'] ?? 0,
                 ]);
-                if (!$store) { throw new \Exception('请选择收货门店'); }
-                if ($store['status'] == 0) { throw new \Exception('当前门店已暂停营业');}
+                if (!$store) { throw new Exception('请选择收货门店'); }
+                if ($store['status'] == 0) { throw new Exception('当前门店已暂停营业');}
                 $data = [
                     'id'       => $store['id'],
                     'contact'  => self::$post['contact'],
@@ -184,7 +183,7 @@ class PlaceOrderService
             }
 
             return $lists;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return [];
         }
     }
@@ -193,7 +192,7 @@ class PlaceOrderService
      * 循环检查每个商品的状态是否达标
      *
      * @author windy
-     * @throws \Exception
+     * @throws Exception
      */
     private static function getOrderStatus(): array
     {
@@ -307,7 +306,7 @@ class PlaceOrderService
      * @author windy
      * @param $oProduct
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private static function getProductStatus($oProduct): array
     {
@@ -369,7 +368,7 @@ class PlaceOrderService
         }
 
         if ($pIndex == -1) {
-            throw new \Exception('商品找不到了,请重新下单');
+            throw new Exception('商品找不到了,请重新下单');
         }
 
         return $pStatus;
@@ -381,7 +380,7 @@ class PlaceOrderService
      * @author windy
      * @param array $orderStatus
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public static function createOrder(array $orderStatus): array
     {
@@ -506,9 +505,9 @@ class PlaceOrderService
                 'order_no'    => $orderNo,
                 'order_id'    => intval($order['id'])
             ];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Db::rollback();
-            throw new \Exception($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -518,7 +517,7 @@ class PlaceOrderService
      * @author windy
      * @param array $product
      * @return array[]
-     * @throws \Exception
+     * @throws Exception
      */
     private static function getProductSnap(array $product): array
     {
@@ -532,15 +531,17 @@ class PlaceOrderService
                     'spec_value_ids' => $sku['spec_value_ids'],
                     'goods_image'    => UrlUtils::getRelativeUrl($sku['goods']['image']),
                     'spec_image'     => UrlUtils::getRelativeUrl($sku['image']),
-                    "market_price"   => $sku['market_price'],
-                    "sell_price"     => $sku['sell_price'],
-                    "cost_price"     => $sku['cost_price'],
-                    "volume"         => $sku['volume'],
-                    "weight"         => $sku['weight'],
-                    "bar_code"       => $sku['bar_code'],
+                    'give_integral'  => $sku['goods']['give_integral'] ?? 0,
+                    'market_price'   => $sku['market_price'],
+                    'sell_price'     => $sku['sell_price'],
+                    'cost_price'     => $sku['cost_price'],
+                    'volume'         => $sku['volume'],
+                    'weight'         => $sku['weight'],
+                    'bar_code'       => $sku['bar_code'],
                 ];
             }
         }
-        throw new \Exception('商品丢失了,下单失败');
+
+        throw new Exception('商品丢失了,下单失败');
     }
 }

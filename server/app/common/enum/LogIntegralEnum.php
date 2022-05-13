@@ -30,10 +30,11 @@ class LogIntegralEnum
     const RECHARGE_INC_INTEGRAL = 102; //充值余额赠送
     const PAY_INC_INTEGRAL      = 103; //下单赠送积分
     const PAY_DEC_INTEGRAL      = 104; //下单扣减积分
-    const REFUND_DEC_INTEGRAL   = 105; //退款退赠积分
-    const REGISTER_INC_INTEGRAL = 106; //注册赠送积分
-    const SIGN_INC_INTEGRAL     = 107; //签到奖励积分
-    const LOTTERY_INC_INTEGRAL  = 108; //抽奖赠送
+    const GOODS_INC_INTEGRAL    = 106; //商品赠送积分
+    const REFUND_DEC_INTEGRAL   = 107; //退款退赠积分
+    const REGISTER_INC_INTEGRAL = 108; //注册赠送积分
+    const SIGN_INC_INTEGRAL     = 109; //签到奖励积分
+    const LOTTERY_INC_INTEGRAL  = 110; //抽奖赠送积分
 
     /**
      * 获取日志描述
@@ -50,6 +51,7 @@ class LogIntegralEnum
             self::RECHARGE_INC_INTEGRAL  => '充值余额赠送',
             self::PAY_INC_INTEGRAL       => '下单增加积分',
             self::PAY_DEC_INTEGRAL       => '下单扣减积分',
+            self::GOODS_INC_INTEGRAL     => '商品赠送积分',
             self::REFUND_DEC_INTEGRAL    => '退款退赠积分',
             self::REGISTER_INC_INTEGRAL  => '注册赠送积分',
             self::SIGN_INC_INTEGRAL      => '签到奖励积分',
