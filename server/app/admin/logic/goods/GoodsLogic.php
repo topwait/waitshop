@@ -85,7 +85,6 @@ class GoodsLogic extends Logic
     {
         // 搜索条件
         self::setSearch([
-//            '='       => ['category@first_category_id|second_category_id|third_category_id'],
             '%like%'  => ['name']
         ]);
 
@@ -158,6 +157,13 @@ class GoodsLogic extends Logic
             foreach ($detail['spec'] as $k => $v) {
                 $detail['spec'][$k]['values'] = isset($data[$v['id']]) ? $data[$v['id']] : [];
             }
+
+            // 处理分类
+            $category = GoodsCategory::getParentIds($detail['category_id']);
+            $detail['base']['first_category_id']  = $category[0] ?? 0;
+            $detail['base']['second_category_id'] = $category[1] ?? 0;
+            $detail['base']['third_category_id']  = $category[2] ?? 0;
+
             return $detail;
         } catch (Exception $e) {
             static::$error = $e->getMessage();

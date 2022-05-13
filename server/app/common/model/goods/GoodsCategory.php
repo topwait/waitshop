@@ -66,9 +66,28 @@ class GoodsCategory extends Models
             return UrlUtils::getAbsoluteUrl($value);
         }
     }
+    /**
+     * 获取某id的父级ID链条(包含自己,数组最后一个元素)
+     *
+     * @author windy
+     * @param int $cid
+     * @return array
+     */
+    public static function getParentIds(int $cid)
+    {
+        $model = new self();
+        $category = $model->field('id,name,relation')
+            ->where(['id'=>$cid])
+            ->findOrEmpty()
+            ->toArray();
+
+        $relation = str_replace('0,', ',', $category['relation']);
+        return explode(',', trim($relation));
+    }
+
 
     /**
-     * 获取某id的子级ID链条
+     * 获取某id的子级ID链条(包含自己,数组第一个元素)
      *
      * @author windy
      * @param int $cid
