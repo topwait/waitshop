@@ -157,7 +157,7 @@ class GoodsLogic extends Logic
             foreach ($detail['spec'] as $k => $v) {
                 $detail['spec'][$k]['values'] = isset($data[$v['id']]) ? $data[$v['id']] : [];
             }
-
+dump($detail['base']);exit;
             // 处理分类
             $category = GoodsCategory::getParentIds($detail['category_id']);
             $detail['base']['first_category_id']  = $category[0] ?? 0;
