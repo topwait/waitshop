@@ -159,8 +159,7 @@ class GoodsLogic extends Logic
             }
 
             // 处理分类
-            $category = GoodsCategory::getParentIds($detail['category_id']);
-            dump($category);exit;
+            $category = GoodsCategory::getParentIds($detail['base']['category_id']);
             $detail['base']['first_category_id']  = $category[0] ?? 0;
             $detail['base']['second_category_id'] = $category[1] ?? 0;
             $detail['base']['third_category_id']  = $category[2] ?? 0;
