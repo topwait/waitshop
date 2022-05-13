@@ -20,6 +20,7 @@ namespace app\admin\logic\goods;
 
 use app\common\basics\Logic;
 use app\common\model\goods\Goods;
+use app\common\model\goods\GoodsCategory;
 use app\common\model\goods\GoodsSku;
 use app\common\model\goods\GoodsSpec;
 use app\common\model\goods\GoodsSpecValue;
@@ -84,13 +85,20 @@ class GoodsLogic extends Logic
     {
         // 搜索条件
         self::setSearch([
-            '='       => ['category@first_category_id|second_category_id|third_category_id'],
+//            '='       => ['category@first_category_id|second_category_id|third_category_id'],
             '%like%'  => ['name']
         ]);
+
+        // 分类搜索
+        $where = [];
+        if (!empty($get['category']) && $get['category']) {
+            $where[] = ['category_id', 'in', GoodsCategory::getChildrenIds($get['category'])];
+        }
 
         // 执行查询
         $model = new Goods();
         $lists = $model->field(true)
+            ->where($where)
             ->where(self::$searchWhere)
             ->where(self::queryWhere($get['type']))
             ->order('id desc, sort desc')
