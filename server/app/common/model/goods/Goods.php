@@ -47,6 +47,7 @@ class Goods extends Models
         'stock'               => 'int',     //商品总库存
         'sort'                => 'int',     //商品排序号
         'stock_warn'          => 'int',     //预警库存
+        'give_integral'       => 'int',     //赠送积分
         'sales_volume'        => 'int',     //商品销量
         'click_count'         => 'int',     //商品点击量
         'is_distribution'     => 'int',     //是否参与分销[0=否, 1=是]
