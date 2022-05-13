@@ -144,7 +144,7 @@ class Goods extends Models
             ->order('level asc')
             ->select()
             ->toArray();
-dump($categoryArray);exit;
+
         foreach ($categoryArray as $item) {
             array_push($categoryArr, $item);
         }
