@@ -9,7 +9,7 @@
 			<u-cell-group>
 				<u-cell-item title="头像" @click="onUploadAvatar">
 					<view style="position: absolute; right: 74rpx; bottom: 20rpx;">
-						<u-image border-radius="50%" width="60rpx" height="60rpx" :src="userInfo.avatar"></u-image>
+						<u-image border-radius="50%" width="60rpx" height="60rpx" :src="userInfo.avatar || ''"></u-image>
 					</view>
 				</u-cell-item>
 				<u-cell-item title="昵称" :value="userInfo.nickname" @click="onShowPopup('nickname')"></u-cell-item>
@@ -92,6 +92,28 @@
 					<u-button type="error" size="medium" 
 						:custom-style="{width: '100%'}" 
 						@click="onEdit(form.type)">确定
+					</u-button>
+				</view>
+			</view>
+			<view class="popup-form-widget" v-if="form.type==='phone'">
+				<view class="title">绑定手机号</view>
+				<view class="form">
+					<u-field v-model="form.mobile" label="手机号" placeholder="请输入手机号"></u-field>
+					<u-field v-model="form.code" label="验证码" placeholder="请输入">
+						<u-form-item slot="right" :border-bottom="false">
+							<u-verification-code :seconds="seconds" ref="uCode" @change="onChangeSms"></u-verification-code>
+							<u-button @click="onSendSms('bindMobile')"
+								:plain="true" type="error" 
+								hover-class="none" size="mini" 
+								shape="circle">{{smsTips}}
+							</u-button>
+						</u-form-item>
+					</u-field>
+				</view>
+				<view class="u-padding-tb-40">
+					<u-button type="error" size="medium" 
+						:custom-style="{width: '100%'}" 
+						@click="onEdit('mobile')">确定
 					</u-button>
 				</view>
 			</view>
@@ -204,7 +226,11 @@
 			 */
 			async onBindMobile(e) {
 				if (e.detail.errMsg !== 'getPhoneNumber:ok') {
-					this.$showToast(e.detail.errMsg)
+					if (this.userInfo.mobile) {
+						this.onShowPopup('mobile')
+					} else {
+						this.onShowPopup('phone')
+					}
 					return
 				}
 
