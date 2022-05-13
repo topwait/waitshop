@@ -183,8 +183,11 @@
 			 * 编辑数据
 			 */
 			onEdit(type) {		
-				const param = {key: type, value: this.form[type], code: this.code}
-				this.$u.api.apiUserSet(param).then(result => {
+				this.$u.api.apiUserSet({
+					key: type, 
+					value: this.form[type], 
+					code: this.form.code,
+				}).then(result => {
 					if (result.code === 0) {
 						this.showPopup = false
 						this.userInfo[type] = this.form[type]

@@ -232,7 +232,7 @@ class UserLogic extends Logic
                 $user = (new User())->field('id,mobile')->findOrEmpty($userId)->toArray();
                 $logSms = (new LogSms())->where([
                     'code'   => $post['code'],
-                    'mobile' => $post['mobile'],
+                    'mobile' => trim($post['value']),
                     'scene'  => $user['mobile'] ? NoticeEnum::SMS_CHANGE_MOBILE_NOTICE : NoticeEnum::SMS_BIND_MOBILE_NOTICE
                 ])->findOrEmpty()->toArray();
                 if (!$logSms || $logSms['is_verify'] || strtotime($logSms['create_time']) + (60 * 15) < time()) {
@@ -244,7 +244,7 @@ class UserLogic extends Logic
             }
 
             User::update([
-                $post['key'] => $post['value'],
+                $post['key']  => trim($post['value']),
                 'update_time' => time()
             ], ['id'=>$userId]);
 
