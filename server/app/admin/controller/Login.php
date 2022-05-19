@@ -49,7 +49,7 @@ class Login extends Backend
         }
 
         return view('public/login', [
-            'title' => ConfigUtils::get('backstage')['backstage_login_title'] ?? 'WaitShop 商业版'
+            'title' => ConfigUtils::get('backstage')['backstage_login_title'] ?? 'WaitShop开源商城系统'
         ]);
     }
 
