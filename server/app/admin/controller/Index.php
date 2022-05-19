@@ -74,7 +74,7 @@ class Index extends Backend
             ->order('sort asc, id asc')
             ->select()->toArray();
 
-        $logo = ConfigUtils::get('backstage')['backstage_side_logo'] ?? '';
+        $logo = ConfigUtils::get('backstage')['backstage_side_logo'] ?? 'static/images/backstage_side_logo.png';
 
         return view('index/index', [
             'menu' => ArrayUtils::toTreeJson($rule_data) ?? [],
