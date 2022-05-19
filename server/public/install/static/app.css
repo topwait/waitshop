@@ -20,6 +20,7 @@ img {vertical-align: middle;}
 .main .footer {text-align: center;margin-top: 20px;}
 .main .footer .layui-btn {width: 140px;}
 .step-1 .agreement {display: block;overflow: hidden;overflow-y: scroll;height: 500px;font-size: 12px;line-height: 1.5;padding: 10px;margin: 0 auto; margin-bottom: 22px;outline: none;border: 1px solid #bdbcbc;box-shadow: 5px 5px 5px #f7f7f7 inset;}
+.step-1 .agreement {font-size: 26px; font-weight: bold;}
 .step-2 .environment .layui-table thead tr th {font-weight: bold !important;}
 .step-2 .environment .layui-table tbody tr:hover {background-color: #FFFFFF;}
 .step-2 .environment .icon {width: 15px;height: 15px;vertical-align: middle;}
