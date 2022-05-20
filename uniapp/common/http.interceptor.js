@@ -1,6 +1,5 @@
 import {baseURL} from './config.js'
 import {isClient, toLogin} from '@/utils/tools.js'
-// import store from '@/store'
 
 const install = (Vue, vm) => {
 	// 参数配置
