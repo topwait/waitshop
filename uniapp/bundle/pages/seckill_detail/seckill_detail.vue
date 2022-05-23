@@ -27,7 +27,7 @@
 		<!-- 金额部件 -->
 		<view class="index-amount-widget">
 			<view class="amount-bg">
-				<img class="u-equal-bfb" src="/bundle/static/seckill_detail_bg.png">
+				<img class="u-equal-bfb" src="../../static/seckill_detail_bg.png">
 				<view class="price u-flex">
 					<view class="u-font-30 u-color-white u-margin-right-6">秒杀价</view>
 					<wait-price :amount="goodsChecked.seckill_price || goodsDetail.min_seckill_price" fontColor="#FFF" fontWeight="bold" mainSize="46rpx" minorSize="28rpx"></wait-price>

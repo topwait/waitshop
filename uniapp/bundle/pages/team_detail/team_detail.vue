@@ -27,7 +27,7 @@
 		<!-- 金额部件 -->
 		<view class="index-amount-widget">
 			<view class="amount-bg">
-				<img class="u-equal-bfb" src="/bundle/static/team_detail_bg.png">
+				<img class="u-equal-bfb" src="../../static/team_detail_bg.png">
 				<view class="price u-flex">
 					<view class="u-font-30 u-color-white u-margin-right-6">拼团价</view>
 					<wait-price :amount="goodsChecked.team_price" fontColor="#FFF" fontWeight="bold" mainSize="46rpx" minorSize="28rpx"></wait-price>
