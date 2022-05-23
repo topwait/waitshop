@@ -115,11 +115,13 @@ class OrderLogic extends Logic
         // 获取自动关闭时长(分)
         $automatic_cancel_duration = ConfigUtils::get('trade')['automatic_cancel_duration'] ?? 0;
         $surplus_close_time = $automatic_cancel_duration * 60;
+        $lists['automaticCancelDuration'] = $automatic_cancel_duration;
 
         // 循环处理数据
         foreach ($lists['data'] as &$item) {
             $allowCancelTime  = (strtotime($item['create_time']) + $customer_cancel_duration);
             $surplusCloseTime = (strtotime($item['create_time']) + $surplus_close_time) - time();
+            $surplusCloseTime = $surplusCloseTime <= 0 ? 0 : $surplusCloseTime;
 
             $item['extend'] = [
                 'order_type'         => OrderEnum::getOrderTypeDesc($item['order_type']),

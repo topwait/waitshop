@@ -74,7 +74,7 @@
                 <div class="upload {if !empty($detail.params.cert_path)}on{/if}">
                     <i class="del-upload-btn" data-type="cert">x</i>
                     <div class="layui-upload-drag" data-type="cert">
-                        <input type="hidden" name="cert_path" value="{$detail.params.cert_path}">
+                        <input type="hidden" name="cert_path" value="{$detail.params.cert_path ?? ''}">
                         <i class="layui-icon {$detail.params.cert_path ? 'layui-icon-form' : 'layui-icon-upload'}"></i>
                         <p>{$detail.params.cert_path ? 'cert.pem' : '上传证书'}</p>
                     </div>

@@ -31,7 +31,7 @@
 				</view>
 				<view class="u-flex u-row-between u-padding-tb-10">
 					<view>支付方式</view>
-					<view class="u-color-muted">{{payResult.extend.pay_way}}</view>
+					<view class="u-color-muted" v-if="payResult.extend">{{payResult.extend.pay_way}}</view>
 				</view>
 				<view class="u-flex u-row-between u-padding-tb-10">
 					<view>支付金额</view>

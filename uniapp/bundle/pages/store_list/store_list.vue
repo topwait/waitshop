@@ -51,6 +51,7 @@
 	// +----------------------------------------------------------------------
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins"
 	import MescrollBody from "@/components/mescroll-uni/mescroll-body"
+	import {toPage} from '@/utils/tools'
 	export default {
 		mixins: [MescrollMixin],
 		components: {MescrollBody},

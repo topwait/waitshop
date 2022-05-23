@@ -16,7 +16,7 @@
                 <label class="layui-form-label"><span class="asterisk">*</span>提现方式</label>
                 <div class="layui-input-block">
                     <input type="checkbox" name="withdraw_way[]" value="1" title="账户余额" lay-skin="primary" {if in_array(1, $detail.withdraw_way)}checked{/if}>
-                    <input type="checkbox" name="withdraw_way[]" value="2" title="微信零钱" lay-skin="primary" {if in_array(2, $detail.withdraw_way)}checked{/if}>
+                    <!-- <input type="checkbox" name="withdraw_way[]" value="2" title="微信零钱" lay-skin="primary" {if in_array(2, $detail.withdraw_way)}checked{/if}>-->
                     <input type="checkbox" name="withdraw_way[]" value="3" title="银行卡" lay-skin="primary" {if in_array(3, $detail.withdraw_way)}checked{/if}>
                     <input type="checkbox" name="withdraw_way[]" value="4" title="微信收款码" lay-skin="primary" {if in_array(4, $detail.withdraw_way)}checked{/if}>
                     <input type="checkbox" name="withdraw_way[]" value="5" title="支付宝收款码" lay-skin="primary" {if in_array(5, $detail.withdraw_way)}checked{/if}>

@@ -24,7 +24,7 @@
 							<view>订单号: {{item.order_sn}}</view>
 						</view>
 						<view class="u-font-28" :class="item.order_status !== 4 ? 'u-color-major' : 'u-color-lighter'">
-							<u-count-down v-if="tabIndex === 1"
+							<u-count-down v-if="tabIndex === 1 && item.extend.surplus_close_time > 0"
 								font-size="28" separator-color="#FF5058" 
 								color="#FF5058" @end="onDownTimeEnd(item.id)"
 								:data-id="item.id"
@@ -159,7 +159,7 @@
 					
 					if (page.num == 1) {
 						this.orderList = []
-						if (this.tabIndex === 1 && lists.length > 0) {
+						if (this.tabIndex === 1 && lists.length > 0 && lists['automaticCancelDuration'] > 0) {
 							lists.forEach(item => {
 								if (item['extend']['surplus_close_time'] <= 0) {
 									this.onDownTimeEnd(item['id'])

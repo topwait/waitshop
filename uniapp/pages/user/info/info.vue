@@ -54,7 +54,7 @@
 			<u-cell-group>
 				<u-cell-item title="服务协议" @click="$toPage('/bundle/pages/user_policy/user_policy?type=service')"></u-cell-item>
 				<u-cell-item title="隐私政策" @click="$toPage('/bundle/pages/user_policy/user_policy?type=privacy')"></u-cell-item>
-				<u-cell-item title="系统版本" :arrow="false">v2.3.0.2021</u-cell-item>
+				<u-cell-item title="系统版本" :arrow="false">v{{userInfo.version}}</u-cell-item>
 			</u-cell-group>
 		</view>
 		

@@ -219,7 +219,7 @@ class IndexLogic extends Logic
             // 客服电话
             'phone' => '',
             // 客服图片
-            'image' => '',
+            'image' => 'static/images/zqq.png',
             // 营业时间
             'business_hours' => ''
         ]);
