@@ -28,9 +28,7 @@ class Goods extends Models
     protected $schema = [
         'id'                  => 'int',     //主键ID
         'name'                => 'string',  //商品名称
-        'first_category_id'   => 'int',     //一级分类ID
-        'second_category_id'  => 'string',  //二级分类ID
-        'third_category_id'   => 'int',     //三级分类ID
+        'category_id'         => 'int',     //分类ID
         'brand_id'            => 'int',     //品牌ID
         'supplier_id'         => 'int',     //供应商ID
         'freight_id'          => 'int',     //运费模板ID
@@ -47,6 +45,7 @@ class Goods extends Models
         'stock'               => 'int',     //商品总库存
         'sort'                => 'int',     //商品排序号
         'stock_warn'          => 'int',     //预警库存
+        'give_integral'       => 'int',     //赠送积分
         'sales_volume'        => 'int',     //商品销量
         'click_count'         => 'int',     //商品点击量
         'is_distribution'     => 'int',     //是否参与分销[0=否, 1=是]
@@ -128,24 +127,26 @@ class Goods extends Models
      * @param $value
      * @param $data
      * @return array
+     * @throws @\think\db\exception\DataNotFoundException
+     * @throws @\think\db\exception\DbException
+     * @throws @\think\db\exception\ModelNotFoundException
      */
     public function getCategoryAttr($value, $data): array
     {
         unset($value);
         $categoryArr = [];
 
+        $parentIds = GoodsCategory::getParentIds($data['category_id']);
         $categoryModel = new GoodsCategory();
-        if ($data['first_category_id'] > 0) {
-            $first = $categoryModel->where(['id'=>(int)$data['first_category_id']])->findOrEmpty();
-            array_push($categoryArr, $first);
-        }
-        if ($data['second_category_id'] > 0) {
-            $second = $categoryModel->where(['id'=>(int)$data['second_category_id']])->findOrEmpty();
-            array_push($categoryArr, $second);
-        }
-        if ($data['third_category_id'] > 0) {
-            $third = $categoryModel->where(['id'=>(int)$data['third_category_id']])->findOrEmpty();
-            array_push($categoryArr, $third);
+        $categoryArray = $categoryModel
+            ->field('id,name')
+            ->whereIn('id', $parentIds)
+            ->order('level asc')
+            ->select()
+            ->toArray();
+
+        foreach ($categoryArray as $item) {
+            array_push($categoryArr, $item);
         }
 
         return $categoryArr;

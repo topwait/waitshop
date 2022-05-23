@@ -22,7 +22,7 @@ if ($util->loadLock() && in_array($step, [1, 2, 3, 4])) {
 }
 
 // 流程校验
-if (!in_array($step, [1, 2, 3, 4]))  {
+if (!in_array($step, [1, 2, 3, 4, 5]))  {
     die('你想干嘛？能不能好按流程操作？');
 }
 

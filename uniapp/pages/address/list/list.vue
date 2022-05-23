@@ -83,10 +83,12 @@
 		},
 		onLoad(options) {
 			this.isSelect = options.type
-			this.getAddressList()
 			// #ifdef H5
 				this.isWeixin = isWeixin()
 			// #endif
+		},
+		onShow() {
+			this.getAddressList()
 		},
 		methods: {
 			/**

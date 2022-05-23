@@ -39,6 +39,7 @@ use app\common\model\order\Order;
 use app\common\model\order\OrderDelivery;
 use app\common\model\user\User;
 use app\common\utils\ConfigUtils;
+use app\common\utils\TimeUtils;
 use think\facade\Db;
 use Exception;
 
@@ -95,10 +96,17 @@ class PayNotifyLogic extends Logic
                 if ($user['money'] - $order['paid_amount'] < 0) {
                     throw new Exception('余额不足');
                 }
+                // 扣减用户钱包余额
                 User::update([
                     'money'       => ['dec', $order['paid_amount']],
                     'update_time' => self::reqTime()
                 ], ['id' => $order['user_id']]);
+                // 记录扣减余额日志
+                LogWallet::reduce(
+                    LogWalletEnum::PAY_DEC_MONEY,
+                    $order['paid_amount'],
+                    $user['id'], 0, $order['id'],
+                    $order['order_sn']);
             }
 
             // 更新订单状态
@@ -125,18 +133,58 @@ class PayNotifyLogic extends Logic
                 }
             }
 
-            // 记录用户累计消费
-            User::update([
-                'total_order_amount' => ['inc', $order['paid_amount']],
-                'update_time'        => time()
-            ], ['id'=>$user['id']]);
+            // 初始用户需要更新的字段
+            $userData = [
+                'update_time' => time(),
+                'total_order_amount' => ['inc', $order['paid_amount']]
+            ];
 
-            // 记录用户消费日志
-            LogWallet::reduce(
-                LogWalletEnum::balance_pay_order,
-                $order['paid_amount'],
-                $user['id'], 0, $order['id'],
-                $order['order_sn']);
+            // 下单赠送积分(每天一次)
+            $logIntegral = (new LogIntegral())->field('id')
+                ->where('create_time', '>=', TimeUtils::today()[0])
+                ->where('create_time', '<=', TimeUtils::today()[1])
+                ->where('user_id', '=', $user['id'])
+                ->where(['source_type'=>LogIntegralEnum::PAY_INC_INTEGRAL])
+                ->findOrEmpty();
+            if ($logIntegral->isEmpty()) {
+                $orderRewardIntegral = ConfigUtils::get('reward')['order_reward_integral'] ?? 0;
+                if ($orderRewardIntegral > 0) {
+                    // 更新用户积分
+                    $userData['integral'] = ['inc', $orderRewardIntegral];
+                    // 记录赠送积分
+                    LogIntegral::add(
+                        LogIntegralEnum::PAY_INC_INTEGRAL,
+                        $orderRewardIntegral,
+                        $user['id'], 0, $order['id'],
+                        $order['order_sn'], '下单赠送积分'
+                    );
+                }
+            }
+
+            // 下单赠送成长值(每天一次)
+            $logGrowth = (new LogGrowth())->field('id')
+                ->where('create_time', '>=', TimeUtils::today()[0])
+                ->where('create_time', '<=', TimeUtils::today()[1])
+                ->where('user_id', '=', $user['id'])
+                ->where(['source_type'=>LogGrowthEnum::PAY_INC_GROWTH])
+                ->findOrEmpty();
+            if ($logGrowth->isEmpty()) {
+                $orderRewardGrowth   = ConfigUtils::get('reward')['order_reward_growth'] ?? 0;
+                if ($orderRewardGrowth > 0) {
+                    // 更新用户成长
+                    $userData['growth_value'] = ['inc', $orderRewardGrowth];
+                    // 记录赠送成长
+                    LogGrowth::add(
+                        LogGrowthEnum::PAY_INC_GROWTH,
+                        $orderRewardGrowth,
+                        $user['id'], 0, $order['id'],
+                        $order['order_sn'], '下单赠送成长值'
+                    );
+                }
+            }
+
+            // 更新用户表的信息
+            User::update($userData, ['id'=>$user['id']]);
 
             // 普通订单分销发放
             if ($order['order_type'] === OrderEnum::NORMAL_ORDER) {
@@ -227,16 +275,16 @@ class PayNotifyLogic extends Logic
 
         // 金额变动日志
         $changeAmount = ($order['paid_amount'] + $order['give_amount']);
-        LogWallet::add(LogWalletEnum::recharge_money, $changeAmount, $order['user_id'], 0, $order['id'], $order['order_sn'], '用户充值');
+        LogWallet::add(LogWalletEnum::RECHARGE_MONEY, $changeAmount, $order['user_id'], 0, $order['id'], $order['order_sn'], '用户充值');
 
         // 积分变动日志
         if ($order['give_integral']) {
-            LogIntegral::add(LogIntegralEnum::recharge_money_give, $order['give_integral'], $order['user_id'], 0, $order['id'], $order['order_sn'], '余额充值赠送');
+            LogIntegral::add(LogIntegralEnum::RECHARGE_INC_INTEGRAL, $order['give_integral'], $order['user_id'], 0, $order['id'], $order['order_sn'], '余额充值赠送');
         }
 
         // 成长值变动日志
         if ($order['give_growth']) {
-            LogGrowth::add(LogGrowthEnum::recharge_inc_growth, $order['give_integral'], $order['user_id'], 0, $order['id'], $order['order_sn'], '余额充值赠送');
+            LogGrowth::add(LogGrowthEnum::RECHARGE_INC_GROWTH, $order['give_integral'], $order['user_id'], 0, $order['id'], $order['order_sn'], '余额充值赠送');
         }
     }
 }

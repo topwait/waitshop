@@ -37,7 +37,7 @@
 				<u-input type="textarea" height="180" v-model="content" placeholder="宝贝收到还满意吗，说说你的使用心得。分享给想买的他们吧！！" />
 			</view>
 			<view class="u-margin-lr-10">
-				<wait-uploader :maxUpload="3" :showProgress="true" v-model="images"></wait-uploader>
+				<wait-uploader dir="comment" :maxUpload="3" :showProgress="true" v-model="images"></wait-uploader>
 			</view>
 		</view>
 		
@@ -102,8 +102,6 @@
 						this.$nextTick(() => {
 							this.isFirstLoading = false
 						})
-					} else {
-						this.$showToast('loading comment error')
 					}
 				})
 			},

@@ -95,7 +95,7 @@ class DistributionSettle extends Command
 
                 // 佣金流水
                 LogWallet::add(
-                    LogWalletEnum::distribution_inc_earnings,
+                    LogWalletEnum::DISTRIBUTION_INC_EARNINGS,
                     $order['earnings_money'],
                     $order['user_id'], 0,
                     $order['id'],

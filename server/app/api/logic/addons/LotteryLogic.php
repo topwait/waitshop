@@ -208,7 +208,7 @@ class LotteryLogic extends Logic
             // 赠送积分
             if ($inPrize['type'] == 2) {
                 LogIntegral::add(
-                    LogIntegralEnum::lottery_inc_integral,
+                    LogIntegralEnum::LOTTERY_INC_INTEGRAL,
                     $inPrize['reward'], $userId, 0, $record['id'], '', '抽奖赠送积分');
 
                 User::update([

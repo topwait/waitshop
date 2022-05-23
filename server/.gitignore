@@ -3,5 +3,4 @@
 *.log
 .env
 install.lock
-public/uploads/
 public/nginx.htaccess

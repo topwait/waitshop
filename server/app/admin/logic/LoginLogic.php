@@ -48,7 +48,7 @@ class LoginLogic extends Logic
         // 验证账户
         if (!$adminUser) { static::$error = '登录账号或密码异常'; return false; }
         if ($adminUser['is_disable']) { static::$error = '账号被禁止登录,请联系管理员'; return false; }
-        if ($adminUser['password'] !== encrypt_password($post['password'])) {
+        if ($adminUser['password'] !== encrypt_password($post['password'], $adminUser['salt'])) {
              static::$error = '账号或密码有误';
              return false;
         }

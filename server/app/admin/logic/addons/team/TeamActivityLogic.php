@@ -127,10 +127,9 @@ class TeamActivityLogic extends Logic
                 throw new Exception("结束时间最少保留20分钟");
             }
 
-            $status = TeamEnum::TEAM_SYS_END;
-            if ($datetime[0] <= time() && $datetime[1] > time()) {
+            if ($datetime[0] <= time()) {
                 $status = TeamEnum::TEAM_CONDUCT_IN;
-            } elseif ($datetime[0] > time() && $datetime[1] > time()) {
+            } else {
                 $status = TeamEnum::TEAM_NOT_STARTED;
             }
 
@@ -149,7 +148,6 @@ class TeamActivityLogic extends Logic
                 'is_delete'       => 0,
                 'is_automatic'    => $post['is_automatic'],
                 'is_coupon'       => $post['is_coupon'],
-                'is_distribution' => $post['is_distribution'],
                 'effective_time'  => $post['effective_time'],
                 'start_time'      => strtotime($datetime[0]),
                 'end_time'        => strtotime($datetime[1]),
@@ -208,7 +206,6 @@ class TeamActivityLogic extends Logic
                 'is_delete'       => 0,
                 'is_automatic'    => $post['is_automatic'],
                 'is_coupon'       => $post['is_coupon'],
-                'is_distribution' => $post['is_distribution'],
                 'effective_time'  => $post['effective_time'],
                 'start_time'      => strtotime($datetime[0]),
                 'end_time'        => strtotime($datetime[1]),

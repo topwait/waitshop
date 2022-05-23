@@ -26,6 +26,8 @@ namespace app\common\enum;
 class AdEnum
 {
     const POS_CATEGORY  = 10;  // 分类页
+    const POS_USER      = 11;  // 用户页
+    const POST_CART     = 12;  // 购物车
 
     const LINK_TYPE_PAGE = 10; // 普通跳转页面
     const LINK_TYPE_WEB  = 20; // webView跳转
@@ -42,7 +44,9 @@ class AdEnum
     public static function getPositionDesc($status = true)
     {
         $desc = [
-            self::POS_CATEGORY  => '分类页'
+            self::POS_CATEGORY  => '分类页',
+            self::POS_USER      => '用户页',
+            self::POST_CART     => '购物车',
         ];
         if ($status === true) {
             return $desc;

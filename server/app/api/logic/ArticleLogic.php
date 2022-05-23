@@ -77,6 +77,7 @@ class ArticleLogic extends Logic
     public static function detail(int $id): array
     {
         $model = new Article();
+        Article::update(['views'=>['inc', 1]], ['id'=>$id]);
         return $model->field('id,title,image,intro,content,views,create_time')
             ->findOrEmpty(intval($id))
             ->toArray();

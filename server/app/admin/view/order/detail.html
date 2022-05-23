@@ -55,7 +55,7 @@
                 </dd>
                 <dd>
                     <span>订单状态：</span>
-                    <span class="tip">{$detail.order_status_text}</span>
+                    <span class="tip" style="font-weight:bold;color:red;">{$detail.order_status_text}</span>
                 </dd>
                 <dd>
                     <span>订单总额：</span>
@@ -120,16 +120,18 @@
             </div>
 
             <!-- 订单操作 -->
-            {if $detail.order_status === 1}
-            <div style="margin-top:20px;">
-                {if $detail.delivery_type==1}<button type="button" class="layui-btn layui-btn-sm" id="deliver">立即发货</button>{/if}
-                {if $detail.delivery_type==2}<button type="button" class="layui-btn layui-btn-sm" id="pickUp">提货核销</button>{/if}
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" id="cancel">取消订单</button>
-            </div>
-            {elseif $detail.order_status === 0}
-            <div style="margin-top:20px;">
-                <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" id="close">关闭订单</button>
-            </div>
+            {if $detail.team_found_status !== 1}
+                {if $detail.order_status === 1}
+                <div style="margin-top:20px;">
+                    {if $detail.delivery_type==1}<button type="button" class="layui-btn layui-btn-sm" id="deliver">立即发货</button>{/if}
+                    {if $detail.delivery_type==2}<button type="button" class="layui-btn layui-btn-sm" id="pickUp">提货核销</button>{/if}
+                    <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" id="cancel">取消订单</button>
+                </div>
+                {elseif $detail.order_status === 0}
+                    <div style="margin-top:20px;">
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" id="close">关闭订单</button>
+                    </div>
+                {/if}
             {/if}
 
             <!-- 订单商品 -->

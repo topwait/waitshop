@@ -118,14 +118,6 @@
                 <input type="radio" name="is_coupon" value="0" title="不允许使用" {if $detail.is_coupon==0}checked{/if}>
             </div>
         </div>
-        <!-- 是否参与分销 -->
-        <div class="layui-form-item">
-            <label class="layui-form-label"><span class="asterisk">*</span>参与分销：</label>
-            <div class="layui-input-block">
-                <input type="radio" name="is_distribution" value="1" title="参与分销" {if $detail.is_distribution==1}checked{/if}>
-                <input type="radio" name="is_distribution" value="0" title="不参与分销" {if $detail.is_distribution==0}checked{/if}>
-            </div>
-        </div>
         <!-- 选择规格 -->
         <div class="layui-form-item">
             <label class="layui-form-label"><span class="asterisk">*</span>选择规格：</label>
@@ -173,7 +165,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="number" name="team_price" class="layui-input" autocomplete="off"
+                                    <input type="text" name="team_price" class="layui-input" autocomplete="off"
                                            lay-vertype="tips" lay-verify="" style="width: 90px;" value="{$vo.team_price}"
                                            onkeyup="value=value.replace(/^\D*(\d*(?:\.\d{0,2})?).*$/g, '$1')">
                                 </td>

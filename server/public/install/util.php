@@ -27,7 +27,7 @@ class Util
      */
     public function makeLock()
     {
-        return file_put_contents (APP_ROOT . '/install.lock' , '');
+        return file_put_contents(APP_ROOT . '/install.lock', '');
     }
 
     /**
@@ -36,6 +36,6 @@ class Util
      */
     public function loadLock()
     {
-        return file_exists(APP_ROOT . './install.lock');
+        return file_exists(APP_ROOT . '/install.lock');
     }
 }

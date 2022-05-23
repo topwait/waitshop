@@ -46,7 +46,6 @@ class Seckill extends Models
         'sales_volume'      => 'int',    //总销量
         'is_end'            => 'int',    //活动是否结束[0=否, 1=是]
         'is_coupon'         => 'int',    //用优惠券[0=否, 1=是]
-        'is_distribution'   => 'int',    //参与分销[0=否, 1=是]
         'is_delete'         => 'int',    //是否删除[0=否, 1=是]
         'start_time'        => 'int',    //活动开始时间
         'end_time'          => 'int',    //活动结束时间

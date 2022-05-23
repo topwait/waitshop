@@ -24,6 +24,7 @@ const install = (Vue, vm) => {
 		apiRegister:    (params = {}) => vm.$u.post("Login/register", params),
 		apiLogin:       (params = {}) => vm.$u.post("Login/login", params),
 		apiWxPhone:     (params = {}) => vm.$u.post("Login/getWxPhone", params),
+		apiBindMobile:  (params = {}) => vm.$u.post("Login/bindMobile", params),
 		apiSendSms:     (params = {}) => vm.$u.post("Sms/send", params),
 		
 		// 用户相关接口
@@ -82,6 +83,7 @@ const install = (Vue, vm) => {
 		apiAfterSaleDetail:  (params = {}) => vm.$u.get("AfterSale/detail", params),
 		apiAfterSaleGoods:   (params = {}) => vm.$u.get("AfterSale/goods", params),
 		apiAfterSaleApply:   (params = {}) => vm.$u.post("AfterSale/apply", params),
+		apiAfterSaleRevoke:  (params = {}) => vm.$u.post("AfterSale/revoke", params),
 		apiAfterSaleExpress: (params = {}) => vm.$u.post("AfterSale/express", params),
 		
 		// 支付相关接口

@@ -316,6 +316,28 @@ class LoginLogic extends Logic
     }
 
     /**
+     * 绑定手机号
+     *
+     * @param string $mobile
+     * @param int $userId
+     * @return bool
+     */
+    public static function bindMobile(string $mobile, int $userId)
+    {
+        try {
+            User::update([
+                'mobile'      => $mobile,
+                'update_time' => time()
+            ], ['id'=>$userId]);
+
+            return true;
+        } catch (Exception $e) {
+            static::$error = $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
      * 根据微信返回信息查询当前用户id
      *
      * @author windy
@@ -406,7 +428,7 @@ class LoginLogic extends Logic
         // 记录赠送积分
         if ($rewardIntegral) {
             LogIntegral::add(
-                LogIntegralEnum::register_inc_integral,
+                LogIntegralEnum::REGISTER_INC_INTEGRAL,
                 $rewardIntegral, $userId,
                 0, 0, '',
                 '注册赠送积分'
@@ -416,7 +438,7 @@ class LoginLogic extends Logic
         // 记录增成长值
         if ($rewardGrowth) {
             LogGrowth::add(
-                LogGrowthEnum::register_inc_growth,
+                LogGrowthEnum::REGISTER_INC_GROWTH,
                 $rewardGrowth, $userId,
                 0, 0, '',
                 '注册赠成长值');

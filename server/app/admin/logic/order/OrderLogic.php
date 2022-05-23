@@ -20,6 +20,7 @@ namespace app\admin\logic\order;
 
 use app\common\basics\Logic;
 use app\common\enum\OrderEnum;
+use app\common\enum\TeamEnum;
 use app\common\model\Express;
 use app\common\model\order\Order;
 use app\common\model\order\OrderDelivery;
@@ -68,17 +69,17 @@ class OrderLogic extends Logic
             ->with(['user', 'orderGoods', 'delivery'])
             ->order('id', 'desc')
             ->paginate([
-                'page' => $post['page'] ?? 1,
+                'page'      => $post['page'] ?? 1,
                 'list_rows' => $post['limit'] ?? 20,
-                'var_page' => 'page',
+                'var_page'  => 'page',
             ])->toArray();
 
         // 处理数据
         foreach ($lists['data'] as &$item) {
-            $item['order_type_text']    = OrderEnum::getOrderTypeDesc($item['order_type']);
             $item['order_status_text']  = OrderEnum::getOrderStatusDesc($item['order_status']);
             $item['pay_status_text']    = OrderEnum::getPayStatusDesc($item['order_status']);
             $item['pay_way_text']       = OrderEnum::getPayWayDesc($item['pay_way']);
+            $item['order_type_text']    = OrderEnum::getOrderTypeDesc($item['order_type']);
             $item['delivery_type_text'] = OrderEnum::getDeliverTypeDesc($item['delivery_type']);
             if (!empty($item['address_snap'])) {
                 $item['address_snap']['address'] = Region::getAddress([
@@ -86,6 +87,10 @@ class OrderLogic extends Logic
                     'city'     => $item['address_snap']['city'],
                     'district' => $item['address_snap']['district']]
                 ) . $item['address_snap']['address'];
+            }
+
+            if ($item['team_found_status']===1) {
+                $item['order_status_text']  = TeamEnum::getFoundStatusDesc($item['team_found_status']);
             }
         }
 
@@ -144,6 +149,11 @@ class OrderLogic extends Logic
         if ($detail['delivery_type'] == OrderEnum::DELIVER_TYPE_STORE) {
             $detail['store_name'] = (new Store())->where(['id'=>$detail['pick_up_store']])->value('name');
         }
+
+        if ($detail['team_found_status']===1) {
+            $detail['order_status_text']  = TeamEnum::getFoundStatusDesc($detail['team_found_status']);
+        }
+
         // 返回结果
         return $detail;
     }

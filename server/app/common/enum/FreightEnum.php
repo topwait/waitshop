@@ -24,10 +24,9 @@ namespace app\common\enum;
  */
 class FreightEnum
 {
-    const piece   = 10;  // 按件数
-    const weight  = 20;  // 按重量
-    const volume  = 30;  // 按体积
-
+    const PIECE   = 10;  // 按件数
+    const WEIGHT  = 20;  // 按重量
+    const VOLUME  = 30;  // 按体积
 
     /**
      * 获取枚举对应文本
@@ -39,9 +38,9 @@ class FreightEnum
     public static function getEnumName($status = true)
     {
         $desc = [
-            self::piece   => '按件数',
-            self::weight  => '按重量',
-            self::volume  => '按体积'
+            self::PIECE   => '按件数',
+            self::WEIGHT  => '按重量',
+            self::VOLUME  => '按体积'
         ];
         if ($status === true) {
             return $desc;

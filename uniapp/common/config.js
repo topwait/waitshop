@@ -2,5 +2,5 @@ module.exports = {
     HEADER: {
         'content-type': 'application/json'
     },
-    baseURL: 'http://wait.fishbook.top/api'
+    baseURL: 'https://b2cdemo.waitshop.cn/api'
 }

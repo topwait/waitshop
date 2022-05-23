@@ -136,7 +136,7 @@ class WithdrawLogic extends Logic
                 'admin_id'      => 0,
                 'user_id'       => $userId,
                 'log_sn'        => make_order_no(),
-                'source_type'   => LogWalletEnum::withdraw_reduce_earnings,
+                'source_type'   => LogWalletEnum::WITHDRAW_DEC_EARNINGS,
                 'source_id'     => $withdraw['id'],
                 'source_sn'     => $withdraw['withdraw_sn'],
                 'change_type'   => 2,

@@ -1,12 +1,11 @@
 <script>
 	import {mapMutations, mapActions} from 'vuex'
-	import {strToParams, setTabBar, tabBarList} from '@/utils/tools'
+	import {strToParams, setTabBar, tabBarList, silentLogin} from '@/utils/tools'
 	export default {
 		globalData: {
 			navHeight: ""
 		},
 		onLaunch: function(options) {
-			console.log("来了吗")
 			uni.hideTabBar({
 				animation: false
 			})
@@ -15,6 +14,9 @@
 		},
 		onShow: function(options) {
 			this.bindInviteCode(options)
+			//#ifdef MP
+				silentLogin()
+			// #endif
 		},
 		onHide: function() {
 			console.log('App Hide')

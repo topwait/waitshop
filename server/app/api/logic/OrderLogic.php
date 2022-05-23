@@ -22,12 +22,15 @@ use app\api\logic\addons\CouponLogic;
 use app\api\service\PlaceOrderService;
 use app\common\basics\Logic;
 use app\common\enum\AfterSaleEnum;
+use app\common\enum\LogIntegralEnum;
 use app\common\enum\OrderEnum;
+use app\common\model\log\LogIntegral;
 use app\common\model\order\AfterSale;
 use app\common\model\order\Order;
 use app\common\model\order\OrderDelivery;
 use app\common\model\order\OrderGoods;
 use app\common\model\store\Store;
+use app\common\model\user\User;
 use app\common\service\OrderService;
 use app\common\service\logistics\Driver as LogisticsDriver;
 use app\common\utils\ConfigUtils;
@@ -409,10 +412,6 @@ class OrderLogic extends Logic
                 throw new Exception('订单不存在');
             }
 
-            if ($order['pay_status'] != OrderEnum::OK_PAID_STATUS) {
-                throw new Exception('钱都没给就想收货?');
-            }
-
             if ($order['order_status'] != OrderEnum::STATUS_WAIT_RECEIVE) {
                 throw new Exception('订单状态异常');
             }
@@ -421,6 +420,38 @@ class OrderLogic extends Logic
                 throw new Exception('订单已完成了亲!');
             }
 
+            // 赠送商品积分
+            $orderGoods = (new OrderGoods())
+                ->alias('OG')
+                ->field('OG.id,OG.order_id,OG.goods_id,O.user_id,O.order_sn,OG.snapshot')
+                ->join('order O', 'O.id=OG.order_id')
+                ->where(['OG.order_id'=>$id])
+                ->select()
+                ->toArray();
+
+            $totalGiveIntegral = 0;
+            foreach ($orderGoods as $item) {
+                $integral = intval($item['snapshot']['give_integral'] ?? 0);
+                if ($integral) {
+                    $totalGiveIntegral += $integral;
+                }
+            }
+
+            if ($totalGiveIntegral) {
+                User::update([
+                    'integral'    => ['inc', $totalGiveIntegral],
+                    'update_time' => time()
+                ], ['id'=>$orderGoods[0]['user_id']]);
+                LogIntegral::add(
+                    LogIntegralEnum::GOODS_INC_INTEGRAL,
+                    $totalGiveIntegral,
+                    $orderGoods[0]['user_id'], 0,
+                    $orderGoods[0]['order_id'],
+                    $orderGoods[0]['order_sn'], '商品赠送积分'
+                );
+            }
+
+            // 更新订单状态
             Order::update([
                 'order_status' => OrderEnum::STATUS_FINISH,
                 'confirm_time' => time(),

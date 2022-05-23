@@ -103,12 +103,12 @@ class UserLogic extends Logic
                     case "inc": //增加
                         $update = ['money' => ['inc', floatval($post['money']), 'update_time'=>time()]];
                         User::update($update, ['id' => (int)$post['id']]);
-                        LogWallet::add(LogWalletEnum::admin_add_money, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remark']);
+                        LogWallet::add(LogWalletEnum::ADMIN_INC_MONEY, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remark']);
                         break;
                     case "dec": //减少
                         $update = ['money' => ['dec', floatval($post['money']), 'update_time'=>time()]];
                         User::update($update, ['id' => (int)$post['id']]);
-                        LogWallet::reduce(LogWalletEnum::admin_reduce_money, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remark']);
+                        LogWallet::reduce(LogWalletEnum::ADMIN_DEC_MONEY, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remark']);
                         break;
                     case "final": //最终
                         $money = (new User())->where(['id'=>$post['id']])->value('money');
@@ -117,10 +117,10 @@ class UserLogic extends Logic
 
                         if (floatval($post['money']) > $money) {
                             $changeMoney = (float)$post['money'] - $money;
-                            LogWallet::add(LogWalletEnum::admin_add_money, $changeMoney, intval($post['id']), $adminId, 0, '', $post['remark']);
+                            LogWallet::add(LogWalletEnum::ADMIN_INC_MONEY, $changeMoney, intval($post['id']), $adminId, 0, '', $post['remark']);
                         } else if ($money > (float)$post['money']) {
                             $changeMoney = $money - (float)$post['money'];
-                            LogWallet::reduce(LogWalletEnum::admin_reduce_money, $changeMoney, intval($post['id']), $adminId, 0, '', $post['remark']);
+                            LogWallet::reduce(LogWalletEnum::ADMIN_DEC_MONEY, $changeMoney, intval($post['id']), $adminId, 0, '', $post['remark']);
                         }
                 }
 
@@ -130,12 +130,12 @@ class UserLogic extends Logic
                     case "inc": //增加
                         $update = ['integral' => ['inc', (int)$post['points'], 'update_time'=>time()]];
                         User::update($update, ['id' => (int)$post['id']]);
-                        LogIntegral::add(LogIntegralEnum::admin_add_integral, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remarks']);
+                        LogIntegral::add(LogIntegralEnum::ADMIN_INC_INTEGRAL, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remarks']);
                         break;
                     case "dec": //减少
                         $update = ['integral' => ['dec', (int)$post['points'], 'update_time'=>time()]];
                         User::update($update, ['id' => (int)$post['id']]);
-                        LogIntegral::add(LogIntegralEnum::admin_reduce_integral, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remarks']);
+                        LogIntegral::add(LogIntegralEnum::ADMIN_DEC_INTEGRAL, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remarks']);
                         break;
                     case "final": //最终
                         $integral = (new User())->where(['id'=>$post['id']])->value('integral');
@@ -144,10 +144,10 @@ class UserLogic extends Logic
 
                         if (intval($post['points']) > $integral) {
                             $changeIntegral = intval($post['points']) - $integral;
-                            LogWallet::add(LogIntegralEnum::admin_add_integral, $changeIntegral, intval($post['id']), $adminId, 0, '', $post['remark']);
+                            LogWallet::add(LogIntegralEnum::ADMIN_INC_INTEGRAL, $changeIntegral, intval($post['id']), $adminId, 0, '', $post['remark']);
                         } else if ($integral > intval($post['points'])) {
                             $changeIntegral = $integral - intval($post['points']);
-                            LogWallet::reduce(LogIntegralEnum::admin_reduce_integral, $changeIntegral, intval($post['id']), $adminId, 0, '', $post['remark']);
+                            LogWallet::reduce(LogIntegralEnum::ADMIN_DEC_INTEGRAL, $changeIntegral, intval($post['id']), $adminId, 0, '', $post['remark']);
                         }
                 }
 

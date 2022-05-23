@@ -75,4 +75,23 @@ class TeamFound extends Backend
             'detail' => TeamFoundLogic::detail($this->getData('id'))
         ]);
     }
+
+    /**
+     * 拼团结束
+     *
+     * @author windy
+     * @return Json
+     */
+    public function end()
+    {
+        if (request()->isAjax()) {
+            $result = TeamFoundLogic::end($this->postData('id'));
+            if ($result === false) {
+                return JsonUtils::error(TeamFoundLogic::getError());
+            }
+            return JsonUtils::ok('结束成功');
+        }
+
+        return JsonUtils::error('请求异常');
+    }
 }

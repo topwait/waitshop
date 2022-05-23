@@ -50,8 +50,11 @@ class Login extends Api
 
     /**
      * 注册
+     *
+     * @author windy
+     * @return Json
      */
-    public function register()
+    public function register(): Json
     {
         (new RequestValidate())->isPost();
         (new LoginValidate())->goCheck('register');
@@ -117,5 +120,21 @@ class Login extends Api
         }
 
         return JsonUtils::success($result);
+    }
+
+    /**
+     * 绑定手机号
+     *
+     * @author windy
+     * @return Json
+     */
+    public function bindMobile(): Json
+    {
+        $result = LoginLogic::bindMobile($this->postData('mobile'), $this->userId);
+        if ($result === false) {
+            return JsonUtils::error(LoginLogic::getError());
+        }
+
+        return JsonUtils::ok('绑定成功');
     }
 }

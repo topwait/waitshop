@@ -1,11 +1,10 @@
 import {baseURL} from './config.js'
 import {isClient, toLogin} from '@/utils/tools.js'
-import store from '@/store'
 
 const install = (Vue, vm) => {
 	// 参数配置
 	Vue.prototype.$u.http.setConfig({
-		baseUrl: baseURL,
+		baseUrl: 'https://b2ctests.waitshop.cn/api',
 		loadingText: '努力加载中~',
 		loadingTime: 5000
 	});
@@ -20,8 +19,7 @@ const install = (Vue, vm) => {
 	
 	// 响应拦截配置
 	Vue.prototype.$u.http.interceptor.response = (res) => {
-		if (res.code === 1009 || store.state.token===null) {
-			store.commit('LOGIN', -1)
+		if (res.code === 1009) {
 			toLogin()
 		}
 		

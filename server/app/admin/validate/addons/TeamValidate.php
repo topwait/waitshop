@@ -39,7 +39,6 @@ class TeamValidate extends Validates
         'people_num'      => 'require|number|egt:2',
         'is_automatic'    => 'require|in:0,1',
         'is_coupon'       => 'require|in:0,1',
-        'is_distribution' => 'require|in:0,1',
         'effective_time'  => 'require|isInteger|egt:1',
         'activity_time'   => 'require|checkActivityTime',
     ];
@@ -48,12 +47,12 @@ class TeamValidate extends Validates
         'id'   => ['id'],
         'add'  => [
             'goods_id', 'name', 'intro', 'image', 'banner', 'min_buy', 'max_buy',
-            'people_num', 'is_automatic', 'is_coupon', 'is_distribution', 'effective_time',
+            'people_num', 'is_automatic', 'is_coupon', 'effective_time',
             'activity_time'
         ],
         'edit' => [
             'id', 'goods_id', 'name', 'intro', 'image', 'banner', 'min_buy', 'max_buy',
-            'people_num', 'is_automatic', 'is_coupon', 'is_distribution', 'effective_time',
+            'people_num', 'is_automatic', 'is_coupon', 'effective_time',
             'activity_time'
         ],
     ];

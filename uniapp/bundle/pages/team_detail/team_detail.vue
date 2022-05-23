@@ -53,7 +53,7 @@
 					@click="onShare"></image>
 			</view>
 			<view class="wrap_product__meta">
-				<text>库存: {{goodsDetail.people_num}}人团</text>
+				<text>类型: {{goodsDetail.people_num}}人团</text>
 				<text>已拼: {{ goodsDetail.total_join_number || 0}}次</text>
 				<text>浏览量: {{ goodsDetail.click_count || 0}}次</text>
 			</view>

@@ -67,9 +67,10 @@ class Upload extends Api
     {
         try {
             (new RequestValidate())->isPost();
+            $dir = $this->postData('dir') ?? '';
 
             $StorageDriver = new StorageDriver($this->config);
-            if ($StorageDriver->upload('uploads/user/')) {
+            if ($StorageDriver->upload('uploads/user/'.$dir)) {
                 $fileInfo = $StorageDriver->getFileInfo();
                 return JsonUtils::ok('上传成功', [
                     'image' => UrlUtils::getAbsoluteUrl($fileInfo['savePath'])

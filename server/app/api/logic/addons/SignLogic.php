@@ -206,14 +206,14 @@ class SignLogic extends Logic
 
                 if ($give['give_integral']) {
                     LogIntegral::add(
-                        LogIntegralEnum::sign_inc_integral,
+                        LogIntegralEnum::SIGN_INC_INTEGRAL,
                         $give['give_integral'], $userId, 0,
                         $record['id'], '', '签到奖励积分');
                 }
 
                 if ($give['give_growth']) {
                     LogGrowth::add(
-                        LogGrowthEnum::sign_inc_growth,
+                        LogGrowthEnum::SIGN_INC_GROWTH,
                         $give['give_growth'], $userId, 0,
                         $record['id'], '', '签到奖励成长值');
                 }

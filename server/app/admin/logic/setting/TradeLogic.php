@@ -39,7 +39,7 @@ class TradeLogic extends Logic
     {
         return ConfigUtils::get('trade', [
             // 配送方式: 1=快递发货,2=上门自提,3=无需快递,4=同城配送
-            'delivery_method'           => 1,
+            'delivery_method'           => [1],
             // 库存扣除方式: order=下单扣库存,payment=支付扣库存
             'stock_deduct_method'       => 'order',
             // 订单自动取消时长

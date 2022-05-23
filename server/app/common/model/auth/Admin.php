@@ -52,7 +52,7 @@ class Admin extends Models
      */
     public function role()
     {
-        return $this->hasOne('AdminRole', 'id', 'role_id');
+        return $this->hasOne(AdminRole::class, 'id', 'role_id');
     }
 
     /**

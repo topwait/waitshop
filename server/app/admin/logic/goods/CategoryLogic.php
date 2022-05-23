@@ -23,6 +23,7 @@ use app\common\model\goods\Goods;
 use app\common\utils\ArrayUtils;
 use app\common\model\goods\GoodsCategory;
 use Exception;
+use think\facade\Db;
 
 /**
  * 商品分类-逻辑层
@@ -86,7 +87,7 @@ class CategoryLogic extends Logic
             $parentCategory = null;
             if (intval($post['pid']) > 0) {
                 $parentCategory = (new GoodsCategory())
-                    ->field('id,name,relation')
+                    ->field('id,name,level,relation')
                     ->where(['id'=>intval($post['pid'])])
                     ->where(['is_delete'=>0])
                     ->findOrEmpty()
@@ -111,10 +112,12 @@ class CategoryLogic extends Logic
             // 更新关系
             if (intval($post['pid']) === 0) {
                 GoodsCategory::update([
+                    'level'    => 1,
                     'relation' => "0," . $category['id']
                 ], ['id'=>$category['id']]);
             } else {
                 GoodsCategory::update([
+                    'level'    => $parentCategory + 1,
                     'relation' => $parentCategory['relation'] . ',' . $category['id']
                 ], ['id'=>$category['id']]);
             }
@@ -135,6 +138,7 @@ class CategoryLogic extends Logic
      */
     public static function edit(array $post): bool
     {
+        Db::startTrans();
         try {
             if ($post['pid'] == $post['id']) {
                 throw new Exception('上级不能是自己');
@@ -144,7 +148,7 @@ class CategoryLogic extends Logic
             $parentCategory = null;
             if (intval($post['pid']) > 0) {
                 $parentCategory = (new GoodsCategory())
-                    ->field('id,name,relation')
+                    ->field('id,name,level,relation')
                     ->where(['id'=>intval($post['pid'])])
                     ->where(['is_delete'=>0])
                     ->findOrEmpty()
@@ -160,11 +164,11 @@ class CategoryLogic extends Logic
                 ->column('id');
 
             if (in_array(intval($post['pid']), $childrenIds)) {
-                throw new Exception( '选这的上级不能是自己的下级');
+                throw new Exception( '选择的上级不能是自己的下级');
             }
 
             $category = $model
-                ->field('id,name,relation')
+                ->field('id,name,level,relation')
                 ->where(['id'=>intval($post['id'])])
                 ->where(['is_delete'=>0])
                 ->findOrEmpty()
@@ -184,19 +188,27 @@ class CategoryLogic extends Logic
             ], ['id'=>(int)$post['id']]);
 
             // 更新关系
+            $replaceLevel = null;
             $relation = null;
             if (intval($post['pid']) === 0) {
+                $replaceLevel = $category['level'] - 1;
                 $relation = "0," . $category['id'];
             } else {
+                $replaceLevel = $category['level'] - ($parentCategory['level'] + 1);
                 $relation = $parentCategory['relation'] . ',' . strval($category['id']);
             }
 
             $model->where("find_in_set(".$category['id'].",relation)")
                 ->exp('relation', "REPLACE(relation,'". $category['relation'] ."','". $relation ."')")
-                ->update();
+                ->update([
+                    'level' => ['dec', $replaceLevel],
+                    'update_time' => time()
+                ]);
 
+            Db::commit();
             return true;
         } catch (Exception $e) {
+            Db::rollback();
             static::$error = $e->getMessage();
             return false;
         }

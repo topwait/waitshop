@@ -52,7 +52,7 @@ class GoodsSku extends Models
     protected function goods(): HasOne
     {
         return $this->hasOne('Goods', 'id', 'goods_id')
-            ->field(['id', 'image', 'name', 'freight_id', 'is_integral', 'is_show', 'is_delete']);
+            ->field(['id', 'image', 'name', 'freight_id', 'give_integral', 'is_integral', 'is_show', 'is_delete']);
     }
 
     /**

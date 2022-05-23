@@ -2,7 +2,7 @@
 	<view class="container">
 
 		<!-- 微信登录 -->
-		<view class="index-mnp-widget" v-if="isWeixin">
+		<view class="index-mnp-widget" v-if="isWeixin && isClient === 6">
 			<view class="avatar"><open-data type="userAvatarUrl"></open-data></view>
 			<view class="u-font-28 u-margin-top-10">用户昵称</view>
 			<view class="u-font-28 u-margin-top-30">申请获取以下权限</view>
@@ -26,7 +26,7 @@
 		</view>
 		
 		<!-- 手机登录 -->
-		<view class="index-mobile-widget" v-if="!isWeixin">
+		<view class="index-mobile-widget" v-if="!isWeixin || isClient === 5">
 			<view class="logo">
 				<image style="width:560rpx; height:156rpx;" :src="config.login_logo"></image>
 			</view>
@@ -57,7 +57,7 @@
 				<view class="u-font-28 u-color-lighter" @click="$toPage('/pages/register/register')">注册账号</view>
 			</view>
 			<!-- #ifdef H5 -->
-			<view class="other" v-if="isWeixin">
+			<view class="other" v-if="isWeixin && isClient !== 5">
 				<view class="header">
 					<view class="line"></view>
 					<view class="title">其他登录方式</view>
@@ -120,6 +120,8 @@
 				config: [],
 				// 是否是微信环境
 				isWeixin: true,
+				// 客服端
+				isClient: 0,
 				// 是否同意协议
 				isAgree: false,
 				// 验证码提示
@@ -148,6 +150,7 @@
 			}
 			this.getConfigFun()
 			// #ifndef MP-WEIXIN
+				this.isClient = isClient()
 				this.isWeixin = isWeixin()
 			//#endif
 		},

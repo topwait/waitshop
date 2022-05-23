@@ -35,7 +35,7 @@ const store = new Vuex.Store({
 		}
 	},
 	actions: {
-		set_history({commit, state}, history) {
+		setHistory({commit, state}, history) {
 			if (history instanceof Object) {
 				let list = state.historyLists
 				let newList = [history]

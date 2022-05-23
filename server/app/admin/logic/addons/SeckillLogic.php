@@ -153,7 +153,6 @@ class SeckillLogic extends Logic
                 'is_end'          => 0,
                 'is_delete'       => 0,
                 'is_coupon'       => $post['is_coupon'],
-                'is_distribution' => $post['is_distribution'],
                 'start_time'      => strtotime($datetime[0]),
                 'end_time'        => strtotime($datetime[1]),
             ]);
@@ -210,7 +209,6 @@ class SeckillLogic extends Logic
                 'is_end'          => 0,
                 'is_delete'       => 0,
                 'is_coupon'       => $post['is_coupon'],
-                'is_distribution' => $post['is_distribution'],
                 'start_time'      => strtotime($datetime[0]),
                 'end_time'        => strtotime($datetime[1]),
             ], ['id'=>$post['id']]);

@@ -171,9 +171,9 @@ class Mysql
         $salt = substr(md5($time . $username), 0, 4);
         $password = md5(md5($password) . $salt);
 
-        $sql  = "{$this->db}.INSERT INTO"." `{$this->prefix}admin` ";
+        $sql  = "INSERT INTO"." `{$this->prefix}admin` ";
         $sql .= "(`id`,`username`,`nickname`,`password`,`salt`,`create_time`,`update_time`) VALUES ";
-        $sql .= "(null, '{$username}', '{$username}', '{$password}', '{$salt}', '{$time}', '{$time}');";
+        $sql .= "(1, '{$username}', '{$username}', '{$password}', '{$salt}', '{$time}', '{$time}');";
         return $sql;
     }
 

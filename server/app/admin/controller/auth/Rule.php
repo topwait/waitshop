@@ -33,7 +33,7 @@ use think\response\View;
 class Rule extends Backend
 {
     /**
-     * 权限列表
+     * 菜单列表
      *
      * @author windy
      * @return View|Json
@@ -49,7 +49,7 @@ class Rule extends Backend
     }
 
     /**
-     * 新增权限
+     * 菜单新增
      *
      * @author windy
      * @return View|Json
@@ -71,7 +71,7 @@ class Rule extends Backend
     }
 
     /**
-     * 编辑权限
+     * 菜单编辑
      *
      * @author windy
      * @return View|Json
@@ -94,7 +94,7 @@ class Rule extends Backend
     }
 
     /**
-     * 删除权限
+     * 菜单删除
      *
      * @author windy
      * @return Json

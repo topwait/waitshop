@@ -25,13 +25,16 @@ namespace app\common\enum;
 class LogIntegralEnum
 {
     // 日志枚举类型
-    const admin_add_integral    = 100; //系统增加积分
-    const admin_reduce_integral = 101; //系统扣减积分
-    const recharge_money_give   = 102; //充值余额赠送
-    const balance_pay_order     = 103; //下单扣减积分
-    const register_inc_integral = 104; //注册赠送积分
-    const sign_inc_integral     = 105; //签到奖励积分
-    const lottery_inc_integral  = 106; //抽奖赠送
+    const ADMIN_INC_INTEGRAL    = 100; //系统增加积分
+    const ADMIN_DEC_INTEGRAL    = 101; //系统扣减积分
+    const RECHARGE_INC_INTEGRAL = 102; //充值余额赠送
+    const PAY_INC_INTEGRAL      = 103; //下单赠送积分
+    const PAY_DEC_INTEGRAL      = 104; //下单扣减积分
+    const GOODS_INC_INTEGRAL    = 106; //商品赠送积分
+    const REFUND_DEC_INTEGRAL   = 107; //退款退赠积分
+    const REGISTER_INC_INTEGRAL = 108; //注册赠送积分
+    const SIGN_INC_INTEGRAL     = 109; //签到奖励积分
+    const LOTTERY_INC_INTEGRAL  = 110; //抽奖赠送积分
 
     /**
      * 获取日志描述
@@ -43,13 +46,16 @@ class LogIntegralEnum
     public static function getLogDesc($status = true)
     {
         $desc = [
-            self::admin_add_integral     => '系统增加积分',
-            self::admin_reduce_integral  => '系统扣减积分',
-            self::recharge_money_give    => '充值余额赠送',
-            self::balance_pay_order      => '下单扣减积分',
-            self::register_inc_integral  => '注册赠送积分',
-            self::sign_inc_integral      => '签到奖励积分',
-            self::lottery_inc_integral   => '抽奖奖励积分',
+            self::ADMIN_INC_INTEGRAL     => '系统增加积分',
+            self::ADMIN_DEC_INTEGRAL     => '系统扣减积分',
+            self::RECHARGE_INC_INTEGRAL  => '充值余额赠送',
+            self::PAY_INC_INTEGRAL       => '下单增加积分',
+            self::PAY_DEC_INTEGRAL       => '下单扣减积分',
+            self::GOODS_INC_INTEGRAL     => '商品赠送积分',
+            self::REFUND_DEC_INTEGRAL    => '退款退赠积分',
+            self::REGISTER_INC_INTEGRAL  => '注册赠送积分',
+            self::SIGN_INC_INTEGRAL      => '签到奖励积分',
+            self::LOTTERY_INC_INTEGRAL   => '抽奖奖励积分',
         ];
         if ($status === true) {
             return $desc;

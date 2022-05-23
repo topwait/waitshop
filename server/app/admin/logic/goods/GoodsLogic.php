@@ -20,6 +20,7 @@ namespace app\admin\logic\goods;
 
 use app\common\basics\Logic;
 use app\common\model\goods\Goods;
+use app\common\model\goods\GoodsCategory;
 use app\common\model\goods\GoodsSku;
 use app\common\model\goods\GoodsSpec;
 use app\common\model\goods\GoodsSpecValue;
@@ -84,13 +85,19 @@ class GoodsLogic extends Logic
     {
         // 搜索条件
         self::setSearch([
-            '='       => ['category@first_category_id|second_category_id|third_category_id'],
             '%like%'  => ['name']
         ]);
+
+        // 分类搜索
+        $where = [];
+        if (!empty($get['category']) && $get['category']) {
+            $where[] = ['category_id', 'in', GoodsCategory::getChildrenIds($get['category'])];
+        }
 
         // 执行查询
         $model = new Goods();
         $lists = $model->field(true)
+            ->where($where)
             ->where(self::$searchWhere)
             ->where(self::queryWhere($get['type']))
             ->order('id desc, sort desc')
@@ -150,6 +157,13 @@ class GoodsLogic extends Logic
             foreach ($detail['spec'] as $k => $v) {
                 $detail['spec'][$k]['values'] = isset($data[$v['id']]) ? $data[$v['id']] : [];
             }
+
+            // 处理分类
+            $category = GoodsCategory::getParentIds($detail['base']['category_id']);
+            $detail['base']['first_category_id']  = $category[0] ?? 0;
+            $detail['base']['second_category_id'] = $category[1] ?? 0;
+            $detail['base']['third_category_id']  = $category[2] ?? 0;
+
             return $detail;
         } catch (Exception $e) {
             static::$error = $e->getMessage();
@@ -178,9 +192,7 @@ class GoodsLogic extends Logic
             // 添加商品基础信息
             $goods = Goods::create([
                 'name'               => $post['name'],
-                'first_category_id'  => $post['category'][0] ?? 0,
-                'second_category_id' => $post['category'][1] ?? 0,
-                'third_category_id'  => $post['category'][2] ?? 0,
+                'category_id'        => $post['category'][count($post['category']) - 1],
                 'brand_id'           => $post['brand_id'] ?? 0,
                 'supplier_id'        => $post['supplier_id'] ?? 0,
                 'freight_id'         => $post['freight_id'] ?? 0,
@@ -190,20 +202,21 @@ class GoodsLogic extends Logic
                 'banner'             => $post['banner'] ?? '',
                 'intro'              => $post['intro'] ?? '',
                 'content'            => $post['content'] ?? '',
-                'spec_type'    => $post['spec_type'],
-                'max_price'    => $maxOrMinPrice['max_price'],
-                'min_price'    => $maxOrMinPrice['min_price'],
-                'market_price' => $maxOrMinPrice['market_price'],
-                'stock'        => $maxOrMinPrice['total_stock'],
-                'sort'         => $post['sort'] ?? 0,
-                'sales_volume' => $post['sales_volume'] ?? 0,
-                'stock_warn'   => $post['stock_warn'] ?? 0,
-                'click_count'  => $post['click_count'] ?? 0,
-                'is_show'      => $post['is_show'] ?? 0,
-                'is_integral'  => $post['is_integral'] ?? 0,
-                'is_new'       => $post['is_new'] ?? 0,
-                'is_best'      => $post['is_best'] ?? 0,
-                'is_like'      => $post['is_like'] ?? 0
+                'spec_type'     => $post['spec_type'],
+                'max_price'     => $maxOrMinPrice['max_price'],
+                'min_price'     => $maxOrMinPrice['min_price'],
+                'market_price'  => $maxOrMinPrice['market_price'],
+                'stock'         => $maxOrMinPrice['total_stock'],
+                'sort'          => $post['sort'] ?? 0,
+                'sales_volume'  => $post['sales_volume'] ?? 0,
+                'stock_warn'    => $post['stock_warn'] ?? 0,
+                'give_integral' => $post['give_integral'] ?? 0,
+                'click_count'   => $post['click_count'] ?? 0,
+                'is_show'       => $post['is_show'] ?? 0,
+                'is_integral'   => $post['is_integral'] ?? 0,
+                'is_new'        => $post['is_new'] ?? 0,
+                'is_best'       => $post['is_best'] ?? 0,
+                'is_like'       => $post['is_like'] ?? 0
             ]);
 
             // 添加商品规格信息
@@ -242,9 +255,7 @@ class GoodsLogic extends Logic
             // 编辑商品基础信息
             Goods::update([
                 'name'               => $post['name'],
-                'first_category_id'  => empty($post['category'][0]) ? 0 : $post['category'][0],
-                'second_category_id' => empty($post['category'][1]) ? 0 : $post['category'][1],
-                'third_category_id'  => empty($post['category'][2]) ? 0 : $post['category'][2],
+                'category_id'        => $post['category'][count($post['category']) - 1],
                 'brand_id'           => $post['brand_id'] ?? 0,
                 'supplier_id'        => $post['supplier_id'] ?? 0,
                 'freight_id'         => $post['freight_id'] ?? 0,
@@ -254,20 +265,21 @@ class GoodsLogic extends Logic
                 'banner'             => $post['banner'] ?? '',
                 'intro'              => $post['intro'] ?? '',
                 'content'            => trim($post['content']) ?? '',
-                'spec_type'    => $post['spec_type'],
-                'max_price'    => $maxOrMinPrice['max_price'],
-                'min_price'    => $maxOrMinPrice['min_price'],
-                'market_price' => $maxOrMinPrice['market_price'],
-                'stock'        => $maxOrMinPrice['total_stock'],
-                'sort'         => $post['sort'],
-                'sales_volume' => $post['sales_volume'] ?? 0,
-                'stock_warn'   => $post['stock_warn'] ?? 0,
-                'click_count'  => $post['click_count'] ?? 0,
-                'is_show'      => $post['is_show'] ?? 0,
-                'is_integral'  => $post['is_integral'] ?? 0,
-                'is_new'       => $post['is_new'] ?? 0,
-                'is_best'      => $post['is_best'] ?? 0,
-                'is_like'      => $post['is_like'] ?? 0
+                'spec_type'     => $post['spec_type'],
+                'max_price'     => $maxOrMinPrice['max_price'],
+                'min_price'     => $maxOrMinPrice['min_price'],
+                'market_price'  => $maxOrMinPrice['market_price'],
+                'stock'         => $maxOrMinPrice['total_stock'],
+                'sort'          => $post['sort'],
+                'sales_volume'  => $post['sales_volume'] ?? 0,
+                'stock_warn'    => $post['stock_warn'] ?? 0,
+                'give_integral' => $post['give_integral'] ?? 0,
+                'click_count'   => $post['click_count'] ?? 0,
+                'is_show'       => $post['is_show'] ?? 0,
+                'is_integral'   => $post['is_integral'] ?? 0,
+                'is_new'        => $post['is_new'] ?? 0,
+                'is_best'       => $post['is_best'] ?? 0,
+                'is_like'       => $post['is_like'] ?? 0
             ], ['id'=>(int)$post['id']]);
 
             // 编辑商品规格信息

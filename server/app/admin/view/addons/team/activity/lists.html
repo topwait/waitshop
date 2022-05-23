@@ -239,9 +239,11 @@
                         data: {id: obj.data.id}
                     }).then((res) => {
                         if (res.code === 0) {
-                            layer.msg(res.msg, {icon: 1, time: 1000});
+                            layer.msg(res.msg, {icon: 1, time: 1500});
                             active.statistics();
                             table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1500});
                         }
                     });
                     layer.close(index);
@@ -262,13 +264,14 @@
                             layer.msg(res.msg, {icon: 1, time: 1000});
                             active.statistics();
                             table.reload("wait-table-lists");
+                        } else {
+                            layer.msg(res.msg, {icon: 2, time: 1500});
                         }
                     });
                     layer.close(index);
                 });
             },
             found: function (obj) {
-                console.log(obj)
                 wait.popup({
                     title: "拼团列表：" + obj.data.name,
                     url: "{:url('addons.team.TeamActivity/found')}?id=" + obj.data.id,

@@ -161,7 +161,6 @@
 						this.orderList = []
 						if (this.tabIndex === 1 && lists.length > 0) {
 							lists.forEach(item => {
-								console.log(item)
 								if (item['extend']['surplus_close_time'] <= 0) {
 									this.onDownTimeEnd(item['id'])
 								}
@@ -195,8 +194,8 @@
 						const param = {id: id}
 						that.$u.api.apiOrderDelete(param).then(result => {
 							if (result.code === 0) {
-								that.$showSccess(result.msg)
-								that.upCallback({page: 1})
+								that.$showSuccess(result.msg)
+								that.upCallback({num: 1})
 							} else {
 								that.$showToast(result.msg)
 							}
@@ -220,9 +219,7 @@
 						that.$u.api.apiOrderCancel(param).then(result => {
 							if (result.code === 0) {
 								that.$showSuccess(result.msg)
-								that.upCallback({
-									page: 1
-								})
+								that.upCallback({num: 1})
 							} else {
 								that.$showToast(result.msg)
 							}
@@ -246,9 +243,7 @@
 						that.$u.api.apiOrderConfirm(param).then(result => {
 							if (result.code === 0) {
 								that.$showSuccess(result.msg)
-								that.upCallback({
-									page: 1
-								})
+								that.upCallback({num: 1})
 							} else {
 								that.$showToast(result.msg)
 							}

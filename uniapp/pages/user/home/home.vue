@@ -9,15 +9,15 @@
 			<view class="user-avatar">
 				<image class="avatar" :lazy-load="true" :src="isLogin ? userInfo.avatar : design.avatar"></image>
 			</view>
-			<view class="user-login" v-if="!isLogin" @click="onJump('/pages/login/login')">点击登录</view>
+			<view class="user-login" v-if="!isLogin" @click="$toPage('/pages/login/login')">点击登录</view>
 			<view class="user-info" v-else>
 				<view class="username">{{userInfo.nickname}}</view>
 				<view class="level">{{userInfo.gradeName}}</view>
 			</view>
-			<image class="user-set" src="/static/ic_set.png" @click="onJump('/pages/user/info/info?login=true')"></image>
+			<image class="user-set" src="/static/ic_set.png" @click="$toPage('/pages/user/info/info?login=true')"></image>
 		</view>
 		
-		<view class="index-vip-widget" @click="onJump('/bundle/pages/user_grade/user_grade')">
+		<view class="index-vip-widget" @click="$toPage('/bundle/pages/user_grade/user_grade')">
 			<!-- <view class="u-flex u-row-between" style="width: 100%; height: 78rpx;">
 				<view class="u-flex">
 					<image src="/static/vip.png" style="width: 40rpx; height: 40rpx; vertical-align: middle;"></image>
@@ -44,15 +44,15 @@
 		
 		<!-- 余额组件 -->
 		<view class="index-balance-widget">
-			<view class="balance-item" @click="onJump('/bundle/pages/user_wallet/user_wallet?login=true')">
+			<view class="balance-item" @click="$toPage('/bundle/pages/user_wallet/user_wallet?login=true')">
 				<view class="text">我的余额</view>
 				<view class="number">{{userInfo.money || 0}}</view>
 			</view>
-			<view class="balance-item" @click="onJump('/bundle/pages/user_integral/user_integral?login=true')">
+			<view class="balance-item" @click="$toPage('/bundle/pages/user_integral/user_integral?login=true')">
 				<view class="text">积分</view>
 				<view class="number">{{userInfo.integral || 0}}</view>
 			</view>
-			<view class="balance-item" @click="onJump('/bundle/pages/coupon_my/coupon_my?login=true')">
+			<view class="balance-item" @click="$toPage('/bundle/pages/coupon_my/coupon_my?login=true')">
 				<view class="text">优惠券</view>
 				<view class="number">{{userInfo.coupon_num || 0}}</view>
 			</view>
@@ -62,12 +62,12 @@
 		<view class="index-order-widget">
 			<view class="order-header">
 				<text class="order-header__title">我的订单</text>
-				<text class="order-header__all" @click="onJump('/pages/order/list/list?login=true&tab=0')">查看全部订单</text>
+				<text class="order-header__all" @click="$toPage('/pages/order/list/list?login=true&tab=0')">查看全部订单</text>
 			</view>
 			<view class="order-navbar">
 				<view class="order-navbar-item" 
 					v-for="(item, index) in design.order" :key="index"
-					@click="onJump(item.path)">
+					@click="$toPage(item.path)">
 					<image class="navbar-item__icons" :src="item.image"></image>
 					<text class="navbar-item__text">{{item.name}}</text>
 				</view>
@@ -80,8 +80,7 @@
 			<view class="tools-apply">
 				<button class="tools-apply-item" hover-class="none"
 					v-for="(item, index) in design.me" :key="index"
-					:open-type="item.link_type === 3 ? 'contact' : ''"
-					@click="onJump(item.link_url, item.link_type)">
+					@click="$toPage(item.link_url, item.link_type)">
 					
 					<image class="apply-item__icon" :src="item.image"></image>
 					<text class="apply-item__text">{{item.name}}</text>
@@ -97,8 +96,7 @@
 </template>
 
 <script>
-	import {mapState, mapMutations} from 'vuex'
-	import {Storage} from '@/utils/storage'
+	import {mapState, mapMutations} from 'vuex'	
 	import {toLogin, toPage, isWeixin} from '@/utils/tools'
 	export default {
 		data() {
@@ -121,7 +119,9 @@
 				this.isWeixin = isWeixin()
 			//#endif
 			this.getUserDesign()
-			this.getUserCenter()
+			if (this.isLogin) {
+				this.getUserCenter()
+			}
 		},
 		methods: {
 			
@@ -132,6 +132,9 @@
 				await this.$u.api.apiUserDesign().then(result => {
 					if (result.code === 0) {
 						this.design = result.data
+						this.$nextTick(() => {
+							this.isFirstLoading = false
+						})
 					} else {
 						this.$showToast(result.msg)
 					}

@@ -49,7 +49,7 @@
 				<image class="icon" src="/bundle/static/wallet/integral_log.png"></image>
 				<view class="text">积分明细</view>
 			</view>
-			<view class="helper-item" @click="onJump('/bundle/pages/user_account/user_account?login=true')">
+			<view class="helper-item" @click="$toPage('/bundle/pages/user_account/user_account?login=true')">
 				<image class="icon" src="/bundle/static/wallet/account_log.png"></image>
 				<view class="text">账户明细</view>
 			</view>
