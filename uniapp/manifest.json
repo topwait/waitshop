@@ -2,8 +2,8 @@
     "name" : "WaitShop开源商城",
     "appid" : "__UNI__203A34A",
     "description" : "",
-    "versionName" : "2.0.101",
-    "versionCode" : 20101,
+    "versionName" : "2.0.10",
+    "versionCode" : 2010,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
