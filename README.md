@@ -43,7 +43,7 @@
 - 密码：123456
 
 ## 微信小程序样式 (体验版功能受限)
-![微信小程序体验](https://b2cdemo.waitshop.cn/uploads/wx.jpg =150x150)
+![微信小程序体验](https://b2cdemo.waitshop.cn/uploads/wx.jpg)
 
 ## 关于我们
     首先目前版本不是一个百分百完善的版本(功能会在持续迭代优化),
