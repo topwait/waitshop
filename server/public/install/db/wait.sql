@@ -1427,9 +1427,9 @@ INSERT INTO `wait_config_sms` VALUES (2, '腾讯云短信', 'Tencent', 'static/i
 COMMIT;
 
 BEGIN;
-INSERT INTO `wait_crontab` VALUES (1, '关闭超时订单', 'order_close', '', '* * * * *', '', '', 0, '0', '0', 1651805822, 1625410746, 1651805822);
-INSERT INTO `wait_crontab` VALUES (2, '关闭超时拼团', 'team_close', '', '* * * * *', '', '', 0, '0', '0', 1651805822, 1640774565, 1651805822);
-INSERT INTO `wait_crontab` VALUES (3, '结算分销佣金', 'distribution_settle', '', '* * * * *', '', '', 0, '0', '0', 1651805822, 1641527789, 1651805822);
+INSERT INTO `wait_crontab` VALUES (1, '关闭超时订单', 'order_close', '', '* * * * *', '', '', 2, '0', '0', 1651805822, 1625410746, 1651805822);
+INSERT INTO `wait_crontab` VALUES (2, '关闭超时拼团', 'team_close', '', '* * * * *', '', '', 2, '0', '0', 1651805822, 1640774565, 1651805822);
+INSERT INTO `wait_crontab` VALUES (3, '结算分销佣金', 'distribution_settle', '', '* * * * *', '', '', 2, '0', '0', 1651805822, 1641527789, 1651805822);
 COMMIT;
 
 BEGIN;
