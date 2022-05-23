@@ -126,15 +126,12 @@ class CouponLogic extends Logic
         $detail['goods'] = [];
         if ($detail['use_goods_type'] !== 0) {
             $goodsModel = new Goods();
-            $detail['goods'] = $goodsModel->field(['id,name,image,min_price,first_category_id,second_category_id,third_category_id'])
+            $detail['goods'] = $goodsModel->field(['id,name,image,min_price,category_id'])
                 ->whereIn('id', $detail['use_goods_ids'])
                 ->append(['category'])
                 ->select()->toArray();
 
             foreach ($detail['goods'] as &$item) {
-                unset($item['first_category_id']);
-                unset($item['second_category_id']);
-                unset($item['third_category_id']);
                 $item['category'] = $item['category'][0]['name'] ?? '未知';
             }
         }
