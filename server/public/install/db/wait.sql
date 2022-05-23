@@ -1452,6 +1452,13 @@ INSERT INTO `wait_diy_nav` VALUES (4, '我的', 0, 'static/images/diy/client/tab
 COMMIT;
 
 BEGIN;
+INSERT INTO `wait_user_grade` VALUES (1, '青铜会员', 1, 'static/images/grade/grade01.png', 'static/images/grade/grade01.png', '{\"total_growth_value\":\"0\"}', '10', 0, 0, 1617633268, 1644592165, 0);
+INSERT INTO `wait_user_grade` VALUES (2, '黄金会员', 2, 'static/images/grade/grade02.png', 'static/images/grade/grade02.png', '{\"total_growth_value\":\"2000\"}', '9.8', 0, 0, 1618237186, 1644461913, 0);
+INSERT INTO `wait_user_grade` VALUES (3, '铂金会员', 3, 'static/images/grade/grade03.png', 'static/images/grade/grade03.png', '{\"total_growth_value\":\"6000\"}', '9.7', 0, 0, 1634031924, 1644461921, 0);
+INSERT INTO `wait_user_grade` VALUES (4, '砖石会员', 4, 'static/images/grade/grade04.png', 'static/images/grade/grade04.png', '{\"total_growth_value\":\"8000\"}', '9.6', 0, 0, 1634033004, 1644461930, 0);
+COMMIT;
+
+BEGIN;
 INSERT INTO `wait_diy_order` VALUES (1, '待付款', 'static/images/diy/client/order/to_be_paid.png', 0, '/pages/order/list/list?login=true&tab=1', 1646697600, 1650202998);
 INSERT INTO `wait_diy_order` VALUES (2, '待发货', 'static/images/diy/client/order/to_be_delivered.png', 0, '/pages/order/list/list?login=true&tab=2', 1646697600, 1650203008);
 INSERT INTO `wait_diy_order` VALUES (3, '待收货', 'static/images/diy/client/order/to_be_received.png', 0, '/pages/order/list/list?login=true&tab=3', 1646697600, 1650203017);
