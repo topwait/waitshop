@@ -106,7 +106,7 @@ class BasicLogic extends Logic
     {
         // 基础配置
         $detail['backstage'] = ConfigUtils::get('backstage', [
-            'backstage_login_title' => '',
+            'backstage_login_title' => 'WaitShop开源商城后台',
             'backstage_web_favicon' => '',
             'backstage_side_logo'   => '',
             'mall_logo'             => '',
