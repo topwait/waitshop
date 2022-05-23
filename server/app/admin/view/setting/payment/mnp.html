@@ -27,36 +27,36 @@
             <label for="name" class="layui-form-label"><span class="asterisk">*</span>支付名称：</label>
             <div class="layui-input-block">
                 <input type="hidden" name="alias" value="{$detail.alias}">
-                <input type="hidden" name="id" value="{$detail.id}">
-                <input type="text" id="name" name="name" value="{$detail.name}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+                <input type="hidden" name="id" value="{$detail.id ?? 0}">
+                <input type="text" id="name" name="name" value="{$detail.name ?? ''}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
             </div>
         </div>
         <!-- 开发者 AppID -->
         <div class="layui-form-item">
             <label for="app_id" class="layui-form-label"><span class="asterisk">*</span>开发者 AppID：</label>
             <div class="layui-input-block">
-                <input type="text" id="app_id" name="app_id" value="{$detail.params.app_id}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+                <input type="text" id="app_id" name="app_id" value="{$detail.params.app_id ?? ''}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
             </div>
         </div>
         <!-- 商户号 MCHID -->
         <div class="layui-form-item">
             <label for="mch_id" class="layui-form-label"><span class="asterisk">*</span>商户号 MCHID：</label>
             <div class="layui-input-block">
-                <input type="text" id="mch_id" name="mch_id" value="{$detail.params.mch_id}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+                <input type="text" id="mch_id" name="mch_id" value="{$detail.params.mch_id ?? ''}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
             </div>
         </div>
         <!-- 支付密钥 APIKEY -->
         <div class="layui-form-item">
             <label for="key" class="layui-form-label"><span class="asterisk">*</span>支付密钥 APIKEY：</label>
             <div class="layui-input-block">
-                <input type="text" id="key" name="key" value="{$detail.params.key}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+                <input type="text" id="key" name="key" value="{$detail.params.key ?? ''}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
             </div>
         </div>
         <!-- 排序号 -->
         <div class="layui-form-item">
             <label for="sort" class="layui-form-label"><span class="asterisk">*</span>排序号：</label>
             <div class="layui-input-block" style="max-width: 150px;">
-                <input type="number" id="sort" name="sort" value="{$detail.sort}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
+                <input type="number" id="sort" name="sort" value="{$detail.sort ?? ''}" autocomplete="off" class="layui-input" lay-verType="tips" lay-verify="required">
             </div>
         </div>
         <!-- 状态 -->
