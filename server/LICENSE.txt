@@ -1,41 +1,8 @@
-
-ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
-版权所有Copyright © 2006-2016 by ThinkPHP (http://thinkphp.cn)
-All rights reserved。
-ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
-
-Apache Licence是著名的非盈利开源组织Apache采用的协议。
-该协议和BSD类似，鼓励代码共享和尊重原作者的著作权，
-允许代码修改，再作为开源或商业软件发布。需要满足
-的条件： 
-1． 需要给代码的用户一份Apache Licence ；
-2． 如果你修改了代码，需要在被修改的文件中说明；
-3． 在延伸的代码中（修改和有源代码衍生的代码中）需要
-带有原来代码中的协议，商标，专利声明和其他原来作者规
-定需要包含的说明；
-4． 如果再发布的产品中包含一个Notice文件，则在Notice文
-件中需要带有本协议内容。你可以在Notice中增加自己的
-许可，但不可以表现为对Apache Licence构成更改。 
-具体的协议参考：http://www.apache.org/licenses/LICENSE-2.0
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-
-------------------------------------------------------
-WaitShop开源系统协议
-------------------------------------------------------
-版权所有Copyright © 2022-2024 by WaitShop (http://www.waitshop.cn)
-All rights reserved。
+版权所有 © 2022-2024 by WaitShop开源团队 保留所有权利
+感谢您选择WaitShop开源商城系统 (简称WaitShop), WaitShop基于当前最流行的技术 PHP + MYSQL, 采用ThinkPHP6.0框架开发。
+具备良好的代码规范,容易扩展,代码逻辑简单清晰,开箱即用,融合了当前市场常用的营销策略。
+为了使你正确并合法的使用本软件，请你在使用前务必阅读清楚下面的协议条款：
+本授权协议适用且仅适用于WaitShop任何版本, WaitShop官方对本授权协议的最终解释权和修改权。
 
 一、协议许可的权利
     1．不能私自去除官方版权，商业使用需要取得商业授权方可使用，可以去除官方版权，否则会被视为盗版行为并承担相应法律责任。
@@ -57,3 +24,13 @@ All rights reserved。
     3．电子文本形式的授权协议如同双方书面签署的协议一样，具有完全的和等同的法律效力。你一旦开始确认本协议并安装本软件，即被视为完全理解并接受本协议的各项条款，在享有上述条款授予的权力的同时，受到相关的约束和限制。协议许可范围以外的行为，将直接违反本授权协议并构成侵权，我们有权随时终止授权，责令停止损害，并保留追究相关责任的权力。
     4．如果本软件带有其它软件的整合API示范例子包，这些文件版权不属于本软件官方，并且这些文件是没经过授权发布的，请参考相关软件的使用许可合法的使用。</p>
     5．本程本身不是百分百的完善，如因使用过程中发现漏洞导致的损失，我们概不承担任何责任，请自行测试好再进行上线。
+
+协议发布时间： 2022年03月10日
+版本最新更新： 2022年05月20日
+
+官方网站：https://www.waitshop.cn
+演示站点：https://b2cdemo.waitshop.cn/admin
+
+-----------------------------------------------------
+团队: WaitShop工作室
+邮箱: 2474369941@qq.com
