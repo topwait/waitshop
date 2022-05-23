@@ -109,7 +109,6 @@ class RuleLogic extends Logic
                 'uri'         => $post['uri'],
                 'sort'        => $post['sort'],
                 'is_menu'     => $post['is_menu'],
-                'is_disable'  => $post['is_disable'],
                 'create_time' => time(),
                 'update_time' => time()
             ]);
@@ -148,7 +147,6 @@ class RuleLogic extends Logic
                 'uri'         => $post['uri'],
                 'sort'        => $post['sort'],
                 'is_menu'     => $post['is_menu'],
-                'is_disable'  => $post['is_disable'],
                 'update_time' => time()
             ], ['id'=>(int)$post['id']]);
 
