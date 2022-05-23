@@ -287,7 +287,7 @@
 					}
 					// 发货方式
 					this.deliveryMethod = result.data.deliveryMethod;
-					if (!this.deliveryMethod.includes(1)) {
+					if (!this.deliveryMethod.includes('1')) {
 						this.deliveryType = 2
 					}
 					// 优惠券信息

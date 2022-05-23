@@ -8,7 +8,7 @@
 				<view class="u-font-24 u-color-lighter" v-if="orderType !== 'recharge'">
 					<text class="u-margin-right-10">支付剩余时间 </text>
 					<u-count-down 
-						:timestamp="orderDetail.extend.order_close_time" 
+						:timestamp="orderCloseTime" 
 						:show-days="false" font-size="24" color="666666"
 						@end="onDownTimeEnd">
 					</u-count-down>
@@ -85,7 +85,9 @@
 				// 订单数据
 				orderDetail: {},
 				// 订单超时[false=未超时, true=超时]
-				isOvertime: false
+				isOvertime: false,
+				// 订单关闭时间
+				orderCloseTime: 0
 			};
 		},
 		watch: {
@@ -117,7 +119,7 @@
 				} else {
 					this.$u.api.apiOrderDetail(param).then(result => {
 						this.orderDetail = result.data
-						this.timestamp = result.data.order_close_time
+						this.orderCloseTime = this.orderDetail.extend.order_close_time
 					})
 				}
 			},
