@@ -181,6 +181,10 @@ class SignLogic extends Logic
                 ->select()
                 ->toArray();
 
+            if (!$singRules) {
+                throw new Exception('当前没有签到活动');
+            }
+
             // 创建签到记录
             $record = SignRecord::create([
                 'user_id'         => $userId,

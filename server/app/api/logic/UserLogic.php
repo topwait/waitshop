@@ -187,7 +187,7 @@ class UserLogic extends Logic
      */
     public static function wallet(int $userId): array
     {
-        return (new User())
+        $detail = (new User())
             ->field(['id,nickname,integral,money,total_order_amount,total_recharge_amount,earnings'])
             ->withAttr(['stayUnlock'=>function() use($userId) {
                 return (new DistributionOrder())
@@ -195,6 +195,9 @@ class UserLogic extends Logic
                     ->sum('earnings_money');
             }])->append(['stayUnlock'])
             ->findOrEmpty($userId)->toArray();
+
+        $detail['version'] = config('project.version');
+        return $detail;
     }
 
     /**

@@ -35,7 +35,7 @@
 
 		<!-- 已评价产品部件 -->
 		<view class="index-evaluate-widget" v-if="tabIndex === 1">
-			<mescroll-body ref="mescrollRef" @init="mescrollInit" height="100%" @down="downCallback" @up="upCallback" :down="downOption" :up="upOption">
+			<mescroll-body ref="mescrollRef" @init="mescrollInit" height="100%" @down="downCallback" @up="upCallback" :up="upOption">
 				<view class="evaluate-item" v-for="(item, index) in commentList" :key="index">
 					<view class="u-font-xs u-color-muted u-margin-bottom-20 u-margin-lr-8">
 						<text class="u-margin-right-10">{{item.create_time}}</text>

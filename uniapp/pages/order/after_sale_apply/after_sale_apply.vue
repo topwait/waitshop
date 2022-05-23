@@ -85,7 +85,7 @@
 						<label v-for="(item, index) in reasonList" :key="index" 
 							class="u-flex u-row-between" style="padding: 24rpx 20rpx;">
 							<view style="line-height: 46rpx;">{{item}}</view>
-							<radio :value="index"></radio>
+							<radio :value="index.toString()"></radio>
 						</label>
 					</radio-group>
 				</view>
