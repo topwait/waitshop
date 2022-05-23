@@ -381,7 +381,7 @@
 				this.$u.api.apiCartAdd(param).then((result) => {
 					if (result.code === 0) {
 						this.showSku = false
-						this.getCategoryGoods()
+						this.upCallback({num: 1})
 						this.$showSuccess(result.msg)
 					} else {
 						this.$showToast(result.msg)
