@@ -46,7 +46,7 @@ class ServiceLogic extends Logic
             // 客服电话
             'phone' => '',
             // 客服图片
-            'image' => '',
+            'image' => 'static/images/zqq.png',
             // 营业时间
             'business_hours' => ''
         ]);
@@ -74,7 +74,7 @@ class ServiceLogic extends Logic
                 // 客服电话
                 'phone' => $post['phone'] ?? '',
                 // 客服图片
-                'image' => UrlUtils::getRelativeUrl($post['image'] ?? ''),
+                'image' => UrlUtils::getRelativeUrl($post['image'] ?? 'static/images/zqq.png'),
                 // 营业时间
                 'business_hours' => $post['business_hours']
             ]);
