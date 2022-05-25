@@ -175,7 +175,9 @@ class UserLogic extends Logic
     public static function info(int $userId): array
     {
         $model = new User();
-        return $model->field('id,sn,avatar,nickname,mobile')->findOrEmpty($userId)->toArray();
+        $detail = $model->field('id,sn,avatar,nickname,mobile')->findOrEmpty($userId)->toArray();
+        $detail['version'] = config('project.version');
+        return $detail;
     }
 
     /**
@@ -187,7 +189,7 @@ class UserLogic extends Logic
      */
     public static function wallet(int $userId): array
     {
-        $detail = (new User())
+        return (new User())
             ->field(['id,nickname,integral,money,total_order_amount,total_recharge_amount,earnings'])
             ->withAttr(['stayUnlock'=>function() use($userId) {
                 return (new DistributionOrder())
@@ -195,9 +197,6 @@ class UserLogic extends Logic
                     ->sum('earnings_money');
             }])->append(['stayUnlock'])
             ->findOrEmpty($userId)->toArray();
-
-        $detail['version'] = config('project.version');
-        return $detail;
     }
 
     /**

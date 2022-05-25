@@ -332,7 +332,7 @@ DROP TABLE IF EXISTS `wait_distribution_extend`;
 CREATE TABLE `wait_distribution_extend`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `fans_num` int(10) NOT NULL COMMENT '推广粉丝数',
+  `fans_num` int(10) NOT NULL DEFAULT 0 COMMENT '推广粉丝数',
   `distribution_order_num` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分销订单数量',
   `distribution_order_money` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '分销订单金额',
   `create_time` int(10) NULL DEFAULT NULL COMMENT '创建时间',
