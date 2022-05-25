@@ -56,11 +56,11 @@ class LoginLogic extends Logic
         $config = ConfigUtils::get('login');
         return [
             // 强制绑定手机
-            'force_mobile'   => $config['force_mobile'] ?? 1,
+            'force_mobile' => $config['force_mobile'] ?? 1,
             // 通用登录方式
-            'login_way'      => empty($config['login_way']) ? [] : json_decode($config['login_way'], true),
+            'login_way'    => empty($config['login_way']) ? [] : json_decode($config['login_way'], true),
             // 登录Logo图
-            'login_logo'     => UrlUtils::getAbsoluteUrl(ConfigUtils::get('backstage')['mall_logo']??'/static/images/mall_logo.png')
+            'login_logo'   => UrlUtils::getAbsoluteUrl(ConfigUtils::get('backstage')['mall_logo']??'/static/images/mall_logo.png')
         ];
     }
 
