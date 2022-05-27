@@ -340,14 +340,11 @@ export async function silentLogin() {
  * 去登录
  */
 export const toLogin = trottle(() => {
-	//#ifdef MP
-		silentLogin()
-	// #endif
-	//#ifndef MP
+
 		uni.navigateTo({
 			url: '/pages/login/login'
 		})
-	// #endif
+
 }, 2000)
 
 /**

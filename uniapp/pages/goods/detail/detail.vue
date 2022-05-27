@@ -274,7 +274,10 @@
 			 * 弹出SKU
 			 */
 			onPopupSku(type) {
+				console.log('aaa')
+				console.log(this.isLogin)
 				if (!this.isLogin) return toLogin()
+				console.log('aaaaee')
 				this.typeSku = type
 				this.showSku = true
 			},
