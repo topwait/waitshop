@@ -2,7 +2,7 @@
 	<view class="container">
 
 		<!-- 微信登录 -->
-		<view class="index-mnp-widget" v-if="isWeixin && isClient === 6">
+		<view class="index-mnp-widget" v-if="isWeixin">
 			<view class="avatar"><open-data type="userAvatarUrl"></open-data></view>
 			<view class="u-font-28 u-margin-top-10">用户昵称</view>
 			<view class="u-font-28 u-margin-top-30">申请获取以下权限</view>
@@ -26,7 +26,7 @@
 		</view>
 		
 		<!-- 手机登录 -->
-		<view class="index-mobile-widget" v-if="!isWeixin || isClient === 5">
+		<view class="index-mobile-widget" v-if="!isWeixin">
 			<view class="logo">
 				<image style="width:560rpx; height:156rpx;" :src="config.login_logo"></image>
 			</view>
@@ -57,7 +57,7 @@
 				<view class="u-font-28 u-color-lighter" @click="$toPage('/pages/register/register')">注册账号</view>
 			</view>
 			<!-- #ifdef H5 -->
-			<view class="other" v-if="isWeixin && isClient !== 5">
+			<!-- <view class="other" v-if="isWeixin && isClient === 5">
 				<view class="header">
 					<view class="line"></view>
 					<view class="title">其他登录方式</view>
@@ -69,7 +69,7 @@
 						<view class="u-font-26 u-color-normal u-margin-top-10">微信登录</view>
 					</view>
 				</view>
-			</view>
+			</view> -->
 			<!-- #endif -->
 		</view>
 
@@ -168,6 +168,7 @@
 					if (result.code === 0) {
 						this.config = result.data
 						if (this.config.login_way.length > 0) {
+							console.log(result.data)
 							this.config.login_way = this.config.login_way.reverse()
 							this.loginType = parseInt(this.config.login_way[0])
 						}
