@@ -31,8 +31,7 @@
     7、PS: 安装流程完全遵循ThinkPHP的安装规范
 
 ## 文档
-    官方网站: https://www.waitshop.cn
-    部署文档: https://www.waitshop.cn/index/wiki.html
+    部署文档: https://www.showdoc.com.cn/1952855820352763/0
         
 ## 后台演示
 - 后台：https://b2cdemo.waitshop.cn/admin.html
@@ -46,7 +45,7 @@
 - 密码：123456
 
 ## 微信小程序样式 (体验版功能受限)
-![微信小程序体验](https://b2cdemo.waitshop.cn/uploads/wx.jpg)
+![微信小程序体验](https://b2cdemo.waitshop.cn/uploads/demo/wx.jpg)
 
 ## 关于我们
     首先目前版本不是一个百分百完善的版本(功能会在持续迭代优化),
@@ -55,14 +54,42 @@
     如果你嫌弃有bug,请移步其它更完善的项目,有bug可以提出我们会
     尽可能的去修复优化项目的, 建议有开发能力的人使用, 没有的也
     可以遇到问题反馈即可,等待官方处理。
-    
-## 授权说明
-- 本程序已申请了软著,个人免费测试体验,商业使用需购买授权。
-- 如有疑问可以添加QQ客服2474369941咨询,代码会持续更新。
-- 价格会随着代码的完善度以及市场来调整,早入手早享受优惠。
-- 原售价: ~~998元~~
-- 现售价: 468元
 
-## 客服
+## 商用说明
+> 商用注意事项
+如果您将此项目用于商业用途，请先联系客服取得授权。
+
+* 商用只允许个人营业使用或者给客户进行项目二次开发
+* 禁止以任何理由任何方式对(源码/二次开发)后重新发布开源或者收费
+* 我们已经申请了相关的软件著作权和相关登记
+* 本项目个人学习测试等场景是免费的
+* 授权 =》原价: ~~998~~   《==》 现价: 468
+
+## 交流QQ群
 - QQ客服: 2474369941
 - QQ群号: 473164123
+
+## 免责声明：
+> 1、用户不得利用WaitShop从事非法行为，用户应当合法合规的使用，发现用户在使用产品时有任何的非法行为，WaitShop有权配合有关机关进行调查或向政府部门举报，WaitShop不承担用户因非法行为造成的任何法律责任，一切法律责任由用户自行承担，如因用户使用造成第三方损害的，用户应当依法予以赔偿。
+
+> 2、所有与使用WaitShop相关的资源直接风险均由用户承担。
+
+## 演示图
+<table>
+    <tr>
+        <td><img src="https://b2cdemo.waitshop.cn/uploads/demo/01.png" height="200" width="400"/></td>
+        <td><img src="https://b2cdemo.waitshop.cn/uploads/demo/02.png" height="200" width="400"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://b2cdemo.waitshop.cn/uploads/demo/03.png" height="200" width="400"/></td>
+        <td><img src="https://b2cdemo.waitshop.cn/uploads/demo/04.png" height="200" width="400"/></td>
+    </tr>
+    <tr>
+        <td><img src="https://b2cdemo.waitshop.cn/uploads/demo/05.png" height="200" width="400"/></td>
+        <td><img src="https://b2cdemo.waitshop.cn/uploads/demo/06.png" height="200" width="400"/></td>
+    </tr>
+	<tr>
+        <td><img src="https://b2cdemo.waitshop.cn/uploads/demo/07.png" height="200" width="400"/></td>
+        <td><img src="https://b2cdemo.waitshop.cn/uploads/demo/08.png" height="200" width="400"/></td>
+    </tr>
+</table>
