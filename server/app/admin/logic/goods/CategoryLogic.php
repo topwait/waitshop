@@ -117,7 +117,7 @@ class CategoryLogic extends Logic
                 ], ['id'=>$category['id']]);
             } else {
                 GoodsCategory::update([
-                    'level'    => $parentCategory + 1,
+                    'level'    => $parentCategory['level'] + 1,
                     'relation' => $parentCategory['relation'] . ',' . $category['id']
                 ], ['id'=>$category['id']]);
             }
@@ -232,7 +232,7 @@ class CategoryLogic extends Logic
                 ->findOrEmpty()
                 ->toArray();
 
-            if ($category) {
+            if (!$category) {
                 throw new Exception('分类不存在!');
             }
 
@@ -249,7 +249,7 @@ class CategoryLogic extends Logic
             $goods = (new Goods())
                 ->field('id,name')
                 ->where([
-                    ['first_category_id|second_category_id|third_category_id', '=', intval($id)],
+                    ['category_id', '=', intval($id)],
                     ['is_delete', '=', 0]
                 ])->findOrEmpty()
                 ->toArray();
