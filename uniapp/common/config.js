@@ -2,5 +2,5 @@ module.exports = {
     HEADER: {
         'content-type': 'application/json'
     },
-    baseURL: 'https://www.waitshop.cn/api'
+    baseURL: 'https://b2ctests.waitshop.cn/api'
 }

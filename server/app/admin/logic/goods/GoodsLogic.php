@@ -189,10 +189,16 @@ class GoodsLogic extends Logic
             $domain = UrlUtils::getStorageUrl();
             $post['content'] = str_replace($domain, '', $post['content']);
 
+            // 取出选中的分类主键
+            $category = [];
+            foreach ($post['category'] as $id) {
+                if ($id) array_push($category, intval($id));
+            }
+
             // 添加商品基础信息
             $goods = Goods::create([
                 'name'               => $post['name'],
-                'category_id'        => $post['category'][count($post['category']) - 1],
+                'category_id'        => $category[count($category) - 1],
                 'brand_id'           => $post['brand_id'] ?? 0,
                 'supplier_id'        => $post['supplier_id'] ?? 0,
                 'freight_id'         => $post['freight_id'] ?? 0,
@@ -252,10 +258,16 @@ class GoodsLogic extends Logic
             $domain = UrlUtils::getStorageUrl();
             $post['content'] = str_replace($domain, '', $post['content']);
 
+            // 取出选中的分类主键
+            $category = [];
+            foreach ($post['category'] as $id) {
+                if ($id) array_push($category, intval($id));
+            }
+
             // 编辑商品基础信息
             Goods::update([
                 'name'               => $post['name'],
-                'category_id'        => $post['category'][count($post['category']) - 1],
+                'category_id'        => $category[count($category) - 1],
                 'brand_id'           => $post['brand_id'] ?? 0,
                 'supplier_id'        => $post['supplier_id'] ?? 0,
                 'freight_id'         => $post['freight_id'] ?? 0,
