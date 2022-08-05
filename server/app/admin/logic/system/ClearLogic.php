@@ -37,25 +37,42 @@ class ClearLogic extends Logic
                 throw new Exception('请至少选择一个类型');
             }
 
+            $dirs = [];
+            foreach (scandir(root_path().'runtime') as $dir) {
+                if (!in_array($dir, ['.', '..', 'log', 'session', 'cache', '.gitignore'])) {
+                    $path = str_replace('\\', '/', root_path().'runtime/'.$dir);
+                    array_push($dirs, $path);
+                }
+            }
+
             foreach ($post['type'] as $type) {
                 switch (intval($type)) {
                     case 1: //系统缓存
                         delete_dir(root_path().'runtime/cache/');
+                        foreach ($dirs as $dir) {
+                            delete_dir($dir.'/cache/');
+                        }
                         break;
                     case 2: //登录缓存
                         delete_dir(root_path().'runtime/session/');
+                        foreach ($dirs as $dir) {
+                            delete_dir($dir.'/session/');
+                        }
                         break;
                     case 3: //模板缓存
-                        delete_dir(public_path().'uploads/temp/');
-                        delete_dir(public_path().'uploads/pem/');
+                        delete_dir(public_path().'runtime/temp/');
+                        foreach ($dirs as $dir) {
+                            delete_dir($dir.'/temp/');
+                        }
                         break;
-                    case 4: //临时图片
-                        delete_dir(root_path().'runtime/admin/log/');
-                        break;
-                    case 5: //日志文件
-                        delete_dir(root_path().'runtime/admin/log/');
-                        delete_dir(root_path().'runtime/api/log/');
+                    case 4: //日志文件
                         delete_dir(root_path().'runtime/log/');
+                        foreach ($dirs as $dir) {
+                            delete_dir($dir.'/log/');
+                        }
+                        break;
+                    case 5: //临时图片
+                        delete_dir(root_path().'public/storage/temp/');
                         break;
                 }
             }
