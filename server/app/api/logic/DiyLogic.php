@@ -27,6 +27,7 @@ use app\common\model\addons\Seckill;
 use app\common\model\addons\Team;
 use app\common\model\goods\Goods;
 use app\common\model\diy\DiyPage;
+use app\common\model\goods\GoodsCategory;
 use app\common\utils\UrlUtils;
 use think\Exception;
 
@@ -106,8 +107,13 @@ class DiyLogic extends Logic
                 ['is_show', '=', 1]
             ];
 
-            if ($item['config']['auto']['category'] > 0)
-                $where[] = ['first_category_id|second_category_id|third_category_id', '=', (int)$item['config']['auto']['category']];
+            if ($item['config']['auto']['category'] > 0) {
+                $cid = intval($item['config']['auto']['category']);
+                $childrenIds = (new GoodsCategory())
+                    ->where("find_in_set(".$cid.",relation)")
+                    ->column('id');
+                $where[] = ['category_id', 'in', $childrenIds];
+            }
 
             return $model->field(['id,name,image,min_price,market_price,sales_volume'])
                 ->where($where)

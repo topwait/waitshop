@@ -56,11 +56,9 @@ class GoodsValidate extends Validates
     ];
 
     protected $scene = [
-        'id'  => ['id'],
-        'add' => ['name', 'first_category_id', 'second_category_id', 'third_category_id',
-            'brand_id', 'supplier_id', 'sort', 'sales_volume', 'is_show'],
-        'edit' => ['id', 'name', 'first_category_id', 'second_category_id', 'third_category_id',
-            'brand_id', 'supplier_id', 'sort', 'sales_volume', 'is_show'],
+        'id'   => ['id'],
+        'add'  => ['name', 'category', 'brand_id', 'supplier_id', 'sort', 'sales_volume', 'is_show'],
+        'edit' => ['id', 'name', 'category', 'brand_id', 'supplier_id', 'sort', 'sales_volume', 'is_show'],
     ];
 
     /**
@@ -68,7 +66,7 @@ class GoodsValidate extends Validates
      * @param $value(需验证的值)
      * @return bool
      */
-    protected function isCategory($value)
+    protected function isCategory($value): bool
     {
         if (is_array($value) && !empty($value) && count($value) > 0) {
             return true;

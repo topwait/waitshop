@@ -43,7 +43,7 @@ class DistributionGoodsLogic extends Logic
     public static function lists(array $get): array
     {
         self::setSearch([
-            '='       => ['category@first_category_id|second_category_id|third_category_id'],
+            'in'       => ['category@category_id'],
             '%like%'  => ['name']
         ]);
 
