@@ -87,12 +87,12 @@ class PlaceOrderService
             case OrderEnum::DELIVER_TYPE_EXPRESS:
                 $address = AddressLogic::getAddressById(self::$post['address_id'], self::$user_id);
                 if (!$address) {
-                    throw new Exception('请选择收货地址');
+                    throw new Exception('请选择收货地址!');
                 }
                 $data = [
                     'id'       => $address['id'],
-                    'contact'  => $address['nickname'],
                     'mobile'   => $address['mobile'],
+                    'contact'  => $address['nickname'],
                     'province' => $address['province_id'],
                     'city'     => $address['city_id'],
                     'district' => $address['district_id'],
@@ -111,11 +111,11 @@ class PlaceOrderService
                     'latitude'  => self::$post['latitude'] ?? 0,
                 ]);
                 if (!$store) { throw new Exception('请选择收货门店'); }
-                if ($store['status'] == 0) { throw new Exception('当前门店已暂停营业');}
+                if ($store['status'] == 0) { throw new Exception('当前门店已暂停营业!');}
                 $data = [
                     'id'       => $store['id'],
-                    'contact'  => self::$post['contact'],
                     'mobile'   => self::$post['mobile'],
+                    'contact'  => self::$post['contact'],
                     'province' => $store['province_id'],
                     'city'     => $store['city_id'],
                     'district' => $store['district_id'],
@@ -347,9 +347,9 @@ class PlaceOrderService
                 $pStatus['id']             = $sku['goods_id'];
                 $pStatus['name']           = $sku['goods']['name'];
                 $pStatus['isIntegral']     = $sku['goods']['is_integral'];
-                $pStatus['totalPrice']     = convert_to_price(($sku['sell_price'] * $oCount));
-                $pStatus['actualPrice']    = convert_to_price(($sku['sell_price'] * $oCount));
                 $pStatus['sellPrice']      = convert_to_price($sku['sell_price']);
+                $pStatus['actualPrice']    = convert_to_price(($sku['sell_price'] * $oCount));
+                $pStatus['totalPrice']     = convert_to_price(($sku['sell_price'] * $oCount));
                 $pStatus['count']          = $oCount;
                 $pStatus['sku_id']         = $sku['id'];
                 $pStatus['spec_value_str'] = $sku['spec_value_str'];
