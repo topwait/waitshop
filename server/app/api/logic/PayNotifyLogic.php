@@ -109,6 +109,24 @@ class PayNotifyLogic extends Logic
                     $order['order_sn']);
             }
 
+            // 积分抵扣(扣积分)
+            if ($order['integral_amount'] > 0) {
+                if ($user['integral'] - $order['integral_amount']) {
+                    throw new Exception('积分不足');
+                }
+                // 扣减用户积分数量
+                User::update([
+                    'money'       => ['dec', $order['paid_amount']],
+                    'update_time' => self::reqTime()
+                ], ['id' => $order['user_id']]);
+                // 记录扣减积分日志
+                LogWallet::reduce(
+                    LogIntegralEnum::PAY_DEC_INTEGRAL,
+                    $order['integral_amount'],
+                    $user['id'], 0, $order['id'],
+                    $order['order_sn']);
+            }
+
             // 更新订单状态
             Order::update([
                 'transaction_id' => $extra['transaction_id'] ?? '',
