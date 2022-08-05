@@ -58,7 +58,7 @@ class LogsLogic extends Logic
         $lists = (new DistributionOrder())
             ->field('DO.*,U.sn,U.avatar,U.nickname,U.mobile,O.order_sn')
             ->alias('DO')
-            ->join('user U', 'U.id = DO.id')
+            ->join('user U', 'U.id = DO.user_id')
             ->join('order O', 'O.id = DO.order_id')
             ->where(self::$searchWhere)
             ->order('DO.id desc')
@@ -103,7 +103,7 @@ class LogsLogic extends Logic
         $lists = (new LogWallet())
             ->field('LW.*,U.sn,U.avatar,U.nickname,U.mobile')
             ->alias('LW')
-            ->join('user U', 'U.id = LW.id')
+            ->join('user U', 'U.id = LW.user_id')
             ->order('LW.id desc')
             ->where(self::$searchWhere)
             ->paginate([
@@ -146,7 +146,7 @@ class LogsLogic extends Logic
         $lists = (new LogIntegral())
             ->field('LI.*,U.sn,U.avatar,U.nickname,U.mobile')
             ->alias('LI')
-            ->join('user U', 'U.id = LI.id')
+            ->join('user U', 'U.id = LI.user_id')
             ->order('LI.id desc')
             ->where(self::$searchWhere)
             ->paginate([
@@ -189,7 +189,7 @@ class LogsLogic extends Logic
         $lists = (new LogGrowth())
             ->field('LG.*,U.sn,U.avatar,U.nickname,U.mobile')
             ->alias('LG')
-            ->join('user U', 'U.id = LG.id')
+            ->join('user U', 'U.id = LG.user_id')
             ->order('LG.id desc')
             ->where(self::$searchWhere)
             ->paginate([
