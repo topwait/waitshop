@@ -110,13 +110,13 @@ class PayNotifyLogic extends Logic
             }
 
             // 积分抵扣(扣积分)
-            if ($order['integral_amount'] > 0) {
-                if ($user['integral'] - $order['integral_amount']) {
+            if ($order['use_integral'] > 0) {
+                if ($user['integral'] - $order['use_integral']) {
                     throw new Exception('积分不足');
                 }
                 // 扣减用户积分数量
                 User::update([
-                    'money'       => ['dec', $order['paid_amount']],
+                    'integral'    => ['dec', $order['use_integral']],
                     'update_time' => self::reqTime()
                 ], ['id' => $order['user_id']]);
                 // 记录扣减积分日志
