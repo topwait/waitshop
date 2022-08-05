@@ -46,8 +46,8 @@ class GoodsLogic extends Logic
         ];
 
         if (!empty($get['cid']) and $get['cid'] > 0) {
-            $field = 'first_category_id|second_category_id|third_category_id';
-            $where[] = [$field, '=', (int)$get['cid']];
+            //$field = 'first_category_id|second_category_id|third_category_id';
+            $where[] = ['category_id', '=', (int)$get['cid']];
         }
 
         if (!empty($get['keyword']) and $get['keyword']) {
