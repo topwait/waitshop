@@ -117,7 +117,11 @@ class OrderService
      */
     public static function refund(int $orderId, float $refundAmount, int $adminId=0)
     {
-        $order = (new Order())->field('id,user_id,order_sn,pay_way,paid_amount,transaction_id')->findOrEmpty($orderId)->toArray();
+        $order = (new Order())
+            ->field('id,user_id,order_sn,pay_way,paid_amount,use_integral,transaction_id')
+            ->findOrEmpty($orderId)
+            ->toArray();
+
         switch ($order['pay_way']) {
             case OrderEnum::PAY_WAY_BALANCE: // 余额支付处理
                 User::update([
@@ -176,6 +180,20 @@ class OrderService
                 $growth,
                 $order['user_id'], 0, $order['id'],
                 $order['order_sn'], '退款退赠成长'
+            );
+        }
+
+        // 退回下单扣除的积分
+        if ($order['use_integral'] > 0) {
+            User::update([
+                'integral'    => ['inc', $order['use_integral']],
+                'update_time' => time()
+            ], ['id'=>$order['user_id']]);
+            LogIntegral::reduce(
+                LogIntegralEnum::REFUND_INC_INTEGRAL,
+                $order['use_integral'],
+                $order['user_id'], 0, $order['id'],
+                $order['order_sn'], '退款回退积分'
             );
         }
     }

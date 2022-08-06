@@ -20,6 +20,7 @@ namespace app\api\logic;
 
 use app\common\basics\Logic;
 use app\common\model\goods\Goods;
+use app\common\model\goods\GoodsCategory;
 use app\common\model\goods\GoodsCollect;
 use app\common\model\HotSearch;
 
@@ -46,8 +47,11 @@ class GoodsLogic extends Logic
         ];
 
         if (!empty($get['cid']) and $get['cid'] > 0) {
-            $field = 'first_category_id|second_category_id|third_category_id';
-            $where[] = [$field, '=', (int)$get['cid']];
+            $cid = intval($get['cid']);
+            $childrenIds = (new GoodsCategory())
+                ->where("find_in_set(".$cid.",relation)")
+                ->column('id');
+            $where[] = ['category_id', 'in', $childrenIds];
         }
 
         if (!empty($get['keyword']) and $get['keyword']) {

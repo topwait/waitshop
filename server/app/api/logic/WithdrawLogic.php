@@ -157,9 +157,9 @@ class WithdrawLogic extends Logic
 
     /**
      * 提现记录
-     *
      * @author windy
      * @param array $get
+     * @param $userId
      * @return array
      * @throws @\think\db\exception\DbException
      */
