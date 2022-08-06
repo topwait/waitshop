@@ -4,8 +4,7 @@ import {isClient, toLogin} from '@/utils/tools.js'
 const install = (Vue, vm) => {
 	// 参数配置
 	Vue.prototype.$u.http.setConfig({
-		// baseUrl: baseURL,
-		baseUrl: 'http://www.ws.top/api',
+		baseUrl: baseURL,
 		loadingText: '努力加载中~',
 		loadingTime: 5000
 	});
