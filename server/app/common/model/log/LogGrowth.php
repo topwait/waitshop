@@ -74,6 +74,8 @@ class LogGrowth extends Models
             'after_amount'  => $integral,
             'remarks'       => $remarks
         ]);
+
+        event('UpdateLevel', ['user_id'=>$userId]);
     }
 
     /**

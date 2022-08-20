@@ -35,7 +35,8 @@ class LogIntegralEnum
     const REGISTER_INC_INTEGRAL = 108; //注册赠送积分
     const SIGN_INC_INTEGRAL     = 109; //签到奖励积分
     const LOTTERY_INC_INTEGRAL  = 110; //抽奖赠送积分
-    const REFUND_INC_INTEGRAL   = 120; //退款回退积分
+    const REFUND_INC_INTEGRAL   = 111; //退款回退积分
+    const INVITE_INC_INTEGRAL   = 112; //邀请赠送积分
 
     /**
      * 获取日志描述
@@ -58,6 +59,7 @@ class LogIntegralEnum
             self::SIGN_INC_INTEGRAL      => '签到奖励积分',
             self::LOTTERY_INC_INTEGRAL   => '抽奖奖励积分',
             self::REFUND_INC_INTEGRAL    => '退款回退积分',
+            self::INVITE_INC_INTEGRAL    => '邀请赠送积分',
         ];
         if ($status === true) {
             return $desc;

@@ -20,12 +20,15 @@ namespace app\api\logic\addons;
 
 use app\common\basics\Logic;
 use app\common\enum\DistributionEnum;
+use app\common\enum\LogIntegralEnum;
 use app\common\enum\LogWalletEnum;
 use app\common\model\addons\DistributionApply;
 use app\common\model\addons\DistributionExtend;
 use app\common\model\addons\DistributionOrder;
+use app\common\model\log\LogIntegral;
 use app\common\model\log\LogWallet;
 use app\common\model\user\User;
+use app\common\utils\ConfigUtils;
 use app\common\utils\UrlUtils;
 use Exception;
 use think\facade\Db;
@@ -89,6 +92,24 @@ class DistributionLogic extends Logic
                 'update_time' => time()
             ], ['id'=>$userId]);
 
+            // 邀请赠送积分/佣金
+            $reward   = ConfigUtils::get('reward');
+            $integral = intval($reward['invited_reward_integral'] ?? 0);
+            $earnings = intval($reward['invited_reward_earnings'] ?? 0);
+            if ($integral || $earnings ) {
+                User::update([
+                    'integral' => ['inc', $integral],
+                    'money'    => ['inc', $earnings],
+                ], ['id' => $myLeader['id']]);
+
+                LogIntegral::add(LogIntegralEnum::INVITE_INC_INTEGRAL,
+                    $integral, $myLeader['id'], 0, 0, '',
+                    '邀请用户赠送积分:'.$userId);
+
+                LogWallet::add(LogWalletEnum::INVITE_INC_EARNINGS,
+                    $earnings, $myLeader['id'], 0, 0, '',
+                    '邀请用户赠送佣金:'.$userId);
+            }
 
             Db::commit();
             return true;

@@ -67,6 +67,9 @@ class Upload extends Backend
     public function image(int $group_id=0, $save_dir='uploads/image/'): Json
     {
         try {
+            $limitSize = (1024 * 1024 * 10);
+            validate(['iFile' => 'fileSize:' . $limitSize . '|fileExt:jpg,jpeg,png,gif,bmp'])->check(request()->file());
+
             $StorageDriver = new StorageDriver($this->config);
             if ($StorageDriver->upload($save_dir)) {
                 // 1、获取上传文件的信息
@@ -101,6 +104,9 @@ class Upload extends Backend
     public function video(int $group_id=0, $save_dir='uploads/video/'): Json
     {
         try {
+            $limitSize = (1024 * 1024 * 30);
+            validate(['iFile' => 'fileSize:' . $limitSize . '|fileExt:mp4,mp3,avi,rmvb'])->check(request()->file());
+
             $StorageDriver = new StorageDriver($this->config);
             if ($StorageDriver->upload($save_dir)) {
                 // 1、获取上传文件的信息
@@ -161,6 +167,9 @@ class Upload extends Backend
     public function pem($save_dir='uploads/pem/'): Json
     {
         try {
+            $limitSize = (1024 * 1024 * 30);
+            validate(['iFile' => 'fileSize:' . $limitSize . '|fileExt:pem,txt'])->check(request()->file());
+
             $StorageDriver = new StorageDriver($this->config, 'local');
             if ($StorageDriver->upload($save_dir)) {
                 // 1、获取上传文件的信息

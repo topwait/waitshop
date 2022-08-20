@@ -26,7 +26,8 @@ return [
         'HttpEnd'  => [],
         'LogLevel' => [],
         'LogWrite' => [],
-        'Notice'   => ['app\common\listener\Notice']
+        'Notice'        => ['app\common\listener\Notice'],
+        'UpdateLevel'   => ['app\common\listener\UpdateLevel'],
     ],
 
     'subscribe' => [

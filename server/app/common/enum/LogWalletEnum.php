@@ -36,6 +36,7 @@ class LogWalletEnum
     const WITHDRAW_DEC_EARNINGS      = 107; //提现扣减佣金(申请中)
     const WITHDRAW_ROLLBACK_EARNINGS = 108; //提现回滚佣金(失败了)
     const WITHDRAW_INCREASE_EARNINGS = 109; //提现增加余额(成功了)
+    const INVITE_INC_EARNINGS        = 110; //邀请用户增加佣金
 
     /**
      * 获取日志描述
@@ -58,6 +59,7 @@ class LogWalletEnum
             self::WITHDRAW_DEC_EARNINGS      => '提现扣减佣金',
             self::WITHDRAW_ROLLBACK_EARNINGS => '提现回滚佣金',
             self::WITHDRAW_INCREASE_EARNINGS => '提现增加余额',
+            self::INVITE_INC_EARNINGS        => '邀请用户增加佣金',
 
         ];
         if ($status === true) {

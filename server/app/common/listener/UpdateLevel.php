@@ -18,7 +18,6 @@
 namespace app\common\listener;
 
 
-use app\common\model\log\LogIntegral;
 use app\common\model\user\User;
 use app\common\model\user\UserGrade;
 
@@ -62,7 +61,7 @@ class UpdateLevel
                 User::update([
                     'grade_id'    => $level['id'],
                     'update_time' => time()
-                ]);
+                ], ['id'=>$userId]);
                 break;
             }
         }

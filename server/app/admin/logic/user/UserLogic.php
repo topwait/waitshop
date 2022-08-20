@@ -130,12 +130,12 @@ class UserLogic extends Logic
                     case "inc": //增加
                         $update = ['integral' => ['inc', (int)$post['points'], 'update_time'=>time()]];
                         User::update($update, ['id' => (int)$post['id']]);
-                        LogIntegral::add(LogIntegralEnum::ADMIN_INC_INTEGRAL, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remarks']);
+                        LogIntegral::add(LogIntegralEnum::ADMIN_INC_INTEGRAL, floatval($post['points']), intval($post['id']), $adminId, 0, '', $post['remarks']);
                         break;
                     case "dec": //减少
                         $update = ['integral' => ['dec', (int)$post['points'], 'update_time'=>time()]];
                         User::update($update, ['id' => (int)$post['id']]);
-                        LogIntegral::add(LogIntegralEnum::ADMIN_DEC_INTEGRAL, floatval($post['money']), intval($post['id']), $adminId, 0, '', $post['remarks']);
+                        LogIntegral::add(LogIntegralEnum::ADMIN_DEC_INTEGRAL, floatval($post['points']), intval($post['id']), $adminId, 0, '', $post['remarks']);
                         break;
                     case "final": //最终
                         $integral = (new User())->where(['id'=>$post['id']])->value('integral');
