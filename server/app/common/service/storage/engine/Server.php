@@ -54,16 +54,7 @@ abstract class Server
                 throw new Exception('未找到上传文件的信息');
             }
 
-            // 3、上传文件验证
-            if (in_array($this->file->extension(), ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) {
-                $limitSize = (1024 * 1024 * 10);
-                validate(['iFile' => 'fileSize:' . $limitSize . '|fileExt:jpg,jpeg,png,gif,bmp'])->check(request()->file());
-            } elseif (in_array($this->file->extension(), ['jpg', 'jpeg', 'png', 'gif', 'bmp'])) {
-                $limitSize = (1024 * 1024 * 30);
-                validate(['iFile' => 'fileSize:' . $limitSize . '|fileExt:mp4,mp3,avi,rmvb'])->check(request()->file());
-            }
-
-            // 4、记录上传文件信息
+            // 3、记录上传文件信息
             $this->fileInfo = [
                 'ext'      => $this->file->extension(),
                 'size'     => $this->file->getSize(),
