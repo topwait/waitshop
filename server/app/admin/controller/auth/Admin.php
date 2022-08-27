@@ -127,7 +127,7 @@ class Admin extends Backend
     {
         if (request()->isAjax()) {
             (new AdminValidate())->goCheck('id');
-            $result = AdminLogic::del($this->getData('id'));
+            $result = AdminLogic::del($this->postData('id'));
             if ($result === false) {
                 return JsonUtils::error(AdminLogic::getError());
             }
