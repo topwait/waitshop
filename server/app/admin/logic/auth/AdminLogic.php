@@ -115,7 +115,7 @@ class AdminLogic extends Logic
                  'username'    => $post['username'],
                  'nickname'    => $post['nickname'],
                  'password'    => $post['password'],
-                 'avatar'      => $post['avatar'],
+                 'avatar'      => $post['avatar'] ?? '',
                  'email'       => $post['email'],
                  'salt'        => $salt,
                  'role_id'     => $post['role_id'],
