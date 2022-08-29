@@ -77,7 +77,7 @@ class DistributionSettle extends Command
 
             $userModel = new User();
             foreach ($orders as $order) {
-                $user = $userModel->findOrEmpty($order['id']);
+                $user = $userModel->findOrEmpty($order['user_id']);
                 // 是否可结算
                 if (
                     $this->isAfterSale($order) === false
