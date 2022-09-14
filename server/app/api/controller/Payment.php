@@ -27,6 +27,7 @@ use app\api\validate\RequestValidate;
 use app\common\basics\Api;
 use app\common\enum\OrderEnum;
 use app\common\model\addons\RechargeOrder;
+use app\common\model\ConfigPayment;
 use app\common\model\order\Order;
 use app\common\utils\JsonUtils;
 use app\common\utils\WeChatUtils;
@@ -155,7 +156,9 @@ class Payment extends Api
     public function notifyMnp()
     {
         try {
-            $config = WeChatUtils::getMnpConfig();
+
+//            $config = WeChatUtils::getMnpConfig();
+            $config = ConfigPayment::getParams('mnp');
             $app = new Application($config);
 
             $response = $app->handlePaidNotify(function ($message, $fail) {
