@@ -30,7 +30,6 @@ use app\common\model\addons\RechargeOrder;
 use app\common\model\ConfigPayment;
 use app\common\model\order\Order;
 use app\common\utils\JsonUtils;
-use app\common\utils\WeChatUtils;
 use EasyWeChat\Payment\Application;
 use Exception;
 use think\facade\Log;
@@ -156,14 +155,12 @@ class Payment extends Api
     public function notifyMnp()
     {
         try {
-
-//            $config = WeChatUtils::getMnpConfig();
             $config = ConfigPayment::getParams('mnp');
             $app = new Application($config);
 
             $response = $app->handlePaidNotify(function ($message, $fail) {
-                Log::write("微信支付回调开始：" . $message);
-                // 回调失败
+                Log::write("\n===微信支付回调开始===");
+
                 if ($message['return_code'] !== 'SUCCESS') {
                     return $fail('通信失败');
                 }
@@ -174,14 +171,14 @@ class Payment extends Api
                     switch ($message['attach']) {
                         case 'order':
                             $order = (new Order())->where(['order_sn'=>$message['out_trade_no']])->findOrEmpty();
-                            if (!$order->isEmpty() || $order['pay_status'] >= OrderEnum::OK_PAID_STATUS) {
+                            if ($order->isEmpty() || $order['pay_status'] >= OrderEnum::OK_PAID_STATUS) {
                                 return true;
                             }
                             PayNotifyLogic::handle('order', $message['out_trade_no'], $extra);
                             break;
                         case 'recharge':
                             $order = (new RechargeOrder())->where(['order_sn'=>$message['out_trade_no']])->findOrEmpty();
-                            if (!$order->isEmpty() || $order['pay_status'] >= OrderEnum::OK_PAID_STATUS) {
+                            if ($order->isEmpty() || $order['pay_status'] >= OrderEnum::OK_PAID_STATUS) {
                                 return true;
                             }
                             PayNotifyLogic::handle('recharge', $message['out_trade_no'], $extra);
