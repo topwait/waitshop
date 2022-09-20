@@ -151,10 +151,10 @@ class WithdrawLogic extends Logic
                     if ($post['status'] == 1) {
                         User::update(['money' => ['inc', $withdraw['actual_money']], 'update_time' => time()], ['id' => $withdraw['user_id']]);
                         LogWallet::add(
-                            WithdrawalEnum::TYPE_BALANCE,
+                            LogWalletEnum::WITHDRAW_INCREASE_EARNINGS,
                             $withdraw['actual_money'], $withdraw['user_id'],
                             $adminId, $withdraw['id'], $withdraw['withdraw_sn'],
-                            '提现到账'
+                            '提现佣金到账'
                         );
                     }
                     break;
