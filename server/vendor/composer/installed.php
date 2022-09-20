@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'fdab12fb6282d007ecee4b45b35ddfc9c4aa0015',
+        'reference' => '15a234871bf254cdcae6dfeae7248110848d1d20',
         'name' => 'topthink/think',
         'dev' => true,
     ),
@@ -98,6 +98,15 @@
             'install_path' => __DIR__ . '/../dasprid/enum',
             'aliases' => array(),
             'reference' => '5abf82f213618696dda8e3bf6f64dd042d8542b2',
+            'dev_requirement' => false,
+        ),
+        'dragonmantank/cron-expression' => array(
+            'pretty_version' => 'v3.3.1',
+            'version' => '3.3.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../dragonmantank/cron-expression',
+            'aliases' => array(),
+            'reference' => 'be85b3f05b46c39bbc0d95f6c071ddff669510fa',
             'dev_requirement' => false,
         ),
         'easywechat-composer/easywechat-composer' => array(
@@ -207,6 +216,12 @@
             'aliases' => array(),
             'reference' => 'fd4380d6fc37626e2f799f29d91195040137eba9',
             'dev_requirement' => false,
+        ),
+        'mtdowling/cron-expression' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '^1.0',
+            ),
         ),
         'mtdowling/jmespath.php' => array(
             'pretty_version' => '2.6.1',
@@ -574,7 +589,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'fdab12fb6282d007ecee4b45b35ddfc9c4aa0015',
+            'reference' => '15a234871bf254cdcae6dfeae7248110848d1d20',
             'dev_requirement' => false,
         ),
         'topthink/think-captcha' => array(
@@ -638,6 +653,15 @@
             'install_path' => __DIR__ . '/../topthink/think-view',
             'aliases' => array(),
             'reference' => 'edce0ae2c9551ab65f9e94a222604b0dead3576d',
+            'dev_requirement' => false,
+        ),
+        'webmozart/assert' => array(
+            'pretty_version' => '1.11.0',
+            'version' => '1.11.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../webmozart/assert',
+            'aliases' => array(),
+            'reference' => '11cb2199493b2f8a3b53e7f19068fc6aac760991',
             'dev_requirement' => false,
         ),
         'xin/container' => array(
