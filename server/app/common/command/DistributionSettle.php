@@ -82,7 +82,7 @@ class DistributionSettle extends Command
                 if (
                     $this->isAfterSale($order) === false
                     || $user['is_distribution'] != 1
-                    || $user['freeze_distribution'] == 0
+                    || $user['freeze_distribution'] == 1
                 ) {
                     continue;
                 }
