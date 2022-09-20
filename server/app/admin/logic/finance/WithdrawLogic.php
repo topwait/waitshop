@@ -149,7 +149,7 @@ class WithdrawLogic extends Logic
                     ], ['id'=>$withdraw['id']]);
 
                     if ($post['status'] == 1) {
-                        User::update(['wallet' => ['inc', $withdraw['actual_money']], 'update_time' => time()], ['id' => $withdraw['user_id']]);
+                        User::update(['money' => ['inc', $withdraw['actual_money']], 'update_time' => time()], ['id' => $withdraw['user_id']]);
                         LogWallet::add(
                             WithdrawalEnum::TYPE_BALANCE,
                             $withdraw['actual_money'], $withdraw['user_id'],
