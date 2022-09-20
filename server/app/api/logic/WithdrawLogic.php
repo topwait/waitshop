@@ -128,6 +128,8 @@ class WithdrawLogic extends Logic
                 'update_time'          => time()
             ]);
 
+            $user = (new User())->field('id,earnings')->where(['id'=>$userId])->findOrEmpty()->toArray();
+
             // 减少佣金
             User::update(['earnings'=>['dec', $post['money']]], ['id'=>$userId]);
 
@@ -141,9 +143,9 @@ class WithdrawLogic extends Logic
                 'source_sn'     => $withdraw['withdraw_sn'],
                 'change_type'   => 2,
                 'change_amount' => $post['money'],
-                'before_amount' => $config['earnings'],
-                'after_amount'  => $config['earnings'] - $post['money'],
-                'remarks'       => '提现申请'
+                'before_amount' => $user['earnings'],
+                'after_amount'  => $user['earnings'] - $post['money'],
+                'remarks'       => '提现佣金申请'
             ]);
 
             Db::commit();
