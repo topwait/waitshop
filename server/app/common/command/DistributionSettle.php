@@ -91,7 +91,7 @@ class DistributionSettle extends Command
                 User::update([
                     'earnings'    => ['inc', $order['earnings_money']],
                     'update_time' => $time
-                ]);
+                ], ['id'=>$order['user_id']]);
 
                 // 佣金流水
                 LogWallet::add(
