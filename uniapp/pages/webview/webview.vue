@@ -23,6 +23,11 @@
 	// | Author: WaitShop Team <2474369941@qq.com>
 	// +----------------------------------------------------------------------
 	export default {
+		data() {
+			return {
+				url: ''
+			}
+		},
 		onLoad(options) {
 			this.url = options.url
 		}
