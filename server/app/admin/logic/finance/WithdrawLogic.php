@@ -19,6 +19,7 @@ namespace app\admin\logic\finance;
 
 
 use app\common\basics\Logic;
+use app\common\enum\LogWalletEnum;
 use app\common\enum\WithdrawalEnum;
 use app\common\model\log\LogWallet;
 use app\common\model\user\User;
@@ -146,17 +147,41 @@ class WithdrawLogic extends Logic
                         'audit_remark' => $post['remark'] ?? '',
                         'update_time'  => time()
                     ], ['id'=>$withdraw['id']]);
-                    User::update(['wallet'=>['inc', $withdraw['actual_money']], 'update_time'=>time()], ['id'=>$withdraw['user_id']]);
-                    LogWallet::add(
-                        WithdrawalEnum::TYPE_BALANCE,
-                        $withdraw['actual_money'], $withdraw['user_id'],
-                        $adminId, $withdraw['id'], $withdraw['withdraw_sn'],
-                        '提现到账'
-                    );
+
+                    if ($post['status'] == 1) {
+                        User::update(['money' => ['inc', $withdraw['actual_money']], 'update_time' => time()], ['id' => $withdraw['user_id']]);
+                        LogWallet::add(
+                            LogWalletEnum::WITHDRAW_INCREASE_EARNINGS,
+                            $withdraw['actual_money'], $withdraw['user_id'],
+                            $adminId, $withdraw['id'], $withdraw['withdraw_sn'],
+                            '提现佣金到账'
+                        );
+                    }
                     break;
                 case WithdrawalEnum::TYPE_WECHAT:
                     // todo 微信零钱
                     break;
+            }
+
+            // 提现回滚
+            if ($post['status'] != 1) {
+                $user = (new User())->field('id,earnings')->where(['id'=>$withdraw['user_id']])->findOrEmpty()->toArray();
+                // 退回佣金
+                User::update(['earnings'=>['inc', $post['apply_money']]], ['id'=>$withdraw['user_id']]);
+                // 钱包日志
+                LogWallet::create([
+                    'admin_id'      => 0,
+                    'user_id'       => $withdraw['user_id'],
+                    'log_sn'        => make_order_no(),
+                    'source_type'   => LogWalletEnum::WITHDRAW_ROLLBACK_EARNINGS,
+                    'source_id'     => $withdraw['id'],
+                    'source_sn'     => $withdraw['withdraw_sn'],
+                    'change_type'   => 1,
+                    'change_amount' => $withdraw['apply_money'],
+                    'before_amount' => $user['earnings'],
+                    'after_amount'  => $user['earnings'] + $withdraw['apply_money'],
+                    'remarks'       => '提现回滚佣金'
+                ]);
             }
 
             return true;

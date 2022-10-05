@@ -19,6 +19,7 @@ namespace app\common\command;
 
 
 use app\common\utils\TimeUtils;
+use Cron\CronExpression;
 use Exception;
 use think\console\Command;
 use think\console\Input;
@@ -58,6 +59,14 @@ class Crontab extends Command
 
         $startTime = time();
         foreach ($crontab as $cron) {
+            $nextTime = (new CronExpression($cron['rules']))
+                ->getNextRunDate($cron['last_time'])
+                ->getTimestamp();
+
+            if ($nextTime > time()) {
+                continue; // 未到执行时间
+            }
+
             try {
                 $startTime = TimeUtils::millisecond();
                 $parameter = explode(' ', $cron['params']);

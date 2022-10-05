@@ -77,12 +77,12 @@ class DistributionSettle extends Command
 
             $userModel = new User();
             foreach ($orders as $order) {
-                $user = $userModel->findOrEmpty($order['id']);
+                $user = $userModel->findOrEmpty($order['user_id']);
                 // 是否可结算
                 if (
                     $this->isAfterSale($order) === false
                     || $user['is_distribution'] != 1
-                    || $user['freeze_distribution'] == 0
+                    || $user['freeze_distribution'] == 1
                 ) {
                     continue;
                 }
@@ -91,7 +91,7 @@ class DistributionSettle extends Command
                 User::update([
                     'earnings'    => ['inc', $order['earnings_money']],
                     'update_time' => $time
-                ]);
+                ], ['id'=>$order['user_id']]);
 
                 // 佣金流水
                 LogWallet::add(

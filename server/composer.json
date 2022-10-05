@@ -35,6 +35,7 @@
         "endroid/qr-code": "^4.1",
         "alipaysdk/easysdk": "2.2",
         "tencentcloud/tencentcloud-sdk-php": "^3.0",
+        "dragonmantank/cron-expression": "^3.3",
         "ext-curl": "*",
         "ext-gd": "*",
         "ext-pdo": "*",

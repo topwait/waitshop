@@ -42,6 +42,8 @@
 {block name="js"}
 <script>
     layui.use(["table"], function() {
+        let table = layui.table;
+
         // 渲染表格
         wait.table({
             elem: "#wait-table-lists"

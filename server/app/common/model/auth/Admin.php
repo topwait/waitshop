@@ -34,6 +34,7 @@ class Admin extends Models
         'username'    => 'string',  //账号
         'nickname'    => 'string',  //昵称
         'password'    => 'string',  //密码
+        'salt'        => 'string',  //盐巴
         'avatar'      => 'string',  //头像
         'email'       => 'string',  //邮箱
         'phone'       => 'string',  //手机号
