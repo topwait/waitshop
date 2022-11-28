@@ -54,6 +54,7 @@
                     url: "{:url('setting.Sms/set')}?alias=" + obj.data.alias,
                     area: ["500px", "500px"],
                     success: function (layero, index) {
+                        wait.locking(this);
                         layero.layui.form.on("submit(addForm)", function(data){
                             data.field['id'] = obj.data.id;
                             data.field['alias'] = obj.data.alias;
@@ -62,6 +63,7 @@
                                 type: "POST",
                                 data: data.field
                             }).then((res) => {
+                                wait.unlock(this);
                                 if (res.code === 0) {
                                     table.reload("wait-table-lists", {page: { cur: 1}})
                                     layer.msg(res.msg, {icon: 1, time: 1000});

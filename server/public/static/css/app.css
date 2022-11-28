@@ -108,12 +108,12 @@ body,a,dl,dt,dd,li,img { cursor: url('../images/cursor.cur'), auto !important; }
 .wait-preview .subject .stat-text { color: #455a64; font-size: 24px; padding-bottom: 5px; }
 .wait-preview .subject .stat-heading { color: #99abb4; }
 .wait-data-view{ height: 332px !important; }
-.wait-data-view > *[carousel-item]:before{ display: none; }
-.wait-data-view > *[carousel-item] > div{ height: 332px; }
+.wait-data-view > *[carousel-item]:before{display: none;}
+.wait-data-view > *[carousel-item] > div{height: 332px;}
 @media screen and (max-width: 768px){
-    .wait-preview .subject .icons img { width: 50px; }
-    .wait-preview .subject .stat-text { font-size: 22px;}
-    .wait-preview .subject .textarea { padding-left: 15px; }
+    .wait-preview .subject .icons img {width: 50px;}
+    .wait-preview .subject .stat-text {font-size: 22px;}
+    .wait-preview .subject .textarea {padding-left: 15px;}
 }
 /* 快捷方式 */
 .wait-shortcut li { text-align: center; }

@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -22,7 +22,6 @@ use app\common\basics\Logic;
 use app\common\enum\LogGrowthEnum;
 use app\common\enum\LogIntegralEnum;
 use app\common\enum\LogWalletEnum;
-use app\common\model\addons\DistributionOrder;
 use app\common\model\log\LogGrowth;
 use app\common\model\log\LogIntegral;
 use app\common\model\log\LogWallet;
@@ -36,57 +35,12 @@ use app\common\utils\UrlUtils;
 class LogsLogic extends Logic
 {
     /**
-     * 佣金流水记录
-     *
-     * @author windy
-     * @param array $get
-     * @return array
-     */
-    public static function commission(array $get): array
-    {
-        self::setSearch([
-            '='        => ['status@DO.status'],
-            'datetime' => ['datetime@DO.create_time'],
-            'keyword'  => [
-                'orderSn'  => ['%like%', 'O.order_sn'],
-                'userSn'   => ['%like%', 'U.sn'],
-                'nickname' => ['%like%', 'U.nickname'],
-                'mobile'   => ['=', 'U.mobile']
-            ]
-        ]);
-
-        $lists = (new DistributionOrder())
-            ->field('DO.*,U.sn,U.avatar,U.nickname,U.mobile,O.order_sn')
-            ->alias('DO')
-            ->join('user U', 'U.id = DO.user_id')
-            ->join('order O', 'O.id = DO.order_id')
-            ->where(self::$searchWhere)
-            ->order('DO.id desc')
-            ->paginate([
-                'page'      => $get['page'] ?? 1,
-                'list_rows' => $get['limit'] ?? 20,
-                'var_page'  => 'page'
-            ])->toArray();
-
-        foreach ($lists['data'] as &$item) {
-            $item['avatar'] = UrlUtils::getAbsoluteUrl($item['avatar']);
-            unset($item['user_id']);
-            unset($item['order_id']);
-            unset($item['order_goods_id']);
-            unset($item['goods_id']);
-            unset($item['sku_id']);
-            unset($item['update_time']);
-        }
-
-        return ['count'=>$lists['total'], 'list'=>$lists['data']];
-    }
-
-    /**
      * 资金流水记录
      *
-     * @author windy
      * @param array $get
      * @return array
+     * @throws @\think\db\exception\DbException
+     * @author windy
      */
     public static function wallet(array $get): array
     {
@@ -127,9 +81,10 @@ class LogsLogic extends Logic
     /**
      * 积分流水记录
      *
-     * @author windy
      * @param array $get
      * @return array
+     * @throws @\think\db\exception\DbException
+     * @author windy
      */
     public static function integral(array $get): array
     {
@@ -170,9 +125,10 @@ class LogsLogic extends Logic
     /**
      * 成长值流水记录
      *
-     * @author windy
      * @param array $get
      * @return array
+     * @throws @\think\db\exception\DbException
+     * @author windy
      */
     public static function growth(array $get): array
     {

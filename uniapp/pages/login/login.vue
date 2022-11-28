@@ -50,8 +50,8 @@
 			<view class="button-item button-item--mobile" @click="onMobileLogin">登录</view>
 			<view class="u-flex u-row-between u-margin-tb-40">
 				<view class="u-font-28 u-color-lighter" @click="onSwitchLoginType" 
-					v-if="this.config.login_way && this.config.login_way.length >= 2">
-					{{loginType == 0 ? "账号密码登录" : "短信验证码登录"}}
+					v-if="config.login_way && config.login_way.length >= 2">
+					{{(loginType == 2) ? "账号密码登录" : "短信验证码登录"}}
 				</view>
 				<view v-else></view>
 				<view class="u-font-28 u-color-lighter" @click="$toPage('/pages/register/register')">注册账号</view>
@@ -97,7 +97,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -149,10 +149,18 @@
 				})
 			}
 			this.getConfigFun()
-			// #ifndef MP-WEIXIN
+			// 除小程序端/APP端
+			// #ifndef MP-WEIXIN || APP-PLUS
 				this.isClient = isClient()
+			
 				this.isWeixin = isWeixin()
-			//#endif
+			// #endif
+
+			// 只在APP端执行
+			// #ifdef APP-PLUS
+				this.isWeixin = false
+				this.isClient = isClient()
+			// #endif
 		},
 		computed: {
 			...mapState(['isLogin'])
@@ -168,7 +176,6 @@
 					if (result.code === 0) {
 						this.config = result.data
 						if (this.config.login_way.length > 0) {
-							console.log(result.data)
 							this.config.login_way = this.config.login_way.reverse()
 							this.loginType = parseInt(this.config.login_way[0])
 						}
@@ -215,20 +222,6 @@
 						this.$showToast(result.msg)
 					}
 				})
-			},
-			
-			/**
-			 * 取消登录
-			 */
-			onCancelLogin() {
-				uni.navigateBack({})
-			},
-			
-			/**
-			 * 切换登录方式[1=账号, 2=短信]
-			 */
-			onSwitchLoginType() {
-				this.loginType = this.loginType===1 ? 2 : 1
 			},
 			
 			/**
@@ -313,6 +306,20 @@
 						this.$showToast(result.msg)
 					}
 				})
+			},
+			
+			/**
+			 * 取消登录
+			 */
+			onCancelLogin() {
+				uni.navigateBack({})
+			},
+			
+			/**
+			 * 切换登录方式[1=账号, 2=短信]
+			 */
+			onSwitchLoginType() {
+				this.loginType = this.loginType===1 ? 2 : 1
 			},
 
 			/**

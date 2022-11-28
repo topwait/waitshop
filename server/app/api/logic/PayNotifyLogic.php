@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -18,8 +18,6 @@
 namespace app\api\logic;
 
 
-use app\api\service\DistributionServer;
-use app\api\service\TeamOrderServer;
 use app\common\basics\Logic;
 use app\common\enum\LogGrowthEnum;
 use app\common\enum\LogIntegralEnum;
@@ -27,16 +25,12 @@ use app\common\enum\LogWalletEnum;
 use app\common\enum\NoticeEnum;
 use app\common\enum\OrderEnum;
 use app\common\model\addons\RechargeOrder;
-use app\common\model\addons\Seckill;
-use app\common\model\addons\SeckillSku;
-use app\common\model\addons\TeamSku;
 use app\common\model\goods\Goods;
 use app\common\model\goods\GoodsSku;
 use app\common\model\log\LogGrowth;
 use app\common\model\log\LogIntegral;
 use app\common\model\log\LogWallet;
 use app\common\model\order\Order;
-use app\common\model\order\OrderDelivery;
 use app\common\model\user\User;
 use app\common\utils\ConfigUtils;
 use app\common\utils\TimeUtils;
@@ -203,39 +197,6 @@ class PayNotifyLogic extends Logic
 
             // 更新用户表的信息
             User::update($userData, ['id'=>$user['id']]);
-
-            // 普通订单分销发放
-            if ($order['order_type'] === OrderEnum::NORMAL_ORDER) {
-                DistributionServer::commission($order['id']);
-            }
-
-            // [营销扩展]: 拼团订单
-            if ($order['order_type'] == OrderEnum::TEAM_ORDER) {
-                TeamOrderServer::createTeam($order);
-                TeamSku::update([
-                    'team_stock'   => ['dec', $order['orderGoods'][0]['count']],
-                    'sales_volume' => ['inc', $order['orderGoods'][0]['count']]
-                ], [
-                    'team_id'  => $order['team_activity_id'],
-                    'goods_id' => $order['orderGoods'][0]['goods_id']
-                ]);
-            }
-
-            // [营销扩展]: 秒杀订单
-            if ($order['order_type'] == OrderEnum::SECKILL_ORDER) {
-                SeckillSku::update([
-                    'seckill_stock' => ['dec', $order['orderGoods'][0]['count']],
-                    'sales_volume'  => ['inc', $order['orderGoods'][0]['count']]
-                ], [
-                    'seckill_id' => $order['seckill_id'],
-                    'goods_id'   => $order['orderGoods'][0]['goods_id']
-                ]);
-
-                Seckill::update([
-                    'sales_volume' => ['inc', $order['orderGoods'][0]['count']],
-                    'update_time'  => time()
-                ], ['id'=>$order['seckill_id']]);
-            }
 
             // 消息通知
             $goodsName = $order['orderGoods'][0]['name'] ?? '商品';

@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -28,7 +28,6 @@ use app\common\model\log\LogIntegral;
 use app\common\model\log\LogSms;
 use app\common\model\log\LogWallet;
 use app\common\model\addons\CouponList;
-use app\common\model\addons\DistributionOrder;
 use app\common\model\store\StoreClerk;
 use app\common\model\user\User;
 use app\common\model\user\UserGrade;
@@ -191,11 +190,6 @@ class UserLogic extends Logic
     {
         return (new User())
             ->field(['id,nickname,integral,money,total_order_amount,total_recharge_amount,earnings'])
-            ->withAttr(['stayUnlock'=>function() use($userId) {
-                return (new DistributionOrder())
-                    ->where(['user_id'=>$userId, 'status'=>1])
-                    ->sum('earnings_money');
-            }])->append(['stayUnlock'])
             ->findOrEmpty($userId)->toArray();
     }
 

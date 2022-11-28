@@ -46,9 +46,19 @@
 			:show="showPayment"
 			:orderId="payOrderId"
 			:orderType="'recharge'"
-			@close="onClosePaymentFun"
-			@pay="onPaymentFun"
+			@close="onClosePayment"
+			@pay="onPayment"
 		></wait-popup-payment>
+		
+		<u-popup v-model="showResultPop" mode="center" border-radius="14" :closeable="true" @close="onResutlClose" :safe-area-inset-bottom="true">
+			<view class="index-recharge-result">
+				<view class="icon">
+					<u-icon name="checkbox-mark" size="48" color="#fff"></u-icon>
+				</view>
+				<view class="text">充值成功</view>
+				<view class="btn" @click="onResutlClose">好的，谢谢</view>
+			</view> 
+		</u-popup>
 
 	</view>
 </template>
@@ -59,7 +69,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -69,6 +79,8 @@
 	// +----------------------------------------------------------------------
 	// | Author: WaitShop Team <2474369941@qq.com>
 	// +----------------------------------------------------------------------
+	import {wxpay} from '@/utils/payment'
+	import {isClient} from '@/utils/tools'
 	export default {
 		data() {
 			return {
@@ -88,7 +100,10 @@
 				// 显示支付窗
 				showPayment: false,
 				// 待支付的订单
-				payOrderId: 0
+				payOrderId: 0,
+				
+				// 结果弹窗
+				showResultPop: false 
 			}
 		},
 		onLoad() {
@@ -120,7 +135,7 @@
 				const param = {money: money, client: 6, package_id:id}
 				this.$u.api.apiRechargeBuy(param).then(result => {
 					if (result.code === 0) {
-						this.payOrderId = result.data.order_id
+						this.payOrderId = parseInt(result.data.order_id)
 						this.showPayment = true
 					} else {
 						return this.$showToast("订单创建失败")
@@ -144,7 +159,7 @@
 				const param = {money: this.rechargeMoney, client: 6, package_id:0}
 				this.$u.api.apiRechargeBuy(param).then(result => {
 					if (result.code === 0) {
-						this.payOrderId = result.data.order_id
+						this.payOrderId = parseInt(result.data.order_id)
 						this.showPayment = true
 					} else {
 						return this.$showToast("订单创建失败")
@@ -159,34 +174,46 @@
 				this.showPayment = false
 			},
 			
+			// 关闭结果弹窗
+			onResutlClose() {
+				this.showResultPop = false
+			},
+			
 			/**
 			 * 去充值支付
 			 */
 			onPayment(e) {
 				const {payWayType, orderId} = e
+				const that = this
 				this.showPayment = false
 				uni.showLoading({title: '处理中'});
 				setTimeout(function(){
 					uni.hideLoading();
-					this.$u.api.apiPaymentPay({
-						from: "order", 
-						client: 6,
+					that.$u.api.apiPaymentPay({
+						from: "recharge", 
+						client: isClient(),
 						pay_way: payWayType,
-						order_id: orderId
-					}).then(result => {
+						order_id: orderId 
+					}).then(({ code, msg, data }) => {
 						switch(code) {
 							case 1:
-								this.$showToast(msg)
+								that.$showToast(msg)
 								break;
 							case 2200: //微信支付
 								wxpay(data).then(res => {
-									uni.navigateTo({
-										url: '/pages/order/pay_results/pay_results?id='+this.orderId
-									})
+									if (res.errMsg === 'requestPayment:ok') {
+										that.getRechargeIndex()
+										that.showResultPop = true
+									}
 								})
 								break;
 							case 2300: //支付宝支付
-								// alipay(data).then(res => {})
+								alipay(data).then(res => {
+									if (res.errMsg === 'requestPayment:ok') {
+										that.getRechargeIndex()
+										that.showResultPop = true
+									}
+								})
 								break;
 						}
 					})
@@ -245,6 +272,37 @@
 			border-radius: 10rpx;
 			background: #FFFFFF;
 			border: 1px solid #ff2c3c;
+		}
+	}
+	
+	// 充值结果样式
+	.index-recharge-result {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		width: 500rpx;
+		padding: 30rpx 0;
+		.icon {
+			margin-top: 30rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100rpx;
+			height: 100rpx;
+			border-radius: 50%;
+			background-color: #18B566;
+		}
+		.text {
+			font-size: 32rpx;
+			font-weight: bold;
+			color: #000;
+			margin: 10rpx 0 20px 0;
+		}
+		.btn {
+			color: #fff;
+			padding: 14rpx 140rpx;
+			border-radius: 50rpx;
+			background-color: #FF2C3C;
 		}
 	}
 	

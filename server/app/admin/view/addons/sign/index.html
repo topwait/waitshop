@@ -83,7 +83,6 @@
 
         // 更新配置
         form.on("submit(addForm)", function(data){
-            console.log(data.field)
             layer.confirm("确定保存当前配置吗?", function(index) {
                 wait.ajax({
                     url: "{:url('addons.Sign/setting')}",
@@ -136,11 +135,13 @@
                     area: ["400px", "330px"],
                     success: function (layero, index) {
                         layero.layui.form.on("submit(addForm)", function(data){
+                            wait.locking(this);
                             wait.ajax({
                                 url: "{:url('addons.Sign/add')}",
                                 type: "POST",
                                 data: data.field
                             }).then((res) => {
+                                wait.unlock(this);
                                 if (res.code === 0) {
                                     layer.msg(res.msg, {icon: 1, time: 1000});
                                     table.reload("wait-table-lists", {
@@ -161,12 +162,14 @@
                     area: ["400px", "330px"],
                     success: function (layero, index) {
                         layero.layui.form.on("submit(addForm)", function(data){
+                            wait.locking(this);
                             data.field['id'] = obj.data.id;
                             wait.ajax({
                                 url: "{:url('addons.Sign/edit')}",
                                 type: "POST",
                                 data: data.field
                             }).then((res) => {
+                                wait.unlock(this);
                                 if (res.code === 0) {
                                     layer.msg(res.msg, {icon: 1, time: 1000});
                                     table.reload("wait-table-lists");

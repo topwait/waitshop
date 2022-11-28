@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -18,10 +18,8 @@
 namespace app\api\controller;
 
 
-use app\api\logic\addons\SeckillLogic;
 use app\api\logic\PaymentLogic;
 use app\api\logic\PayNotifyLogic;
-use app\api\service\TeamOrderServer;
 use app\api\validate\PaymentValidate;
 use app\api\validate\RequestValidate;
 use app\common\basics\Api;
@@ -61,7 +59,7 @@ class Payment extends Api
         $payWay  = $this->postData('pay_way');
 
         // 2、查询订单
-        $order = [];
+        $order = null;
         switch ($from) {
             case 'order':
                 $order = (new Order())->field(true)
@@ -70,6 +68,9 @@ class Payment extends Api
                     ->findOrEmpty()->toArray();
                 break;
             case 'recharge':
+                $order = (new RechargeOrder())->field(true)
+                    ->where(['id'=>intval($orderId)])
+                    ->findOrEmpty()->toArray();
                 break;
             default:
                 return JsonUtils::error('支付场景异常');
@@ -80,7 +81,7 @@ class Payment extends Api
             return JsonUtils::error('订单不存在');
         }
 
-        if ($order['order_status'] == OrderEnum::STATUS_CLOSE) {
+        if ($from!=='recharge' && $order['order_status'] == OrderEnum::STATUS_CLOSE) {
             return JsonUtils::error('订单已关闭');
         }
 
@@ -98,16 +99,6 @@ class Payment extends Api
             OrderEnum::PAY_WAY_ALI]))
         {
             return JsonUtils::error('支付方式不存在');
-        }
-
-        try {
-            if ($order['order_type'] == OrderEnum::TEAM_ORDER) {
-                TeamOrderServer::checkTeamStatus($order['user_id'], $order['team_activity_id'], $order['team_found_id']);
-            } elseif ($order['order_type'] == OrderEnum::SECKILL_ORDER) {
-                SeckillLogic::checkSeckillStatus($order['seckill_id'],  $order['orderGoods'][0]);
-            }
-        } catch (Exception $e) {
-            return JsonUtils::error($e->getMessage());
         }
 
         // 4、更新支付方式

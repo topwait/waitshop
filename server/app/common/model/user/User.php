@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -43,13 +43,6 @@ class User extends Models
         'growth_value'          => 'int',     //成长值
         'total_order_amount'    => 'float',   //累计消费金额
         'total_recharge_amount' => 'float',   //累计充值金额
-        'first_leader'          => 'int',     //上级一级
-        'second_leader'         => 'int',     //上级二级
-        'third_leader'          => 'int',     //上三级
-        'ancestor_relation'     => 'string',  //关系链
-        'distribution_code'     => 'string',  //分销邀请码
-        'distribution_freeze'   => 'int',     //是否冻结分销[0=否,1=是]
-        'is_distribution'       => 'int',     //是否是分销会员[0=否,1=是]
         'is_disable'            => 'int',     //是否禁用[0=否,1=是]
         'is_delete'             => 'int',     //是否删除[0=否,1=是]
         'create_time'           => 'int',     //创建时间

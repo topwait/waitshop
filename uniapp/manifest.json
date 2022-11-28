@@ -1,6 +1,6 @@
 {
     "name" : "WaitShop开源商城系统",
-    "appid" : "__UNI__203A34A",
+    "appid" : "__UNI__0F254F5",
     "description" : "WaitShop开源新零售电商系统",
     "versionName" : "2.0.10",
     "versionCode" : 2010,
@@ -41,9 +41,16 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            },
+            "splashscreen" : {
+                "useOriginalMsgbox" : true
+            }
         }
     },
     /* 快应用特有相关 */

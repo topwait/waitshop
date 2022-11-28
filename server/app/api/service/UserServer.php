@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -21,9 +21,7 @@ namespace app\api\service;
 use app\common\enum\ClientEnum;
 use app\common\model\user\User;
 use app\common\model\user\UserAuth;
-use app\common\utils\ConfigUtils;
 use app\common\utils\TokenUtils;
-use think\Exception;
 
 /**
  * 用户服务类
@@ -46,10 +44,6 @@ class UserServer
             $response = self::getResponse($loginRes, $client);
             $avatarUrl = download_file($response['avatarUrl'],'uploads/user/avatar/', 'png');
 
-            // 全员分销
-            $isDistribution = ConfigUtils::get('distribution', 'apply_condition');
-            $isDistribution = intval($isDistribution) === 1 ? 1 : 0;
-
             // 创建新用户资料
             $userModel = new User();
             $user = User::create([
@@ -62,9 +56,7 @@ class UserServer
                 'login_ip'    => request()->ip(),
                 'login_time'  => time(),
                 'update_time' => time(),
-                'create_time' => time(),
-                'is_distribution'   => $isDistribution,
-                'distribution_code' => make_invite_code($userModel)
+                'create_time' => time()
             ]);
 
             // 创建用户客户端

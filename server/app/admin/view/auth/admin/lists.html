@@ -70,11 +70,13 @@
                     area: ["510px", "540px"],
                     success: function (layero, index) {
                         layero.layui.form.on("submit(addForm)", function(data){
+                            wait.locking(this);
                             wait.ajax({
                                 url: "{:url('auth.Admin/add')}",
                                 type: "POST",
                                 data: data.field
                             }).then((res) => {
+                                wait.unlock(this);
                                 if (res.code === 0) {
                                     layer.msg(res.msg, {icon: 1, time: 1000});
                                     table.reload("wait-table-lists", {
@@ -98,12 +100,14 @@
                     area: ["510px", "540px"],
                     success: function (layero, index) {
                         layero.layui.form.on("submit(addForm)", function(data){
+                            wait.locking(this);
                             data.field['id'] = obj.data.id;
                             wait.ajax({
                                 url: "{:url('auth.Admin/edit')}",
                                 type: "POST",
                                 data: data.field
                             }).then((res) => {
+                                wait.unlock(this);
                                 if (res.code === 0) {
                                     layer.msg(res.msg, {icon: 1, time: 1000});
                                     table.reload("wait-table-lists");

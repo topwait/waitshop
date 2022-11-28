@@ -46,7 +46,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -112,9 +112,9 @@
 				if (this.orderType === 'recharge') {
 					this.$u.api.apiRechargeOrder(param).then(result => {
 						this.orderDetail = result.data
-						if (this.orderDetail.extend.order_close_time <= 0) {
-							this.isOvertime = true
-						}
+						// if (this.orderDetail.extend.order_close_time <= 0) {
+						// 	this.isOvertime = true
+						// }
 					})
 				} else {
 					this.$u.api.apiOrderDetail(param).then(result => {

@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -94,5 +94,61 @@ class Models extends Model
             }
             return implode(',', $data);
         }
+    }
+
+    /**
+     * 处理IDEA的警告
+     *
+     * @param $join
+     * @param $condition
+     * @return $this
+     */
+    public function join($join, $condition): Models
+    {
+        unset($join);
+        unset($condition);
+        return $this;
+    }
+
+    /**
+     * 处理IDEA的警告
+     *
+     * @param $join
+     * @param $condition
+     * @return $this
+     */
+    public function leftJoin($join, $condition): Models
+    {
+        unset($join);
+        unset($condition);
+        return $this;
+    }
+
+    /**
+     * 处理IDEA的警告
+     *
+     * @param $join
+     * @param $condition
+     * @return $this
+     */
+    public function rightJoin($join, $condition): Models
+    {
+        unset($join);
+        unset($condition);
+        return $this;
+    }
+
+    /**
+     * 处理IDEA的警告
+     *
+     * @param $field
+     * @param $value
+     * @return $this
+     */
+    public function exp($field, $value): Models
+    {
+        unset($field);
+        unset($value);
+        return $this;
     }
 }

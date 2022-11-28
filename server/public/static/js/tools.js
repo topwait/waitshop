@@ -332,4 +332,24 @@ let wait = {
             });
         });
     }
+    /**
+     * 锁定按钮
+     * @author windy
+     * @param options
+     */
+    ,locking: function (options) {
+        let icon = 'layui-icon layui-icon-loading ';
+        let anim = 'layui-anim layui-anim-rotate layui-anim-loop';
+        $(options).addClass('layui-btn-forbid');
+        $(options).prepend('<i class="'+icon+ anim +'" style="font-size:13px;"></i> ');
+    }
+    /**
+     * 解锁按钮
+     * @author windy
+     * @param options
+     */
+    ,unlock: function (options) {
+        $(options).removeClass('layui-btn-forbid');
+        $(options).children('i').remove();
+    }
 };

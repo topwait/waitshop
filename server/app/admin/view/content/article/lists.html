@@ -122,6 +122,7 @@
                     area: ["1000px", "90%"],
                     success: function (layero, index) {
                         layero.layui.form.on("submit(addForm)", function(data){
+                            wait.locking(this);
                             let content = layero.tinymce.activeEditor.getContent();
                             content = content.replace("<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n", '');
                             content = content.replace("</body>\n</html>", '');
@@ -131,6 +132,7 @@
                                 type: "POST",
                                 data: data.field
                             }).then((res) => {
+                                wait.unlock(this);
                                 if (res.code === 0) {
                                     layer.msg(res.msg, {icon: 1, time: 1000});
                                     table.reload("wait-table-lists", {
@@ -153,6 +155,7 @@
                     area: ["95%", "95%"],
                     success: function (layero, index) {
                         layero.layui.form.on("submit(addForm)", function(data){
+                            wait.locking(this);
                             let content = layero.tinymce.activeEditor.getContent();
                             content = content.replace("<!DOCTYPE html>\n<html>\n<head>\n</head>\n<body>\n", '');
                             content = content.replace("</body>\n</html>", '');
@@ -163,6 +166,7 @@
                                 type: "POST",
                                 data: data.field
                             }).then((res) => {
+                                wait.unlock(this);
                                 if (res.code === 0) {
                                     layer.msg(res.msg, {icon: 1, time: 1000});
                                     table.reload("wait-table-lists");

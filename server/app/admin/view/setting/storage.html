@@ -19,8 +19,6 @@
                 <div class="layui-input-block">
                     <input type="radio" name="storage" lay-filter="storage" value="local" title="本地存储" {if $storage.default=="local"}checked{/if}>
                     <input type="radio" name="storage" lay-filter="storage" value="qiniu" title="七牛云存储" {if $storage.default=="qiniu"}checked{/if}>
-                    <input type="radio" name="storage" lay-filter="storage" value="aliyun" title="阿里云OSS" {if $storage.default=="aliyun"}checked{/if}>
-                    <input type="radio" name="storage" lay-filter="storage" value="qcloud" title="腾讯云COS" {if $storage.default=="qcloud"}checked{/if}>
                 </div>
             </div>
 
@@ -48,68 +46,6 @@
                     <label for="qiniu_domain" class="layui-form-label">空间域名 Domain</label>
                     <div class="layui-input-block">
                         <input type="text" name="qiniu_domain" id="qiniu_domain" value="{$storage.engine.qiniu.domain}" class="layui-input" autocomplete="off">
-                    </div>
-                </div>
-            </div>
-
-            <!-- 阿里云OSS -->
-            <div class="engine aliyun {$storage.default==='aliyun' ? 'checked' : ''}">
-                <div class="layui-form-item">
-                    <label for="aliyun_bucket" class="layui-form-label">存储空间名称 Bucket</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="aliyun_bucket" value="{$storage.engine.aliyun.bucket}" id="aliyun_bucket" class="layui-input" autocomplete="off">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="aliyun_ak" class="layui-form-label">AccessKeyId</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="aliyun_ak" value="{$storage.engine.aliyun.access_key_id}" id="aliyun_ak" class="layui-input" autocomplete="off">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="aliyun_sk" class="layui-form-label">AccessKeySecret</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="aliyun_sk" value="{$storage.engine.aliyun.access_key_secret}" id="aliyun_sk" class="layui-input" autocomplete="off">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="aliyun_domain" class="layui-form-label">空间域名 Domain</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="aliyun_domain" value="{$storage.engine.aliyun.domain}" id="aliyun_domain" class="layui-input" autocomplete="off">
-                    </div>
-                </div>
-            </div>
-
-            <!-- 腾讯云COS -->
-            <div class="engine qcloud {$storage.default==='qcloud' ? 'checked' : ''}">
-                <div class="layui-form-item">
-                    <label for="qcloud_bucket" class="layui-form-label">存储空间名称 Bucket</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="qcloud_bucket" value="{$storage.engine.qcloud.bucket}" id="qcloud_bucket" class="layui-input" autocomplete="off">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="qcloud_region" class="layui-form-label">所属地域 Region</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="qcloud_region" value="{$storage.engine.qcloud.region}" id="qcloud_region" class="layui-input" autocomplete="off">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="qcloud_ak" class="layui-form-label">SecretId</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="qcloud_ak" value="{$storage.engine.qcloud.secret_id}" id="qcloud_ak" class="layui-input" autocomplete="off">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="qcloud_sk" class="layui-form-label">SecretKey</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="qcloud_sk" value="{$storage.engine.qcloud.secret_key}" id="qcloud_sk" class="layui-input" autocomplete="off">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="qcloud_domain" class="layui-form-label">空间域名 Domain</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="qcloud_domain" value="{$storage.engine.qcloud.domain}" id="qcloud_domain" class="layui-input" autocomplete="off">
                     </div>
                 </div>
             </div>

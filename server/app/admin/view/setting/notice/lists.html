@@ -65,6 +65,7 @@
                area: ["750px", "680px"],
                success: function (layero, index) {
                    layero.layui.form.on("submit(addForm)", function(data){
+                       wait.locking(this);
                        data.field["id"] = id;
                        data.field["scene"] = scene;
                        wait.ajax({
@@ -72,6 +73,7 @@
                            type: "POST",
                            data: data.field
                        }).then((res) => {
+                           wait.unlock(this);
                            if (res.code === 0) {
                                layer.msg(res.msg, {icon: 1, time: 1000});
                                setTimeout(function () {
@@ -81,7 +83,6 @@
                            } else {
                                layer.msg(res.msg, {icon: 2, time: 1000});
                            }
-
                        });
                    });
                }

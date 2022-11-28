@@ -183,7 +183,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -287,8 +287,8 @@
 					}
 					// 发货方式
 					this.deliveryMethod = result.data.deliveryMethod;
-					if (!this.deliveryMethod.includes('1')) {
-						this.deliveryType = 2
+					if (!this.deliveryMethod.length >= 2) {
+						this.deliveryType = 1
 					}
 					// 优惠券信息
 					this.couponListId = result.data.couponListId
@@ -492,7 +492,7 @@
 						this.isHandler = true
 						this.getSubscribeMessage()
 							.catch(err => {
-								console.log(err)
+								//console.log(err)
 							}).finally(() => {
 								this.handleOrderSubmit(orderFrom)
 							})
@@ -550,6 +550,8 @@
 								uni.redirectTo({
 									url: '/pages/order/pay_results/pay_results?id='+this.orderId
 								})
+							}).catch(err => {
+								this.$showToast(err)
 							})
 							break;
 						case 2300: //支付宝支付

@@ -51,6 +51,7 @@ layui.use(["jquery", "element"], function() {
             }
             // 跳转页面
             iframeNode.attr("src", iframeUrls);
+            loading();
             return true;
         }
     });
@@ -72,6 +73,7 @@ layui.use(["jquery", "element"], function() {
             $(this).addClass("active");
             iframeUrls = $(this).attr("data-url");
             iframeNode.attr("src", iframeUrls);
+            loading();
         }
     });
 
@@ -151,7 +153,8 @@ layui.use(["jquery", "element"], function() {
 
     /** 刷新当前页面 **/
     tplHeaderNode.on("click", ".refresh", function () {
-        iframeNode.attr("src", iframeNode.attr("src"))
+        iframeNode.attr("src", iframeNode.attr("src"));
+        loading();
     });
 
     /** 点击按钮全屏或退出全屏 **/
@@ -178,4 +181,27 @@ layui.use(["jquery", "element"], function() {
             $(".fullscreen").children("i").eq(0).addClass("layui-icon-screen-restore");
         }
     });
+
+    /**
+     * 加载动画
+     */
+    function loading() {
+        let load = '<div class="wait-loading">' +
+                '<div class="ball-loader">' +
+                    '<span></span><span></span>' +
+                    '<span></span><span></span>' +
+                '</div>' +
+            '</div>';
+
+        if (iframeNode.parent().find('.wait-loading').length <= 0) {
+            iframeNode.parent().append(load);
+        }
+
+        let loadNode = iframeNode.parent().find('.wait-loading');
+        iframeNode.on('load', function() {
+            loadNode.fadeOut(1000, function() {
+                loadNode.remove();
+            });
+        });
+    }
 });

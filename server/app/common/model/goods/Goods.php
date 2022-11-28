@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -48,7 +48,6 @@ class Goods extends Models
         'give_integral'       => 'int',     //赠送积分
         'sales_volume'        => 'int',     //商品销量
         'click_count'         => 'int',     //商品点击量
-        'is_distribution'     => 'int',     //是否参与分销[0=否, 1=是]
         'is_integral'         => 'int',     //积分抵扣[0=否, 1=是]
         'is_show'             => 'int',     //是否上架
         'is_new'              => 'int',     //新品推荐

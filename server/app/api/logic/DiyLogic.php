@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -20,16 +20,12 @@ namespace app\api\logic;
 
 use app\common\basics\Logic;
 use app\common\enum\CouponEnum;
-use app\common\enum\TeamEnum;
 use app\common\model\addons\Coupon;
 use app\common\model\addons\CouponList;
-use app\common\model\addons\Seckill;
-use app\common\model\addons\Team;
 use app\common\model\goods\Goods;
 use app\common\model\diy\DiyPage;
 use app\common\model\goods\GoodsCategory;
 use app\common\utils\UrlUtils;
-use think\Exception;
 
 /**
  * 页面设计接口-逻辑层
@@ -60,12 +56,6 @@ class DiyLogic extends Logic
             switch ($item['type']) {
                 case 'goods':
                     $items[$key]['data'] = self::getGoodsList($item);
-                    break;
-                case 'teamGoods':
-                    $items[$key]['data'] = self::getTeamGoodsList($item);
-                    break;
-                case 'seckillGoods':
-                    $items[$key]['data'] = self::getSeckillGoodsList($item);
                     break;
                 case 'coupon':
                     $items[$key]['data'] = self::getCoupon($item, $userId);
@@ -116,90 +106,6 @@ class DiyLogic extends Logic
             }
 
             return $model->field(['id,name,image,min_price,market_price,sales_volume'])
-                ->where($where)
-                ->limit((int)$item['config']['auto']['showNum'])
-                ->order($sort[$item['config']['auto']['goodsSort']])
-                ->select()->toArray();
-        }
-    }
-
-    /**
-     * 拼团数据
-     *
-     * @author windy
-     * @param array $item
-     * @return array
-     * @throws @\think\db\exception\DataNotFoundException
-     * @throws @\think\db\exception\DbException
-     * @throws @\think\db\exception\ModelNotFoundException
-     */
-    private static function getTeamGoodsList(array $item): array
-    {
-        $model = new Team();
-        if ($item['config']['source'] === 'choice') {
-            // 手动: 获取指定数据
-            $ids = array_column($item['data'], 'id');
-            return $model->field(['id,goods_id,name,image,min_team_price,total_join_number'])
-                ->whereIn('id', $ids)
-                ->select()->toArray();
-        } else {
-            // 自动: 获取随机数据
-            $sort = [
-                'all'   => ['id' => 'desc'],
-                'sales' => ['total_found_number' => 'desc'],
-                'price' => ['min_team_price' => 'asc']
-            ];
-
-            $where = [
-                ['start_time', '<', time()],
-                ['end_time', '>', time()],
-                ['status', '=', TeamEnum::TEAM_CONDUCT_IN],
-                ['is_delete', '=', 0]
-            ];
-
-            return $model->field(['id,goods_id,name,image,min_team_price,total_join_number'])
-                ->where($where)
-                ->limit((int)$item['config']['auto']['showNum'])
-                ->order($sort[$item['config']['auto']['goodsSort']])
-                ->select()->toArray();
-        }
-    }
-
-    /**
-     * 秒杀商品数据
-     *
-     * @author windy
-     * @param array $item
-     * @return array
-     * @throws @\think\db\exception\DataNotFoundException
-     * @throws @\think\db\exception\DbException
-     * @throws @\think\db\exception\ModelNotFoundException
-     */
-    private static function getSeckillGoodsList(array $item): array
-    {
-        $model = new Seckill();
-        if ($item['config']['source'] === 'choice') {
-            // 手动: 获取指定数据
-            $ids = array_column($item['data'], 'id');
-            return $model->field(['id,goods_id,name,image,min_seckill_price'])
-                ->whereIn('id', $ids)
-                ->select()->toArray();
-        } else {
-            // 自动: 获取随机数据
-            $sort = [
-                'all'   => ['id' => 'desc'],
-                'sales' => ['sales_volume' => 'desc'],
-                'price' => ['min_seckill_price' => 'asc']
-            ];
-
-            $where = [
-                ['start_time', '<', time()],
-                ['end_time', '>', time()],
-                ['is_end', '=', 0],
-                ['is_delete', '=', 0]
-            ];
-
-            return $model->field(['id,goods_id,name,image,min_seckill_price,sales_volume'])
                 ->where($where)
                 ->limit((int)$item['config']['auto']['showNum'])
                 ->order($sort[$item['config']['auto']['goodsSort']])

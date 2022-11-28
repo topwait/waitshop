@@ -55,7 +55,7 @@
                         <p class="mt6">5．本程本身不是百分百的完善，如因使用过程中发现漏洞导致的损失，我们概不承担任何责任，请自行测试好再进行上线。</p>
                         <br><br>
                         <p class="mt6">gitee:   https://gitee.com/wafts/WaitShop</p>
-                        <p class="mt6">github:  https://github.com/miniWorlds/waitshop</p>
+                        <p class="mt6">github:  https://github.com/topwait/waitshop</p>
                         <p class="mt6">官方网站: https://www.waitshop.cn</p>
                         <p class="mt6">-----------------------------------------------------</p>
                         <p class="mt6">邮箱: 2474369941@qq.com</p>

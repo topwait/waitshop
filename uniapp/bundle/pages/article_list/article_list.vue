@@ -20,7 +20,7 @@
 							<view class="title u-line-2">{{item.title}}</view>
 							<view class="intro u-line-2">{{item.intro}}</view>
 						</view>
-						<u-image :lazy-load="true" width="240rpx" height="180rpx" :src="item.image"></u-image>
+						<u-image :lazy-load="true" width="240rpx" height="180rpx" :src="item.image" style="flex-shrink: 0;"></u-image>
 					</view>
 					<view class="u-flex u-row-between u-margin-top-18">
 						<view class="u-font-24 u-color-muted">发布时间: {{item.create_time}}</view>
@@ -39,7 +39,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售

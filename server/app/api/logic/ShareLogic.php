@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -18,11 +18,8 @@
 namespace app\api\logic;
 
 
-use app\admin\controller\addons\team\TeamActivity;
 use app\common\basics\Logic;
 use app\common\enum\ClientEnum;
-use app\common\model\addons\Seckill;
-use app\common\model\addons\Team;
 use app\common\model\goods\Goods;
 use app\common\model\user\User;
 use app\common\utils\UrlUtils;
@@ -105,7 +102,7 @@ class ShareLogic extends Logic
             self::writeImg($canvas, public_path() . $headPath, $config['avatar'], true);
             self::writeImg($canvas, public_path() . $qrPath, $config['qr']);
             self::writeText($canvas, $user['nickname'], $config['nickname']);
-            self::writeText($canvas, '世界那么大我想去看看', $config['title']);
+            self::writeText($canvas, '邀请您一起来赚大钱', $config['title']);
             self::writeText($canvas, '长按识别二维码 >>', $config['notice']);
 
             // 合成图片
@@ -129,23 +126,24 @@ class ShareLogic extends Logic
     /**
      * 生成商品分享
      *
-     * @author windy
+     * @param string $type (类型: goods)
      * @param int $goodsId (商品ID)
-     * @param int $userId (用户ID)
-     * @param int $client (客户端)
-     * @param string $url (调整地址)
+     * @param int $userId  (用户ID)
+     * @param int $client  (客户端)
+     * @param string $url  (调整地址)
      * @return bool|array
+     * @author windy
      */
-    public static function goodsPoster(int $goodsId, int $userId, int $client, string $url)
+    public static function goodsPoster(string $type, int $goodsId, int $userId, int $client, string $url)
     {
         try {
             // 设置配置
             $fontPath = public_path() . '/fonts/SourceHanSansCN-Regular.otf';
             $config = [
+                'image'         => ['w' => 560, 'h' => 560, 'x' => 40, 'y' => 100],
                 'avatar'        => ['w' => 64, 'h' => 64, 'x' => 40, 'y' => 20],
                 'nickname'      => ['color' => '#555555', 'font-family' => $fontPath, 'font-size' => 19, 'x' => 120, 'y' => 60],
                 'title'         => ['color' => '#333333', 'font-family' => $fontPath, 'font-size' => 20, 'w' => 360, 'x' => 40, 'y' => 785],
-                'image'         => ['w' => 560, 'h' => 560, 'x' => 40, 'y' => 100],
                 'sell_symbol'   => ['color' => '#FF2C3C', 'font-family' => $fontPath, 'font-size' => 22, 'w' => 140, 'x' => 40, 'y' => 722],
                 'sell_price'    => ['color' => '#FF2C3C', 'font-family' => $fontPath, 'font-size' => 30, 'w' => 140, 'x' => 66, 'y' => 722],
                 'market_price'  => ['color' => '#999999', 'font-family' => $fontPath, 'font-size' => 20, 'w' => 140, 'x' => 180, 'y' => 722],
@@ -157,7 +155,12 @@ class ShareLogic extends Logic
             $user = (new User())->findOrEmpty($userId)->toArray();
 
             // 获取商品
-            $goods =(new Goods())->findOrEmpty($goodsId)->toArray();
+            $goods = ['id'=>0, 'name'=>'', 'image'=>'', 'min_price'=>0, 'max_price'=>0];
+            switch ($type) {
+                case 'goods':
+                    $goods = (new Goods())->field('id,name,image,min_price as min_price,market_price as max_price')->findOrEmpty($goodsId)->toArray();
+                    break;
+            }
 
             // 存储路径
             $headPath = UrlUtils::getRelativeUrl($user['avatar']);
@@ -179,14 +182,14 @@ class ShareLogic extends Logic
                     break;
                 case ClientEnum::OA:
                 case ClientEnum::H5:
-                    $params = ['id'=>$goodsId, 'invite_code'=>$user['distribution_code']];
-                    $reqUrl = url($url, $params)->domain(true);
+                    $params = ['goods_id'=>$goodsId, 'invite_code'=>$user['distribution_code']];
+                    $reqUrl = url($url, $params,'')->domain(true);
                     self::makeWebQrCode($qrPath, $reqUrl);
                     break;
                 case ClientEnum::IOS:
                 case ClientEnum::ANDROID:
-                    $params = ['id'=>$goodsId, 'invite_code'=>$user['distribution_code'], 'app'=>1];
-                    $reqUrl = url($url, $params)->domain(true);
+                    $params = ['goods_id'=>$goodsId, 'invite_code'=>$user['distribution_code'], 'app'=>1];
+                    $reqUrl = url($url, $params, '')->domain(true);
                     self::makeWebQrCode($qrPath, $reqUrl);
             }
 
@@ -199,201 +202,7 @@ class ShareLogic extends Logic
             self::writeText($canvas, '长按识别二维码', $config['notice']);
             self::writeText($canvas, '￥', $config['sell_symbol']);
             self::writeText($canvas, $goods['min_price'], $config['sell_price']);
-            self::writeText($canvas,  '￥'.$goods['market_price'], $config['market_price']);
-
-            $confTitle = $config['title'];
-            $goodsName = auto_adapt($confTitle['font-size'], 0, $confTitle['font-family'], $goods['name'], $confTitle['w'], $confTitle['y'], getimagesize($bgPath));
-            self::writeText($canvas, $goodsName, $config['title']);
-
-            // 合成图片
-            imagepng($canvas, public_path() . $savePath);
-            unlink(public_path() . $qrPath);
-
-            // 转base64
-            $base64 = image_to_base64(public_path() . $savePath);
-
-            // 删除原件
-            unlink(public_path() . $savePath);
-
-            // 返回结果
-            return ['url' => $base64];
-        } catch (Exception $e) {
-            static::$error = $e->getMessage();
-            return false;
-        }
-    }
-
-    /**
-     * 生成拼团分享
-     *
-     * @author windy
-     * @param int $teamId (拼团活动ID)
-     * @param int $userId (用户ID)
-     * @param int $client (客户端)
-     * @param string $url (调整地址)
-     * @return bool|array
-     */
-    public static function teamPoster(int $teamId, int $userId, int $client, string $url)
-    {
-        try {
-            // 设置配置
-            $fontPath = public_path() . '/fonts/SourceHanSansCN-Regular.otf';
-            $config = [
-                'avatar'        => ['w' => 64, 'h' => 64, 'x' => 40, 'y' => 20],
-                'nickname'      => ['color' => '#555555', 'font-family' => $fontPath, 'font-size' => 19, 'x' => 120, 'y' => 60],
-                'title'         => ['color' => '#333333', 'font-family' => $fontPath, 'font-size' => 20, 'w' => 360, 'x' => 40, 'y' => 785],
-                'image'         => ['w' => 560, 'h' => 560, 'x' => 40, 'y' => 100],
-                'sell_symbol'   => ['color' => '#FF2C3C', 'font-family' => $fontPath, 'font-size' => 22, 'w' => 140, 'x' => 40, 'y' => 722],
-                'sell_price'    => ['color' => '#FF2C3C', 'font-family' => $fontPath, 'font-size' => 30, 'w' => 140, 'x' => 66, 'y' => 722],
-                'market_price'  => ['color' => '#999999', 'font-family' => $fontPath, 'font-size' => 20, 'w' => 140, 'x' => 180, 'y' => 722],
-                'notice'        => ['color' => '#888888', 'font-family' => $fontPath, 'font-size' => 18, 'x' => 432, 'y' => 895],
-                'qr'            => ['w' => 165,'h' => 165, 'x' => 436, 'y' => 700]
-            ];
-
-            // 获取用户
-            $user = (new User())->findOrEmpty($userId)->toArray();
-
-            // 获取商品
-            $goods =(new Team())->findOrEmpty($teamId)->toArray();
-
-            // 存储路径
-            $headPath = UrlUtils::getRelativeUrl($user['avatar']);
-            $rootPath = 'uploads/temp/';
-            $savePath = 'uploads/temp/'.md5($client.$goods['id'].$userId).'.png';
-            $qrPath   = 'uploads/temp/'.md5($client.$goods['id'].$user['distribution_code']).'.png';
-            $bgPath   = public_path().'static/images/share_goods_bg.png';
-
-            // 创建目录
-            if(!file_exists(public_path().$rootPath)) {
-                mkdir(public_path().$rootPath,0777,true);
-            }
-
-            // 生成二维码
-            switch ($client) {
-                case ClientEnum::MNP:
-                    $fileName = md5($client.$goods['id'].$user['distribution_code']).'.png';
-                    self::makeMnpQrCode($rootPath, $fileName, $user['distribution_code'], $url);
-                    break;
-                case ClientEnum::OA:
-                case ClientEnum::H5:
-                    $params = ['id'=>$teamId, 'invite_code'=>$user['distribution_code']];
-                    $reqUrl = url($url, $params)->domain(true);
-                    self::makeWebQrCode($qrPath, $reqUrl);
-                    break;
-                case ClientEnum::IOS:
-                case ClientEnum::ANDROID:
-                    $params = ['id'=>$teamId, 'invite_code'=>$user['distribution_code'], 'app'=>1];
-                    $reqUrl = url($url, $params)->domain(true);
-                    self::makeWebQrCode($qrPath, $reqUrl);
-            }
-
-            // 创建海报图
-            $canvas = imagecreatefromstring(file_get_contents($bgPath));
-            self::writeImg($canvas, public_path() . $headPath, $config['avatar'], true);
-            self::writeImg($canvas, public_path() . $qrPath, $config['qr']);
-            self::writeImg($canvas, public_path() . UrlUtils::getRelativeUrl($goods['image']), $config['image']);
-            self::writeText($canvas, '来自'.$user['nickname'].'的分享', $config['nickname']);
-            self::writeText($canvas, '长按识别二维码', $config['notice']);
-            self::writeText($canvas, '￥', $config['sell_symbol']);
-            self::writeText($canvas, $goods['min_team_price'], $config['sell_price']);
-            self::writeText($canvas,  '￥'.$goods['max_team_price'], $config['market_price']);
-
-            $confTitle = $config['title'];
-            $goodsName = auto_adapt($confTitle['font-size'], 0, $confTitle['font-family'], $goods['name'], $confTitle['w'], $confTitle['y'], getimagesize($bgPath));
-            self::writeText($canvas, $goodsName, $config['title']);
-
-            // 合成图片
-            imagepng($canvas, public_path() . $savePath);
-            unlink(public_path() . $qrPath);
-
-            // 转base64
-            $base64 = image_to_base64(public_path() . $savePath);
-
-            // 删除原件
-            unlink(public_path() . $savePath);
-
-            // 返回结果
-            return ['url' => $base64];
-        } catch (Exception $e) {
-            static::$error = $e->getMessage();
-            return false;
-        }
-    }
-
-    /**
-     * 生成秒杀分享
-     *
-     * @author windy
-     * @param int $seckillId (秒杀活动ID)
-     * @param int $userId (用户ID)
-     * @param int $client (客户端)
-     * @param string $url (调整地址)
-     * @return bool|array
-     */
-    public static function seckillPoster(int $seckillId, int $userId, int $client, string $url)
-    {
-        try {
-            // 设置配置
-            $fontPath = public_path() . '/fonts/SourceHanSansCN-Regular.otf';
-            $config = [
-                'avatar'        => ['w' => 64, 'h' => 64, 'x' => 40, 'y' => 20],
-                'nickname'      => ['color' => '#555555', 'font-family' => $fontPath, 'font-size' => 19, 'x' => 120, 'y' => 60],
-                'title'         => ['color' => '#333333', 'font-family' => $fontPath, 'font-size' => 20, 'w' => 360, 'x' => 40, 'y' => 785],
-                'image'         => ['w' => 560, 'h' => 560, 'x' => 40, 'y' => 100],
-                'sell_symbol'   => ['color' => '#FF2C3C', 'font-family' => $fontPath, 'font-size' => 22, 'w' => 140, 'x' => 40, 'y' => 722],
-                'sell_price'    => ['color' => '#FF2C3C', 'font-family' => $fontPath, 'font-size' => 30, 'w' => 140, 'x' => 66, 'y' => 722],
-                'market_price'  => ['color' => '#999999', 'font-family' => $fontPath, 'font-size' => 20, 'w' => 140, 'x' => 180, 'y' => 722],
-                'notice'        => ['color' => '#888888', 'font-family' => $fontPath, 'font-size' => 18, 'x' => 432, 'y' => 895],
-                'qr'            => ['w' => 165,'h' => 165, 'x' => 436, 'y' => 700]
-            ];
-
-            // 获取用户
-            $user = (new User())->findOrEmpty($userId)->toArray();
-
-            // 获取商品
-            $goods =(new Seckill())->findOrEmpty($seckillId)->toArray();
-
-            // 存储路径
-            $headPath = UrlUtils::getRelativeUrl($user['avatar']);
-            $rootPath = 'uploads/temp/';
-            $savePath = 'uploads/temp/'.md5($client.$goods['id'].$userId).'.png';
-            $qrPath   = 'uploads/temp/'.md5($client.$goods['id'].$user['distribution_code']).'.png';
-            $bgPath   = public_path().'static/images/share_goods_bg.png';
-
-            // 创建目录
-            if(!file_exists(public_path().$rootPath)) {
-                mkdir(public_path().$rootPath,0777,true);
-            }
-
-            // 生成二维码
-            switch ($client) {
-                case ClientEnum::MNP:
-                    $fileName = md5($client.$goods['id'].$user['distribution_code']).'.png';
-                    self::makeMnpQrCode($rootPath, $fileName, $user['distribution_code'], $url);
-                    break;
-                case ClientEnum::OA:
-                case ClientEnum::H5:
-                    $params = ['id'=>$seckillId, 'invite_code'=>$user['distribution_code']];
-                    $reqUrl = url($url,'','',true).'?'.http_build_query($params);
-                    self::makeWebQrCode($qrPath, $reqUrl);
-                    break;
-                case ClientEnum::IOS:
-                case ClientEnum::ANDROID:
-                    $params = ['id'=>$seckillId, 'invite_code'=>$user['distribution_code'], 'app'=>1];
-                    $reqUrl = url($url,'','',true).'?'.http_build_query($params);
-                    self::makeWebQrCode($qrPath, $reqUrl);
-            }
-
-            // 创建海报图
-            $canvas = imagecreatefromstring(file_get_contents($bgPath));
-            self::writeImg($canvas, public_path() . $headPath, $config['avatar'], true);
-            self::writeImg($canvas, public_path() . $qrPath, $config['qr']);
-            self::writeImg($canvas, public_path() . UrlUtils::getRelativeUrl($goods['image']), $config['image']);
-            self::writeText($canvas, '来自'.$user['nickname'].'的分享', $config['nickname']);
-            self::writeText($canvas, '长按识别二维码', $config['notice']);
-            self::writeText($canvas, '￥', $config['sell_symbol']);
-            self::writeText($canvas, $goods['min_seckill_price'], $config['sell_price']);
-            self::writeText($canvas,  '￥'.$goods['min_seckill_price'], $config['market_price']);
+            self::writeText($canvas,  '￥'.$goods['max_price'], $config['market_price']);
 
             $confTitle = $config['title'];
             $goodsName = auto_adapt($confTitle['font-size'], 0, $confTitle['font-family'], $goods['name'], $confTitle['w'], $confTitle['y'], getimagesize($bgPath));
@@ -425,7 +234,7 @@ class ShareLogic extends Logic
      * @param $imgUri (图片路径)
      * @param $config (配置)
      * @param false $isRound
-     * @return \Resource
+     * @return Resource
      */
     private static function writeImg($canvas, $imgUri, $config, $isRound=false)
     {

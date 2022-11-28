@@ -60,7 +60,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -142,11 +142,11 @@
 				let param = null
 				switch (this.shareType) {
 					case 'user':
-						paths = 'pages/index/index'
+						paths = '/pages/index/index'
 						param = {type: 'user', url: paths}
 						break
 					case 'goods':
-						paths = 'pages/goods/detail/detail'
+						paths = '/pages/goods/detail/detail'
 						param = {type: 'goods', id: this.tid, url: paths}
 						break
 					case 'team':
@@ -160,7 +160,7 @@
 				}
 				
 				// #ifdef H5 || APP-PLUS
-					param.url = '/mobile/' + paths
+					param.url = '/mobile/#' + paths
 				// #endif
 				this.$u.api.apiSharePoster(param).then(result => {
 					if (result.code === 0) {
@@ -176,6 +176,32 @@
 						})
 					}		
 				})
+			},
+			
+			shareWx() {
+				// #ifdef H5
+					this.showTips = true
+					this.showshare = false
+				// #endif
+				// #ifdef APP-PLUS
+					uni.share({
+						provider: "weixin",
+						scene: "WXSceneSession",
+						type: 0,
+						href: this.getLink,
+						title: this.config.name,
+						summary: '',
+						imageUrl: this.config.image,
+						success: (res) => {
+							console.log('分享成功');
+						},
+						fail: (err) => {
+							this.$toast({
+								title: err.errMsg
+							})
+						}
+					});
+				// #endif
 			},
 			
 			/**
