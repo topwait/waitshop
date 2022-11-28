@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -20,11 +20,9 @@ namespace app\api\logic;
 
 use app\api\service\UserServer;
 use app\common\basics\Logic;
-use app\common\enum\ClientEnum;
 use app\common\enum\LogGrowthEnum;
 use app\common\enum\LogIntegralEnum;
 use app\common\enum\NoticeEnum;
-use app\common\model\addons\DistributionExtend;
 use app\common\model\log\LogGrowth;
 use app\common\model\log\LogIntegral;
 use app\common\model\log\LogSms;
@@ -114,9 +112,6 @@ class LoginLogic extends Logic
                 'create_time'         => time(),
                 'update_time'         => time()
             ]);
-
-            // 分销扩展
-            self::makeDistributionExtend($user['id']);
 
             // 注册奖励
             self::registerReward($user['id']);
@@ -272,7 +267,6 @@ class LoginLogic extends Logic
             // 创建用户或更新用户信息
             if (empty($user)) {
                 $userResponse = UserServer::createUser($response, intval($post['client']));
-                self::makeDistributionExtend($userResponse['id']);
                 self::registerReward($userResponse['id']);
             } else {
                 $userResponse = UserServer::updateUser($response, intval($post['client']), $user['id']);
@@ -322,7 +316,7 @@ class LoginLogic extends Logic
      * @param int $userId
      * @return bool
      */
-    public static function bindMobile(string $mobile, int $userId)
+    public static function bindMobile(string $mobile, int $userId): bool
     {
         try {
             User::update([
@@ -443,28 +437,5 @@ class LoginLogic extends Logic
                 0, 0, '',
                 '注册赠成长值');
         }
-    }
-
-    /**
-     * 生成分销推荐扩展
-     *
-     * @author windy
-     * @param int $userId
-     * @return bool
-     */
-    private static function makeDistributionExtend(int $userId): bool
-    {
-        $check = (new DistributionExtend())->where(['user_id'=>$userId])->findOrEmpty();
-        if (!$check->isEmpty()) {
-            return true;
-        }
-
-        DistributionExtend::create([
-            'user_id'     => $userId,
-            'create_time' => time(),
-            'update_time' => time()
-        ]);
-
-        return true;
     }
 }

@@ -109,11 +109,13 @@
         let form = layui.form;
 
         form.on("submit(addForm)", function(data){
+            wait.locking(this);
             wait.ajax({
                 url: "{:url('addons.Reward/set')}",
                 type: "POST",
                 data: data.field
             }).then((res) => {
+                wait.unlock(this);
                 if (res.code === 0) {
                     layer.msg(res.msg, {icon: 1, time: 1000});
                 } else {

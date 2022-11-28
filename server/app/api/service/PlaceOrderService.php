@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -23,7 +23,6 @@ use app\api\logic\StoreLogic;
 use app\common\enum\CouponEnum;
 use app\common\enum\OrderEnum;
 use app\common\model\addons\CouponList;
-use app\common\model\addons\SeckillSku;
 use app\common\model\Cart;
 use app\common\model\goods\Goods;
 use app\common\model\order\Order;
@@ -155,30 +154,6 @@ class PlaceOrderService
             foreach ($lists as &$item) {
                 if (empty($item['goods'])) {
                     unset($item);
-                }
-            }
-
-            // 秒杀商品
-            if (!empty(self::$post['seckill_id'])) {
-                $seckillSkuModel = new SeckillSku();
-                foreach ($lists as &$item) {
-                    $seckill = $seckillSkuModel->alias('SK')
-                        ->field('SK.*,S.name,S.image,S.is_coupon,S.is_delete')
-                        ->join('seckill S', 'S.id=SK.seckill_id')
-                        ->where([
-                            ['SK.sku_id', '=', $item['id']],
-                            ['SK.goods_id', '=', $item['goods']['id']],
-                            ['SK.seckill_id', '=', intval(self::$post['seckill_id'])]
-                        ])->findOrEmpty()->toArray();
-
-                    $item['cost_price']     = $item['sell_price'];
-                    $item['sell_price']     = $seckill['seckill_price'];
-                    $item['sales_volume']   = $seckill['sales_volume'];
-                    $item['stock']          = $seckill['seckill_stock'];
-                    $item['goods']['name']      = $seckill['name'];
-                    $item['goods']['image']     = $seckill['image'];
-                    $item['goods']['is_coupon'] = $seckill['is_coupon'];
-                    $item['goods']['is_delete'] = $seckill['is_delete'];
                 }
             }
 
@@ -393,7 +368,7 @@ class PlaceOrderService
             if (self::$post['delivery_type']==OrderEnum::DELIVER_TYPE_STORE) {
                 $pickUp = [
                     'store'  => $address['id'],
-                    'code'   => create_random_code((new Order), 'pick_up_code', 8),
+                    'code'   => create_random_code((new Order), 'pick_up_code'),
                     'status' => 0
                 ];
             }
@@ -418,7 +393,7 @@ class PlaceOrderService
                 'integral_amount' => $orderStatus['integralAmount'],
                 'use_integral'    => $orderStatus['useIntegral'],
                 'coupon_list_id'  => $orderStatus['couponListId'],
-                'order_type'      => empty(self::$post['seckill_id']) ? OrderEnum::NORMAL_ORDER : OrderEnum::SECKILL_ORDER,
+                'order_type'      => OrderEnum::NORMAL_ORDER,
                 'order_status'    => OrderEnum::STATUS_WAIT_PAY,
                 'pay_status'      => OrderEnum::TO_BE_PAID_STATUS,
                 'address_snap'    => json_encode($address, JSON_UNESCAPED_UNICODE),
@@ -426,8 +401,6 @@ class PlaceOrderService
                 'pick_up_store'   => $pickUp['store'] ?? 0,
                 'pick_up_code'    => $pickUp['code'] ?? 0,
                 'pick_up_status'  => $pickUp['status'] ?? 0,
-                'seckill_id'      => self::$post['seckill_id'] ?? 0,
-
                 'stock_deduct_method' => $stockDeductMethod == 'order' ? 1 : 2,
 
                 'create_time'     => $time,

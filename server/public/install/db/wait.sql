@@ -5,1406 +5,1198 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Table structure for wait_ad
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_ad`;
-CREATE TABLE `wait_ad`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `position` smallint(5) UNSIGNED NOT NULL COMMENT '位置[10=首页轮播]',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '轮播名称',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图片路径',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
-  `link_url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '跳转链接',
-  `link_type` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '跳转类型',
-  `is_show` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否显示[1=是，0=否]',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[1=是，0=否]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_ad` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `position` smallint(5) unsigned NOT NULL COMMENT '位置[10=首页轮播]',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '轮播名称',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '图片路径',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `link_url` varchar(100) NOT NULL DEFAULT '' COMMENT '跳转链接',
+  `link_type` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '跳转类型',
+  `is_show` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否显示[1=是，0=否]',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[1=是，0=否]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统广告表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统广告表';
 
 -- ----------------------------
 -- Table structure for wait_admin
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_admin`;
-CREATE TABLE `wait_admin`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `role_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '角色ID',
-  `username` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '账号',
-  `nickname` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '昵称',
-  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '密码',
-  `salt` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '加密盐',
-  `avatar` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '头像',
-  `email` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '电子邮箱',
-  `is_disable` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否禁用[0=否, 1=是]',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否, 1=是]',
-  `login_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0.0.0.0' COMMENT '登录IP',
-  `login_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '登录时间',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '修改时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_admin` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `role_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '角色ID',
+  `username` varchar(16) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '账号',
+  `nickname` varchar(16) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '昵称',
+  `password` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '密码',
+  `salt` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '加密盐',
+  `avatar` varchar(200) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '头像',
+  `email` varchar(60) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '电子邮箱',
+  `is_disable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否禁用[0=否, 1=是]',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否, 1=是]',
+  `login_ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '0.0.0.0' COMMENT '登录IP',
+  `login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录时间',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统管理表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统管理表';
 
 -- ----------------------------
 -- Table structure for wait_admin_role
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_admin_role`;
-CREATE TABLE `wait_admin_role`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '名称',
-  `rule_ids` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '菜单',
-  `describe` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '描述',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 100 COMMENT '排序',
-  `is_disable` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否禁用',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '修改时间',
+CREATE TABLE `wait_admin_role` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '名称',
+  `rule_ids` text CHARACTER SET utf8 COMMENT '菜单',
+  `describe` varchar(200) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '描述',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
+  `is_disable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否禁用',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统角色表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统角色表';
 
 -- ----------------------------
 -- Table structure for wait_admin_rule
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_admin_rule`;
-CREATE TABLE `wait_admin_rule`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `pid` int(10) UNSIGNED NOT NULL COMMENT '父级',
-  `title` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '名称',
-  `icon` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '图标',
-  `uri` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '地址',
-  `sort` smallint(6) UNSIGNED NOT NULL DEFAULT 100 COMMENT '排序',
-  `is_menu` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否菜单',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '修改时间',
+CREATE TABLE `wait_admin_rule` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `pid` int(10) unsigned NOT NULL COMMENT '父级',
+  `title` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '名称',
+  `icon` varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '图标',
+  `uri` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '地址',
+  `sort` smallint(6) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
+  `is_menu` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否菜单',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统菜单表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统菜单表';
 
 -- ----------------------------
 -- Table structure for wait_after_sale
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_after_sale`;
-CREATE TABLE `wait_after_sale`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `sn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '售后编号',
-  `user_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
-  `order_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单ID',
-  `order_goods_id` int(10) UNSIGNED NOT NULL COMMENT '订单商品表ID',
-  `goods_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品ID',
-  `sku_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '规格ID',
-  `refund_num` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '申请退款数量',
-  `refund_type` tinyint(255) UNSIGNED NOT NULL DEFAULT 0 COMMENT '退款类型[1=仅退款， 2=退款退货]',
-  `refund_reason` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '退款原因',
-  `refund_remark` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '退款说明',
-  `refund_image` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '退款图片',
-  `refund_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '退款金额',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '售后状态[1=申请退款，2=商家拒绝，3=商品待退货，4=商家待收货，5=商家拒收货，6=等待退款，7=退款成功，8=撤销申请]',
-  `express_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '快递公司名称',
-  `express_no` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '快递运单号',
-  `express_image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '快递单凭证',
-  `express_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '快递退回时间',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_after_sale` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `sn` varchar(64) NOT NULL DEFAULT '' COMMENT '售后编号',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单ID',
+  `order_goods_id` int(10) unsigned NOT NULL COMMENT '订单商品表ID',
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品ID',
+  `sku_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '规格ID',
+  `refund_num` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '申请退款数量',
+  `refund_type` tinyint(255) unsigned NOT NULL DEFAULT '0' COMMENT '退款类型[1=仅退款， 2=退款退货]',
+  `refund_reason` varchar(250) NOT NULL DEFAULT '' COMMENT '退款原因',
+  `refund_remark` varchar(250) NOT NULL DEFAULT '' COMMENT '退款说明',
+  `refund_image` varchar(250) NOT NULL DEFAULT '' COMMENT '退款图片',
+  `refund_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '退款金额',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '售后状态[1=申请退款，2=商家拒绝，3=商品待退货，4=商家待收货，5=商家拒收货，6=等待退款，7=退款成功，8=撤销申请]',
+  `express_name` varchar(100) NOT NULL DEFAULT '' COMMENT '快递公司名称',
+  `express_no` varchar(100) NOT NULL DEFAULT '' COMMENT '快递运单号',
+  `express_image` varchar(200) NOT NULL DEFAULT '' COMMENT '快递单凭证',
+  `express_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '快递退回时间',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单售后申请表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='订单售后申请表';
 
 -- ----------------------------
 -- Table structure for wait_after_sale_log
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_after_sale_log`;
-CREATE TABLE `wait_after_sale_log`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '操作类型[1=申请退款，2=商家拒绝，3=商品待退货，4=商家待收货，5=商家拒收货，6=等待退款，7=退款成功，8=撤销申请]',
-  `after_sale_id` int(10) UNSIGNED NOT NULL COMMENT '售后主键',
-  `operate_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作员工',
-  `operate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作标题',
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作内容',
-  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注内容',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
+CREATE TABLE `wait_after_sale_log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '操作类型[1=申请退款，2=商家拒绝，3=商品待退货，4=商家待收货，5=商家拒收货，6=等待退款，7=退款成功，8=撤销申请]',
+  `after_sale_id` int(10) unsigned NOT NULL COMMENT '售后主键',
+  `operate_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作员工',
+  `operate` varchar(255) NOT NULL DEFAULT '' COMMENT '操作标题',
+  `content` varchar(255) NOT NULL DEFAULT '' COMMENT '操作内容',
+  `remarks` varchar(255) NOT NULL DEFAULT '' COMMENT '备注内容',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_after_sale_id`(`after_sale_id`) USING BTREE COMMENT '售后ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单售后日志表' ROW_FORMAT = Dynamic;
+  KEY `idx_after_sale_id` (`after_sale_id`) USING BTREE COMMENT '售后ID索引'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='订单售后日志表';
 
 -- ----------------------------
 -- Table structure for wait_article
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_article`;
-CREATE TABLE `wait_article`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `category_id` int(10) UNSIGNED NOT NULL COMMENT '分类ID',
-  `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章标题',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '封面图',
-  `intro` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文章简介',
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '文章内容',
-  `views` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '浏览量',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 100 COMMENT '排序',
-  `is_notice` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商城公告：0=否，1=是',
-  `is_show` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否显示：0=否，1=是',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除：0=否，1=是',
-  `create_time` int(10) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
+CREATE TABLE `wait_article` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `category_id` int(10) unsigned NOT NULL COMMENT '分类ID',
+  `title` varchar(64) NOT NULL DEFAULT '' COMMENT '文章标题',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '封面图',
+  `intro` varchar(255) NOT NULL DEFAULT '' COMMENT '文章简介',
+  `content` text COMMENT '文章内容',
+  `views` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '浏览量',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
+  `is_notice` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '商城公告：0=否，1=是',
+  `is_show` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否显示：0=否，1=是',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除：0=否，1=是',
+  `create_time` int(10) DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
+  `delete_time` int(10) unsigned DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文章管理表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='文章管理表';
 
 -- ----------------------------
 -- Table structure for wait_article_category
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_article_category`;
-CREATE TABLE `wait_article_category`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类名称',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
-  `is_disable` tinyint(255) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否禁用：0=否，1=是',
-  `is_delete` tinyint(255) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除：0=否，1=是',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_article_category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(20) NOT NULL DEFAULT '' COMMENT '分类名称',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `is_disable` tinyint(255) unsigned NOT NULL DEFAULT '0' COMMENT '是否禁用：0=否，1=是',
+  `is_delete` tinyint(255) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除：0=否，1=是',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文章分类表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='文章分类表';
 
 -- ----------------------------
 -- Table structure for wait_cart
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_cart`;
-CREATE TABLE `wait_cart`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `goods_id` int(10) UNSIGNED NOT NULL COMMENT '商品ID',
-  `sku_id` int(10) UNSIGNED NOT NULL COMMENT 'SKU_ID',
-  `num` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '数量',
-  `selected` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否选中[0=否, 1=是]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_cart` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `goods_id` int(10) unsigned NOT NULL COMMENT '商品ID',
+  `sku_id` int(10) unsigned NOT NULL COMMENT 'SKU_ID',
+  `num` int(10) unsigned DEFAULT '0' COMMENT '数量',
+  `selected` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否选中[0=否, 1=是]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '购物车表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='购物车表';
 
 -- ----------------------------
 -- Table structure for wait_config
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_config`;
-CREATE TABLE `wait_config`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `describe` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '描述',
-  `key` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '键',
-  `values` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '值',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_config` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `describe` varchar(100) NOT NULL DEFAULT '' COMMENT '描述',
+  `key` varchar(64) NOT NULL DEFAULT '' COMMENT '键',
+  `values` text COMMENT '值',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '全局配置表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='全局配置表';
 
 -- ----------------------------
 -- Table structure for wait_config_payment
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_config_payment`;
-CREATE TABLE `wait_config_payment`  (
-  `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '支付名称',
-  `alias` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '别名',
-  `image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'logo\r\n',
-  `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图标',
-  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '支付描述',
-  `params` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置参数',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 100 COMMENT '排序[从小到大]',
-  `is_enable` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '启用状态[0=否, 1=是]',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_config_payment` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '支付名称',
+  `alias` varchar(32) NOT NULL DEFAULT '' COMMENT '别名',
+  `image` varchar(100) NOT NULL DEFAULT '' COMMENT 'logo\r\n',
+  `icon` varchar(100) NOT NULL DEFAULT '' COMMENT '图标',
+  `desc` varchar(255) NOT NULL DEFAULT '' COMMENT '支付描述',
+  `params` text COMMENT '配置参数',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '100' COMMENT '排序[从小到大]',
+  `is_enable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '启用状态[0=否, 1=是]',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '支付配置表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='支付配置表';
 
 -- ----------------------------
 -- Table structure for wait_config_policy
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_config_policy`;
-CREATE TABLE `wait_config_policy`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '类型: service=服务协议, privacy=隐私政策, ensure=售后保障',
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '政策内容',
-  `update_time` int(10) NULL DEFAULT NULL COMMENT '更新时间',
+CREATE TABLE `wait_config_policy` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `type` varchar(20) NOT NULL DEFAULT '' COMMENT '类型: service=服务协议, privacy=隐私政策, ensure=售后保障',
+  `content` text COMMENT '政策内容',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '协议配置表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='协议配置表';
 
 -- ----------------------------
 -- Table structure for wait_config_sms
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_config_sms`;
-CREATE TABLE `wait_config_sms`  (
-  `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '支付名称',
-  `alias` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '别名',
-  `image` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图标',
-  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '支付描述',
-  `params` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '配置参数',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 100 COMMENT '排序[从小到大]',
-  `is_enable` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '启用状态[0=否, 1=是]',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_config_sms` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '支付名称',
+  `alias` varchar(32) NOT NULL DEFAULT '' COMMENT '别名',
+  `image` varchar(100) NOT NULL DEFAULT '' COMMENT '图标',
+  `desc` varchar(255) NOT NULL DEFAULT '' COMMENT '支付描述',
+  `params` text COMMENT '配置参数',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '100' COMMENT '排序[从小到大]',
+  `is_enable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '启用状态[0=否, 1=是]',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '短信配置表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='短信配置表';
 
 -- ----------------------------
 -- Table structure for wait_coupon
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_coupon`;
-CREATE TABLE `wait_coupon`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `type` tinyint(2) UNSIGNED NOT NULL DEFAULT 10 COMMENT '优惠券类型[10=满减券，20=折扣券]',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '优惠券名称',
-  `min_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '最低消费金额',
-  `reduce_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '满减券：减免金额',
-  `discount` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '折扣券：折扣率(0-100)',
-  `total_num` int(10) NOT NULL DEFAULT 0 COMMENT '发放总数量(-1为不限制)',
-  `get_method` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '获取方式[1=直接领取， 2=指定发放]',
-  `get_num_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '领取限制[0=不限制，1=限制次数，2=每天限制次数]',
-  `get_num` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '可领取次数',
-  `use_goods_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '使用商品[0-全部商品可用, 1=部分商品可用，2=部分商品不可用]',
-  `use_goods_ids` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '限制使用商品的ID, 逗号隔开',
-  `use_expire_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '领取后多久过期(0为不过期)，单位: 天',
-  `receive_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '累计领取数量',
-  `explain` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '使用说明',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态[0=未发布, 1=已发布, 2=已关闭]',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否, 1=是]',
-  `publish_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '发布时间',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_coupon` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '10' COMMENT '优惠券类型[10=满减券，20=折扣券]',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '优惠券名称',
+  `min_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '最低消费金额',
+  `reduce_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '满减券：减免金额',
+  `discount` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '折扣券：折扣率(0-100)',
+  `total_num` int(10) NOT NULL DEFAULT '0' COMMENT '发放总数量(-1为不限制)',
+  `get_method` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '获取方式[1=直接领取， 2=指定发放]',
+  `get_num_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '领取限制[0=不限制，1=限制次数，2=每天限制次数]',
+  `get_num` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '可领取次数',
+  `use_goods_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '使用商品[0-全部商品可用, 1=部分商品可用，2=部分商品不可用]',
+  `use_goods_ids` text COMMENT '限制使用商品的ID, 逗号隔开',
+  `use_expire_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '领取后多久过期(0为不过期)，单位: 天',
+  `receive_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '累计领取数量',
+  `explain` text COMMENT '使用说明',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态[0=未发布, 1=已发布, 2=已关闭]',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否, 1=是]',
+  `publish_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发布时间',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '优惠券管理表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='优惠券管理表';
 
 -- ----------------------------
 -- Table structure for wait_coupon_list
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_coupon_list`;
-CREATE TABLE `wait_coupon_list`  (
-  `coupon_list_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '领取后的优惠券ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `coupon_id` int(10) UNSIGNED NOT NULL COMMENT '优惠券ID',
-  `order_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '使用的订单ID',
-  `is_use` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否使用: 0=否. 1=是',
-  `is_expire` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否失效: 0=否. 1=是',
+CREATE TABLE `wait_coupon_list` (
+  `coupon_list_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '领取后的优惠券ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `coupon_id` int(10) unsigned NOT NULL COMMENT '优惠券ID',
+  `order_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '使用的订单ID',
+  `is_use` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否使用: 0=否. 1=是',
+  `is_expire` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否失效: 0=否. 1=是',
   `use_time` int(10) NOT NULL COMMENT '使用时间',
   `expiry_time` int(10) NOT NULL COMMENT '过期时间',
-  `receive_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '领取时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+  `receive_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '领取时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`coupon_list_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '优惠券领取表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='优惠券领取表';
 
 -- ----------------------------
 -- Table structure for wait_crontab
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_crontab`;
-CREATE TABLE `wait_crontab`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '任务名称',
-  `command` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '执行命令',
-  `params` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '附带参数',
-  `rules` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '运行规则',
-  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注信息',
-  `error` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '错误提示',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态[1=运行, 2=暂停，3=错误]',
-  `exe_time` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '执行时长',
-  `max_time` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '最大执行时长',
-  `last_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '最后执行时间',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_crontab` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
+  `command` varchar(64) NOT NULL DEFAULT '' COMMENT '执行命令',
+  `params` varchar(64) NOT NULL DEFAULT '' COMMENT '附带参数',
+  `rules` varchar(64) NOT NULL DEFAULT '' COMMENT '运行规则',
+  `remarks` varchar(255) NOT NULL DEFAULT '' COMMENT '备注信息',
+  `error` text COMMENT '错误提示',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态[1=运行, 2=暂停，3=错误]',
+  `exe_time` varchar(16) NOT NULL DEFAULT '' COMMENT '执行时长',
+  `max_time` varchar(16) NOT NULL DEFAULT '' COMMENT '最大执行时长',
+  `last_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后执行时间',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统定时任务表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_distribution_apply
--- ----------------------------
-DROP TABLE IF EXISTS `wait_distribution_apply`;
-CREATE TABLE `wait_distribution_apply`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
-  `nickname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '真实姓名',
-  `telephone` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '联系电话',
-  `apply_reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '申请理由',
-  `audit_reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '审核理由',
-  `invite_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '邀请码',
-  `province_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '省',
-  `city_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '市',
-  `district_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '区',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '审核状态[0=待审核，1=审核通过，2=审核拒绝]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '分销资格申请表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_distribution_extend
--- ----------------------------
-DROP TABLE IF EXISTS `wait_distribution_extend`;
-CREATE TABLE `wait_distribution_extend`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `fans_num` int(10) NOT NULL DEFAULT 0 COMMENT '推广粉丝数',
-  `distribution_order_num` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分销订单数量',
-  `distribution_order_money` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '分销订单金额',
-  `create_time` int(10) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uid_idx`(`user_id`) USING BTREE COMMENT '用户索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '分销推广记录表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_distribution_goods
--- ----------------------------
-DROP TABLE IF EXISTS `wait_distribution_goods`;
-CREATE TABLE `wait_distribution_goods`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `goods_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品ID',
-  `sku_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'SkuID',
-  `first_ratio` float(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '一级佣金比例(%)',
-  `second_ratio` float(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '二级佣金比例(%)',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '分销商品参与表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_distribution_order
--- ----------------------------
-DROP TABLE IF EXISTS `wait_distribution_order`;
-CREATE TABLE `wait_distribution_order`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `distribution_sn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分销单号',
-  `user_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
-  `order_id` int(10) UNSIGNED NOT NULL COMMENT '主订单ID',
-  `order_goods_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '子订单ID',
-  `goods_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品ID',
-  `sku_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品规格ID',
-  `reality_amount` decimal(8, 0) NOT NULL COMMENT '子订单实付金额',
-  `earnings_money` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '预估收益金额',
-  `earnings_ratio` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '分佣比例值',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '结算状态: 1=未结算，2=已结算，3=已失效',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '分销收益订单表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='系统定时任务表';
 
 -- ----------------------------
 -- Table structure for wait_diy_me
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_diy_me`;
-CREATE TABLE `wait_diy_me`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '名称',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图标',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
-  `link_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '链接类型: 1=商城模块, 2=自定链接',
-  `link_url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '链接地址: 取决于链接的类型',
+CREATE TABLE `wait_diy_me` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '名称',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '图标',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `link_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '链接类型: 1=商城模块, 2=自定链接',
+  `link_url` varchar(200) NOT NULL DEFAULT '' COMMENT '链接地址: 取决于链接的类型',
   `is_show` tinyint(1) NOT NULL COMMENT '是否显示: 0=否, 1=是',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除: 0=否, 1=是',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除: 0=否, 1=是',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) NOT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '装修我的工具表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='装修我的工具表';
 
 -- ----------------------------
 -- Table structure for wait_diy_nav
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_diy_nav`;
-CREATE TABLE `wait_diy_nav`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '名称',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
-  `selected_icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '已选图标',
-  `unselected_icon` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '未选图标',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_diy_nav` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '名称',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `selected_icon` varchar(255) DEFAULT '' COMMENT '已选图标',
+  `unselected_icon` varchar(200) NOT NULL DEFAULT '' COMMENT '未选图标',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '装修我的导航表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='装修我的导航表';
 
 -- ----------------------------
 -- Table structure for wait_diy_order
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_diy_order`;
-CREATE TABLE `wait_diy_order`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '名称',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图标',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
-  `path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '链接',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_diy_order` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '名称',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '图标',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `path` varchar(200) NOT NULL DEFAULT '' COMMENT '链接',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '装修我的订单表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='装修我的订单表';
 
 -- ----------------------------
 -- Table structure for wait_diy_page
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_diy_page`;
-CREATE TABLE `wait_diy_page`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `page_type` tinyint(2) UNSIGNED NOT NULL DEFAULT 20 COMMENT '页面类型[10=首页，20=自定义页]',
-  `page_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '页面名称',
-  `page_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '页面数据',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否，1=是]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_diy_page` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `page_type` tinyint(2) unsigned NOT NULL DEFAULT '20' COMMENT '页面类型[10=首页，20=自定义页]',
+  `page_name` varchar(32) NOT NULL DEFAULT '' COMMENT '页面名称',
+  `page_data` longtext COMMENT '页面数据',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否，1=是]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` int(10) unsigned DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '装修我的页面表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='装修我的页面表';
 
 -- ----------------------------
 -- Table structure for wait_express
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_express`;
-CREATE TABLE `wait_express`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '快递公司',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '快递图标',
-  `code100` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '快递100编码',
-  `codebird` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '快递鸟编码',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 100 COMMENT '排序编号',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_express` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '快递公司',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '快递图标',
+  `code100` varchar(32) NOT NULL DEFAULT '' COMMENT '快递100编码',
+  `codebird` varchar(32) NOT NULL DEFAULT '' COMMENT '快递鸟编码',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '100' COMMENT '排序编号',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '快递管理表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='快递管理表';
 
 -- ----------------------------
 -- Table structure for wait_file
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_file`;
-CREATE TABLE `wait_file`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `group_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文件分组ID',
-  `file_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '文件类型[1=图片, 2=视频]',
-  `file_url` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文件路径',
-  `file_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文件名称',
-  `file_size` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文件大小',
-  `file_ext` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文件扩展',
-  `is_delete` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否, 1=是]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_file` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `group_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '文件分组ID',
+  `file_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '文件类型[1=图片, 2=视频]',
+  `file_url` varchar(200) NOT NULL DEFAULT '' COMMENT '文件路径',
+  `file_name` varchar(100) NOT NULL DEFAULT '' COMMENT '文件名称',
+  `file_size` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '文件大小',
+  `file_ext` varchar(20) NOT NULL DEFAULT '' COMMENT '文件扩展',
+  `is_delete` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否, 1=是]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `group_id`(`group_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文件管理表' ROW_FORMAT = Dynamic;
+  KEY `group_id` (`group_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='文件管理表';
 
 -- ----------------------------
 -- Table structure for wait_file_group
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_file_group`;
-CREATE TABLE `wait_file_group`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '类型[1=图片, 2=视频]',
-  `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类名称',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否, 1=是]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_file_group` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '类型[1=图片, 2=视频]',
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '分类名称',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否, 1=是]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '文件分组表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='文件分组表';
 
 -- ----------------------------
 -- Table structure for wait_freight
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_freight`;
-CREATE TABLE `wait_freight`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '模板名称',
-  `method` tinyint(2) UNSIGNED NOT NULL DEFAULT 10 COMMENT '计费方式[10=按件数，20=按重量，30=按体积]',
-  `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '备注信息',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 100 COMMENT '排序',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+CREATE TABLE `wait_freight` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '模板名称',
+  `method` tinyint(2) unsigned NOT NULL DEFAULT '10' COMMENT '计费方式[10=按件数，20=按重量，30=按体积]',
+  `remarks` varchar(255) NOT NULL COMMENT '备注信息',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '100' COMMENT '排序',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '运费模板表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='运费模板表';
 
 -- ----------------------------
 -- Table structure for wait_freight_rule
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_freight_rule`;
-CREATE TABLE `wait_freight_rule`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `freight_id` int(10) UNSIGNED NOT NULL COMMENT '运费模板ID',
-  `first_unit` int(255) UNSIGNED NOT NULL DEFAULT 0 COMMENT '首重/件',
-  `first_fee` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '首重/件价格',
-  `continue_unit` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '续重/件',
-  `continue_fee` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '续费(元)',
-  `region` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '可配送区域(城市id集)',
-  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '可配送区域名称',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+CREATE TABLE `wait_freight_rule` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `freight_id` int(10) unsigned NOT NULL COMMENT '运费模板ID',
+  `first_unit` int(255) unsigned NOT NULL DEFAULT '0' COMMENT '首重/件',
+  `first_fee` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '首重/件价格',
+  `continue_unit` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '续重/件',
+  `continue_fee` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '续费(元)',
+  `region` text COMMENT '可配送区域(城市id集)',
+  `address` text COMMENT '可配送区域名称',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '运费规则表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='运费规则表';
 
 -- ----------------------------
 -- Table structure for wait_goods
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_goods`;
-CREATE TABLE `wait_goods`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品名称',
-  `category_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分类主键',
-  `brand_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '品牌id',
-  `supplier_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '供应商id',
-  `freight_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '运费模板id',
-  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品编码',
-  `image` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品主图',
-  `video` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品视频',
-  `intro` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品简介',
-  `banner` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '轮播图',
-  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品详细',
-  `spec_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '规格类型[1=单规格，2=多规格]',
-  `max_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '最大售卖价格',
-  `min_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '最小售卖价格',
-  `market_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '最大市场价格',
-  `stock` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '总库存',
-  `stock_warn` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '预警库存',
-  `give_integral` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '赠送积分',
-  `sort` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
-  `sales_volume` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品销量',
-  `click_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品点击量',
-  `is_distribution` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否参与分销[0=否, 1=是]',
-  `is_integral` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '积分抵扣[0=否, 1=是]',
-  `is_show` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否显示[0=否, 1=是]',
-  `is_new` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '新品推荐[0=否, 1=是]',
-  `is_best` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '好物优选[0=否, 1=是]',
-  `is_like` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '猜你喜欢[0=否, 1=是]',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否, 1=是]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '修改时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_goods` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '商品名称',
+  `category_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '分类主键',
+  `brand_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '品牌id',
+  `supplier_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '供应商id',
+  `freight_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '运费模板id',
+  `code` varchar(32) NOT NULL DEFAULT '' COMMENT '商品编码',
+  `image` varchar(128) NOT NULL DEFAULT '' COMMENT '商品主图',
+  `video` varchar(128) NOT NULL DEFAULT '' COMMENT '商品视频',
+  `intro` varchar(255) NOT NULL DEFAULT '' COMMENT '商品简介',
+  `banner` varchar(1000) NOT NULL DEFAULT '' COMMENT '轮播图',
+  `content` text COMMENT '商品详细',
+  `spec_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '规格类型[1=单规格，2=多规格]',
+  `max_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '最大售卖价格',
+  `min_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '最小售卖价格',
+  `market_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '最大市场价格',
+  `stock` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '总库存',
+  `stock_warn` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '预警库存',
+  `give_integral` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '赠送积分',
+  `sort` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `sales_volume` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品销量',
+  `click_count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品点击量',
+  `is_integral` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '积分抵扣[0=否, 1=是]',
+  `is_show` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否显示[0=否, 1=是]',
+  `is_new` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '新品推荐[0=否, 1=是]',
+  `is_best` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '好物优选[0=否, 1=是]',
+  `is_like` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '猜你喜欢[0=否, 1=是]',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否, 1=是]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品管理表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='商品管理表';
 
 -- ----------------------------
 -- Table structure for wait_goods_brand
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_goods_brand`;
-CREATE TABLE `wait_goods_brand`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '品牌名称',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '图片地址',
-  `letter` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '品牌首字母',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 100 COMMENT '排序号',
-  `is_show` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否显示[0=否，1=是]',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否，1=是]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_goods_brand` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(60) NOT NULL DEFAULT '' COMMENT '品牌名称',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '图片地址',
+  `letter` char(2) NOT NULL DEFAULT '' COMMENT '品牌首字母',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '100' COMMENT '排序号',
+  `is_show` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否显示[0=否，1=是]',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否，1=是]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品品牌表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商品品牌表';
 
 -- ----------------------------
 -- Table structure for wait_goods_category
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_goods_category`;
-CREATE TABLE `wait_goods_category`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `pid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父级ID',
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类名称',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分类图片',
-  `relation` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '链条关系',
-  `level` tinyint(1) UNSIGNED NULL DEFAULT 1 COMMENT '层级',
-  `sort` smallint(5) NOT NULL DEFAULT 100 COMMENT '排序',
-  `is_show` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否显示[0=否, 1=是]',
-  `is_delete` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除[0=否, 1=是]',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '修改时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
+CREATE TABLE `wait_goods_category` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父级ID',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '分类名称',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '分类图片',
+  `relation` text COMMENT '链条关系',
+  `level` tinyint(1) unsigned DEFAULT '1' COMMENT '层级',
+  `sort` smallint(5) NOT NULL DEFAULT '100' COMMENT '排序',
+  `is_show` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否显示[0=否, 1=是]',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除[0=否, 1=是]',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
+  `delete_time` int(10) unsigned DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品分类表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='商品分类表';
 
 -- ----------------------------
 -- Table structure for wait_goods_collect
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_goods_collect`;
-CREATE TABLE `wait_goods_collect`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `goods_id` int(10) UNSIGNED NOT NULL COMMENT '商品ID',
-  `count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作次数: 即删除又重新收藏的次数',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除: 0=否，1=是',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `delete_time` int(10) NULL DEFAULT NULL COMMENT '删除时间',
+CREATE TABLE `wait_goods_collect` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `goods_id` int(10) unsigned NOT NULL COMMENT '商品ID',
+  `count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作次数: 即删除又重新收藏的次数',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除: 0=否，1=是',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `delete_time` int(10) DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_uid`(`user_id`) USING BTREE COMMENT '用户ID索引',
-  INDEX `idx_gid`(`goods_id`) USING BTREE COMMENT '商品ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品收藏表' ROW_FORMAT = Dynamic;
+  KEY `idx_uid` (`user_id`) USING BTREE COMMENT '用户ID索引',
+  KEY `idx_gid` (`goods_id`) USING BTREE COMMENT '商品ID索引'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商品收藏表';
 
 -- ----------------------------
 -- Table structure for wait_goods_comment
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_goods_comment`;
-CREATE TABLE `wait_goods_comment`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `goods_id` int(10) UNSIGNED NOT NULL COMMENT '商品ID',
-  `order_id` int(10) UNSIGNED NOT NULL COMMENT '订单ID',
-  `order_goods_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单商品ID',
-  `goods_comment` tinyint(1) UNSIGNED NOT NULL COMMENT '商品评论星级[1:一星, 2:二星, 3:三星, 4:四星, 5:五星',
-  `service_comment` tinyint(1) UNSIGNED NOT NULL COMMENT '服务评论星级[1:一星, 2:二星, 3:三星, 4:四星, 5:五星',
-  `express_comment` tinyint(1) UNSIGNED NOT NULL COMMENT '物流评论星级[1:一星, 2:二星, 3:三星, 4:四星, 5:五星',
-  `images` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '评论图片',
-  `content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '评论内容',
-  `reply` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商家回复',
-  `is_reply` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商家是否回复[0=否，1=是]',
-  `is_show` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否显示[0=否， 1=是]',
-  `is_delete` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除[0=否, 1=是]',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '修改时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
+CREATE TABLE `wait_goods_comment` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `goods_id` int(10) unsigned NOT NULL COMMENT '商品ID',
+  `order_id` int(10) unsigned NOT NULL COMMENT '订单ID',
+  `order_goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单商品ID',
+  `goods_comment` tinyint(1) unsigned NOT NULL COMMENT '商品评论星级[1:一星, 2:二星, 3:三星, 4:四星, 5:五星',
+  `service_comment` tinyint(1) unsigned NOT NULL COMMENT '服务评论星级[1:一星, 2:二星, 3:三星, 4:四星, 5:五星',
+  `express_comment` tinyint(1) unsigned NOT NULL COMMENT '物流评论星级[1:一星, 2:二星, 3:三星, 4:四星, 5:五星',
+  `images` text COMMENT '评论图片',
+  `content` varchar(500) NOT NULL DEFAULT '' COMMENT '评论内容',
+  `reply` varchar(500) NOT NULL DEFAULT '' COMMENT '商家回复',
+  `is_reply` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '商家是否回复[0=否，1=是]',
+  `is_show` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否显示[0=否， 1=是]',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除[0=否, 1=是]',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '修改时间',
+  `delete_time` int(10) unsigned DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_uid`(`user_id`) USING BTREE COMMENT '用户ID索引',
-  INDEX `idx_gid`(`goods_id`) USING BTREE COMMENT '商品ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品评论表' ROW_FORMAT = Dynamic;
+  KEY `idx_uid` (`user_id`) USING BTREE COMMENT '用户ID索引',
+  KEY `idx_gid` (`goods_id`) USING BTREE COMMENT '商品ID索引'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商品评论表';
 
 -- ----------------------------
 -- Table structure for wait_goods_sku
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_goods_sku`;
-CREATE TABLE `wait_goods_sku`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `goods_id` int(10) UNSIGNED NOT NULL COMMENT '商品ID',
-  `spec_value_ids` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规格ID,隔开',
-  `spec_value_str` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '多个规格名称,隔开',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品图片',
-  `market_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '市场价格',
-  `sell_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '现售价格',
-  `cost_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '成本价格',
-  `sales_volume` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '销量',
-  `stock` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '库存',
-  `volume` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '体积',
-  `weight` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '重量',
-  `bar_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '条形码',
+CREATE TABLE `wait_goods_sku` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `goods_id` int(10) unsigned NOT NULL COMMENT '商品ID',
+  `spec_value_ids` varchar(32) NOT NULL DEFAULT '' COMMENT '规格ID,隔开',
+  `spec_value_str` varchar(64) NOT NULL DEFAULT '' COMMENT '多个规格名称,隔开',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '商品图片',
+  `market_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '市场价格',
+  `sell_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '现售价格',
+  `cost_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '成本价格',
+  `sales_volume` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '销量',
+  `stock` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '库存',
+  `volume` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '体积',
+  `weight` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '重量',
+  `bar_code` varchar(32) NOT NULL DEFAULT '' COMMENT '条形码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品的SKU表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='商品的SKU表';
 
 -- ----------------------------
 -- Table structure for wait_goods_spec
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_goods_spec`;
-CREATE TABLE `wait_goods_spec`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `goods_id` int(10) UNSIGNED NOT NULL COMMENT '商品ID',
-  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规格ID',
+CREATE TABLE `wait_goods_spec` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `goods_id` int(10) unsigned NOT NULL COMMENT '商品ID',
+  `name` varchar(20) NOT NULL DEFAULT '' COMMENT '规格ID',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `goods_id`(`goods_id`) USING BTREE COMMENT '索引\"商品表ID\"'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品规格表' ROW_FORMAT = Dynamic;
+  KEY `goods_id` (`goods_id`) USING BTREE COMMENT '索引"商品表ID"'
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COMMENT='商品规格表';
 
 -- ----------------------------
 -- Table structure for wait_goods_spec_value
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_goods_spec_value`;
-CREATE TABLE `wait_goods_spec_value`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `goods_id` int(10) UNSIGNED NOT NULL COMMENT '商品ID',
-  `spec_id` int(10) UNSIGNED NOT NULL COMMENT '规格ID',
-  `value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '规格名称',
+CREATE TABLE `wait_goods_spec_value` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `goods_id` int(10) unsigned NOT NULL COMMENT '商品ID',
+  `spec_id` int(10) unsigned NOT NULL COMMENT '规格ID',
+  `value` varchar(64) NOT NULL DEFAULT '' COMMENT '规格名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品规格属性表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COMMENT='商品规格属性表';
 
 -- ----------------------------
 -- Table structure for wait_goods_supplier
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_goods_supplier`;
-CREATE TABLE `wait_goods_supplier`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '供应商名称',
-  `nickname` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '联系人姓名',
-  `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '联系电话',
-  `address` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '联系地址',
-  `remarks` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '备注信息',
-  `sort` smallint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序号',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否，1=是]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_goods_supplier` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(60) NOT NULL DEFAULT '' COMMENT '供应商名称',
+  `nickname` varchar(20) NOT NULL DEFAULT '' COMMENT '联系人姓名',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '联系电话',
+  `address` varchar(500) NOT NULL DEFAULT '' COMMENT '联系地址',
+  `remarks` varchar(500) NOT NULL DEFAULT '' COMMENT '备注信息',
+  `sort` smallint(1) unsigned NOT NULL DEFAULT '0' COMMENT '排序号',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否，1=是]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品供应商表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='商品供应商表';
 
 -- ----------------------------
 -- Table structure for wait_hot_search
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_hot_search`;
-CREATE TABLE `wait_hot_search`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `keyword` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '关键词',
-  `count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '搜索次数',
-  `is_sys` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '系统设定[1=是, 0=否]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+CREATE TABLE `wait_hot_search` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `keyword` varchar(64) NOT NULL DEFAULT '' COMMENT '关键词',
+  `count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '搜索次数',
+  `is_sys` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '系统设定[1=是, 0=否]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '热门搜索表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='热门搜索表';
 
 -- ----------------------------
 -- Table structure for wait_log_growth
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_log_growth`;
-CREATE TABLE `wait_log_growth`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员ID，大于0=后台操作，否则不是',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `log_sn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '日志编号',
-  `source_type` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '来源类型',
-  `source_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '来源ID',
-  `source_sn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '来源订单号',
-  `change_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '变动类型 [1=增加， 2=减少]',
-  `change_amount` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT '变动成长值(增加多少成长值 / 减少成长值)',
-  `before_amount` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT '变动前成长值',
-  `after_amount` decimal(8, 2) NOT NULL COMMENT '变动后成长值',
-  `remarks` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作备注信息',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+CREATE TABLE `wait_log_growth` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '管理员ID，大于0=后台操作，否则不是',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `log_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '日志编号',
+  `source_type` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '来源类型',
+  `source_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '来源ID',
+  `source_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '来源订单号',
+  `change_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '变动类型 [1=增加， 2=减少]',
+  `change_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '变动成长值(增加多少成长值 / 减少成长值)',
+  `before_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '变动前成长值',
+  `after_amount` decimal(8,2) NOT NULL COMMENT '变动后成长值',
+  `remarks` varchar(200) NOT NULL DEFAULT '' COMMENT '操作备注信息',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_uid`(`user_id`) USING BTREE COMMENT '用户ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日志：用户成长变动流水记录' ROW_FORMAT = Dynamic;
+  KEY `idx_uid` (`user_id`) USING BTREE COMMENT '用户ID索引'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='日志：用户成长变动流水记录';
 
 -- ----------------------------
 -- Table structure for wait_log_integral
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_log_integral`;
-CREATE TABLE `wait_log_integral`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员ID：大于0=后台操作，否则不是',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `log_sn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '日志编号',
-  `source_type` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '来源类型',
-  `source_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '来源的ID',
-  `source_sn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '来源订单号',
-  `change_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '变动类型 [1=增加， 2=减少]',
-  `change_amount` int(10) NOT NULL DEFAULT 0 COMMENT '变动数量【增加多少积分 / 减少多少积分】',
+CREATE TABLE `wait_log_integral` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '管理员ID：大于0=后台操作，否则不是',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `log_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '日志编号',
+  `source_type` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '来源类型',
+  `source_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '来源的ID',
+  `source_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '来源订单号',
+  `change_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '变动类型 [1=增加， 2=减少]',
+  `change_amount` int(10) NOT NULL DEFAULT '0' COMMENT '变动数量【增加多少积分 / 减少多少积分】',
   `before_amount` int(10) NOT NULL COMMENT '变动前数量',
-  `after_amount` int(10) NOT NULL DEFAULT 0 COMMENT '变动后数量',
-  `remarks` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作的备注',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `after_amount` int(10) NOT NULL DEFAULT '0' COMMENT '变动后数量',
+  `remarks` varchar(200) NOT NULL DEFAULT '' COMMENT '操作的备注',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_uid`(`user_id`) USING BTREE COMMENT '用户ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日志：用户积分变动流水记录' ROW_FORMAT = Dynamic;
+  KEY `idx_uid` (`user_id`) USING BTREE COMMENT '用户ID索引'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='日志：用户积分变动流水记录';
 
 -- ----------------------------
 -- Table structure for wait_log_order
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_log_order`;
-CREATE TABLE `wait_log_order`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `type` tinyint(1) UNSIGNED NOT NULL COMMENT '类型: 1=系统, 2=卖家, 3=买家',
-  `channel` smallint(5) UNSIGNED NOT NULL COMMENT '渠道编号',
-  `order_id` int(10) UNSIGNED NOT NULL COMMENT '订单ID',
+CREATE TABLE `wait_log_order` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `type` tinyint(1) unsigned NOT NULL COMMENT '类型: 1=系统, 2=卖家, 3=买家',
+  `channel` smallint(5) unsigned NOT NULL COMMENT '渠道编号',
+  `order_id` int(10) unsigned NOT NULL COMMENT '订单ID',
   `operator_id` int(10) NOT NULL COMMENT '操作人ID',
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '日志内容',
-  `create_time` int(10) NULL DEFAULT NULL COMMENT '创建时间',
+  `content` varchar(255) NOT NULL DEFAULT '' COMMENT '日志内容',
+  `create_time` int(10) DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_order_id`(`order_id`) USING BTREE COMMENT '订单ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日志：订单日志表' ROW_FORMAT = Dynamic;
+  KEY `idx_order_id` (`order_id`) USING BTREE COMMENT '订单ID索引'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='日志：订单日志表';
 
 -- ----------------------------
 -- Table structure for wait_log_sms
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_log_sms`;
-CREATE TABLE `wait_log_sms`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `scene` int(10) UNSIGNED NOT NULL COMMENT '场景值',
-  `mobile` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '手机号',
-  `code` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '验证码(某些场景需要)',
-  `content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '短信内容',
-  `results` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '短信结果',
-  `is_verify` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否验证：0=否，1=是',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '发送状态：1=发送中，2=发送成功，3=发送失败',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) NULL DEFAULT NULL COMMENT '更新时间',
+CREATE TABLE `wait_log_sms` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `scene` int(10) unsigned NOT NULL COMMENT '场景值',
+  `mobile` varchar(16) NOT NULL DEFAULT '' COMMENT '手机号',
+  `code` varchar(16) NOT NULL DEFAULT '' COMMENT '验证码(某些场景需要)',
+  `content` varchar(500) NOT NULL DEFAULT '' COMMENT '短信内容',
+  `results` varchar(500) NOT NULL DEFAULT '' COMMENT '短信结果',
+  `is_verify` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否验证：0=否，1=是',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '发送状态：1=发送中，2=发送成功，3=发送失败',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_mobile`(`mobile`) USING BTREE COMMENT '手机号码索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日志：短信日志表' ROW_FORMAT = Dynamic;
+  KEY `idx_mobile` (`mobile`) USING BTREE COMMENT '手机号码索引'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='日志：短信日志表';
 
 -- ----------------------------
 -- Table structure for wait_log_visit
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_log_visit`;
-CREATE TABLE `wait_log_visit`  (
-  `ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '访问IP',
+CREATE TABLE `wait_log_visit` (
+  `ip` varchar(20) NOT NULL COMMENT '访问IP',
   `count` int(10) NOT NULL COMMENT '访问次数',
-  `client` tinyint(1) UNSIGNED NOT NULL COMMENT '客户端[1=安卓，2=苹果, 3=H5, 4=小程序]',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日志：访问日志表' ROW_FORMAT = Dynamic;
+  `client` tinyint(1) unsigned NOT NULL COMMENT '客户端[1=安卓，2=苹果, 3=H5, 4=小程序]',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='日志：访问日志表';
 
 -- ----------------------------
 -- Table structure for wait_log_wallet
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_log_wallet`;
-CREATE TABLE `wait_log_wallet`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员ID，大于0=后台操作，否则不是',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `log_sn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '日志编号',
-  `source_type` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '来源类型',
-  `source_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '来源ID',
-  `source_sn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '来源订单号',
-  `change_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '变动类型 [1=增加， 2=减少]',
-  `change_amount` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT '变动金额(增加多少钱 / 减少多少钱)',
-  `before_amount` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT '变动前金额',
-  `after_amount` decimal(8, 2) NOT NULL COMMENT '变动后金额',
-  `remarks` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '操作备注信息',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+CREATE TABLE `wait_log_wallet` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '管理员ID，大于0=后台操作，否则不是',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `log_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '日志编号',
+  `source_type` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '来源类型',
+  `source_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '来源ID',
+  `source_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '来源订单号',
+  `change_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '变动类型 [1=增加， 2=减少]',
+  `change_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '变动金额(增加多少钱 / 减少多少钱)',
+  `before_amount` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '变动前金额',
+  `after_amount` decimal(8,2) NOT NULL COMMENT '变动后金额',
+  `remarks` varchar(200) NOT NULL DEFAULT '' COMMENT '操作备注信息',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_uid`(`user_id`) USING BTREE COMMENT '用户ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '日志：用户钱包变动流水记录' ROW_FORMAT = Dynamic;
+  KEY `idx_uid` (`user_id`) USING BTREE COMMENT '用户ID索引'
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='日志：用户钱包变动流水记录';
 
 -- ----------------------------
 -- Table structure for wait_lottery_prize
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_lottery_prize`;
-CREATE TABLE `wait_lottery_prize`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '奖品类型',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '奖品名称',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '奖品图标',
-  `number` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '奖品数量',
-  `reward` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '奖励数值',
-  `probability` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '中奖概率',
-  `tips` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '奖励提示',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排列顺序',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
+CREATE TABLE `wait_lottery_prize` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '奖品类型',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '奖品名称',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '奖品图标',
+  `number` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '奖品数量',
+  `reward` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '奖励数值',
+  `probability` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '中奖概率',
+  `tips` varchar(100) NOT NULL DEFAULT '' COMMENT '奖励提示',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '排列顺序',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '抽奖奖品表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='抽奖奖品表';
 
 -- ----------------------------
 -- Table structure for wait_lottery_record
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_lottery_record`;
-CREATE TABLE `wait_lottery_record`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `prize_type` tinyint(1) UNSIGNED NOT NULL COMMENT '奖品类型',
-  `prize_image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '奖品图片',
-  `prize_name` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '奖品名称',
-  `prize_value` smallint(10) UNSIGNED NOT NULL COMMENT '奖品内容',
-  `prize_tips` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '奖励提示',
-  `prize_snap` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '奖励快照',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
+CREATE TABLE `wait_lottery_record` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `prize_type` tinyint(1) unsigned NOT NULL COMMENT '奖品类型',
+  `prize_image` varchar(200) NOT NULL COMMENT '奖品图片',
+  `prize_name` varchar(10) NOT NULL COMMENT '奖品名称',
+  `prize_value` smallint(10) unsigned NOT NULL COMMENT '奖品内容',
+  `prize_tips` varchar(100) NOT NULL DEFAULT '' COMMENT '奖励提示',
+  `prize_snap` text COMMENT '奖励快照',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '抽奖记录表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='抽奖记录表';
 
 -- ----------------------------
 -- Table structure for wait_message_template
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_message_template`;
-CREATE TABLE `wait_message_template`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '场景名称',
-  `scene` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '场景编号',
-  `variable` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '可用场景变量',
-  `sms_template` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '短信模板',
-  `mnp_template` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '小程序模板',
-  `official_template` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '公众号模板',
+CREATE TABLE `wait_message_template` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(200) NOT NULL DEFAULT '' COMMENT '场景名称',
+  `scene` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '场景编号',
+  `variable` text COMMENT '可用场景变量',
+  `sms_template` text COMMENT '短信模板',
+  `mnp_template` text COMMENT '小程序模板',
+  `official_template` text COMMENT '公众号模板',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '消息模板表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='消息模板表';
 
 -- ----------------------------
 -- Table structure for wait_order
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_order`;
-CREATE TABLE `wait_order`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `order_sn` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '订单编号(唯一)',
-  `order_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '订单类型[1=普通订单，2=秒杀订单，3=拼团订单，4=砍价订单]',
-  `order_platform` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '订单平台[1=安卓，2=苹果, 3=H5, 4=小程序]',
-  `order_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单状态[0=待付款，1=待发货，2=待收货，3=已完成，4=已关闭]',
-  `pay_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '支付状态[0=待支付，1=已支付]',
-  `refund_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '退款状态[0=无退款, 1=全部退款，2=部分退款]',
-  `pay_way` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '支付方式[1=余额支付，2=微信支付，3=支付宝支付]',
-  `delivery_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '配送方式[1=快递发货，2=上门自提，3=无需快递, 4=同城配送]',
-  `coupon_list_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '使用优惠券ID',
-  `total_num` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '总购买数量',
-  `total_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '订单总额 (尚未优惠前的金额)',
-  `paid_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '实际付款金额 (优惠后的金额)',
-  `refund_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '退款金额',
-  `freight_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '运费金额',
-  `discount_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '优惠金额',
-  `integral_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '积分抵扣金额',
-  `use_integral` int(10) UNSIGNED NULL DEFAULT 0 COMMENT '使用积分',
-  `buyers_remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '买家备注',
-  `transaction_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '第三方交易流水号',
-  `address_snap` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '收货地址快照Json',
-  `pick_up_store` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '自提门店ID',
-  `pick_up_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提货码',
-  `pick_up_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '提货状态：0=待核销，1=已核销',
-  `seckill_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '秒杀活动ID: 0=非秒杀订单',
-  `team_activity_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '拼团活动ID: 0=非拼团订单',
-  `team_found_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '拼团开团ID: 0=非拼团订单',
-  `team_found_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '拼团状态: 0=非拼团, 1=拼团中, 2=拼团成功, 3=拼团失败',
-  `stock_deduct_method` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '库存扣除方式: 1=下单扣除, 2=支付扣除',
-  `is_after_sale` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否正在售后中: 0=否, 1=是',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除：0=否，1=是',
-  `pay_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '支付时间',
-  `delivery_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '发货时间',
-  `confirm_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '确认收货时间',
-  `cancel_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '订单取消时间',
-  `create_time` int(10) NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
+CREATE TABLE `wait_order` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `order_sn` varchar(32) NOT NULL DEFAULT '' COMMENT '订单编号(唯一)',
+  `order_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '订单类型[1=普通订单，2=秒杀订单，3=拼团订单，4=砍价订单]',
+  `order_platform` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '订单平台[1=安卓，2=苹果, 3=H5, 4=小程序]',
+  `order_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '订单状态[0=待付款，1=待发货，2=待收货，3=已完成，4=已关闭]',
+  `pay_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '支付状态[0=待支付，1=已支付]',
+  `refund_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '退款状态[0=无退款, 1=全部退款，2=部分退款]',
+  `pay_way` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '支付方式[1=余额支付，2=微信支付，3=支付宝支付]',
+  `delivery_type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '配送方式[1=快递发货，2=上门自提，3=无需快递, 4=同城配送]',
+  `coupon_list_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '使用优惠券ID',
+  `total_num` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '总购买数量',
+  `total_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '订单总额 (尚未优惠前的金额)',
+  `paid_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '实际付款金额 (优惠后的金额)',
+  `refund_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '退款金额',
+  `freight_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '运费金额',
+  `discount_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '优惠金额',
+  `integral_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '积分抵扣金额',
+  `use_integral` int(10) unsigned DEFAULT '0' COMMENT '使用积分',
+  `buyers_remarks` varchar(255) NOT NULL DEFAULT '' COMMENT '买家备注',
+  `transaction_id` varchar(64) NOT NULL DEFAULT '' COMMENT '第三方交易流水号',
+  `address_snap` text COMMENT '收货地址快照Json',
+  `pick_up_store` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '自提门店ID',
+  `pick_up_code` varchar(64) NOT NULL DEFAULT '' COMMENT '提货码',
+  `pick_up_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '提货状态：0=待核销，1=已核销',
+  `seckill_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '秒杀活动ID: 0=非秒杀订单',
+  `team_activity_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '拼团活动ID: 0=非拼团订单',
+  `team_found_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '拼团开团ID: 0=非拼团订单',
+  `team_found_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '拼团状态: 0=非拼团, 1=拼团中, 2=拼团成功, 3=拼团失败',
+  `stock_deduct_method` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '库存扣除方式: 1=下单扣除, 2=支付扣除',
+  `is_after_sale` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否正在售后中: 0=否, 1=是',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除：0=否，1=是',
+  `pay_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '支付时间',
+  `delivery_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发货时间',
+  `confirm_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '确认收货时间',
+  `cancel_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '订单取消时间',
+  `create_time` int(10) DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
+  `delete_time` int(10) unsigned DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `idx_order_sn`(`order_sn`) USING BTREE COMMENT '订单编号唯一索引',
-  INDEX `idx_user_id`(`user_id`) USING BTREE COMMENT '用户ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单管理表' ROW_FORMAT = Dynamic;
+  UNIQUE KEY `idx_order_sn` (`order_sn`) USING BTREE COMMENT '订单编号唯一索引',
+  KEY `idx_user_id` (`user_id`) USING BTREE COMMENT '用户ID索引'
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='订单管理表';
 
 -- ----------------------------
 -- Table structure for wait_order_delivery
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_order_delivery`;
-CREATE TABLE `wait_order_delivery`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `order_id` int(10) UNSIGNED NOT NULL COMMENT '订单ID',
-  `order_sn` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '订单编号 (冗余字段)',
-  `contact` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '收货人姓名',
-  `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '联系电话',
-  `province_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '省ID',
-  `city_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '市ID',
-  `district_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '区ID',
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '详细地址',
-  `express_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '快递公司ID',
-  `express_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '快递公司',
-  `waybill_no` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '运单编号',
-  `delivery_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '发货方式[1=快递配送，2=上门自提，3=同城配送]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
+CREATE TABLE `wait_order_delivery` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `order_id` int(10) unsigned NOT NULL COMMENT '订单ID',
+  `order_sn` varchar(32) NOT NULL DEFAULT '' COMMENT '订单编号 (冗余字段)',
+  `contact` varchar(20) NOT NULL DEFAULT '' COMMENT '收货人姓名',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '联系电话',
+  `province_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '省ID',
+  `city_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '市ID',
+  `district_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '区ID',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '详细地址',
+  `express_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '快递公司ID',
+  `express_name` varchar(32) NOT NULL DEFAULT '' COMMENT '快递公司',
+  `waybill_no` varchar(60) NOT NULL DEFAULT '' COMMENT '运单编号',
+  `delivery_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '发货方式[1=快递配送，2=上门自提，3=同城配送]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单发货表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='订单发货表';
 
 -- ----------------------------
 -- Table structure for wait_order_goods
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_order_goods`;
-CREATE TABLE `wait_order_goods`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `order_id` int(10) UNSIGNED NOT NULL COMMENT '订单ID',
-  `goods_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品ID',
-  `sku_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'SKU_ID',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品名称',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品图片',
-  `spec_value_str` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品规格',
-  `count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '购买数量',
-  `sell_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '商品售价',
-  `total_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '商品总价格 (未优惠金额)',
-  `actual_price` decimal(8, 2) NOT NULL COMMENT '实际应付金额 (已优惠金额)',
-  `discount_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '优惠券抵扣金额',
-  `integral_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '积分抵扣金额',
-  `refund_status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '退款状态[0=未退款，1=申请中, 2=拒绝退款, 3=已退款]',
-  `snapshot` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '快照信息',
-  `is_comment` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否已评论: 0=否, 1=是',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_order_goods` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `order_id` int(10) unsigned NOT NULL COMMENT '订单ID',
+  `goods_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品ID',
+  `sku_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'SKU_ID',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '商品名称',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '商品图片',
+  `spec_value_str` varchar(100) NOT NULL DEFAULT '' COMMENT '商品规格',
+  `count` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '购买数量',
+  `sell_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '商品售价',
+  `total_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '商品总价格 (未优惠金额)',
+  `actual_price` decimal(8,2) NOT NULL COMMENT '实际应付金额 (已优惠金额)',
+  `discount_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '优惠券抵扣金额',
+  `integral_price` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '积分抵扣金额',
+  `refund_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '退款状态[0=未退款，1=申请中, 2=拒绝退款, 3=已退款]',
+  `snapshot` text COMMENT '快照信息',
+  `is_comment` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否已评论: 0=否, 1=是',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_order_id`(`order_id`) USING BTREE COMMENT '索引订单ID',
-  INDEX `idx_good_id`(`goods_id`) USING BTREE COMMENT '索引商品ID'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单商品表' ROW_FORMAT = Dynamic;
+  KEY `idx_order_id` (`order_id`) USING BTREE COMMENT '索引订单ID',
+  KEY `idx_good_id` (`goods_id`) USING BTREE COMMENT '索引商品ID'
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='订单商品表';
 
 -- ----------------------------
 -- Table structure for wait_recharge_order
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_recharge_order`;
-CREATE TABLE `wait_recharge_order`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
-  `order_sn` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '订单编号',
-  `order_platform` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '订单平台: [1=安卓，2=苹果, 3=H5, 4=小程序]',
-  `pay_way` tinyint(1) UNSIGNED NOT NULL DEFAULT 2 COMMENT '支付方式[2=微信支付，3=支付宝支付]',
-  `pay_status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '支付状态[0=待支付，1=已支付]',
-  `pay_time` int(10) NOT NULL DEFAULT 0 COMMENT '支付时间',
-  `package_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '充值套餐',
-  `transaction_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '支付流水号',
-  `paid_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '充值金额',
-  `give_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '赠送金额',
-  `give_integral` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '赠送积分',
-  `give_growth` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '赠送成长值',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
+CREATE TABLE `wait_recharge_order` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `order_sn` varchar(64) NOT NULL DEFAULT '' COMMENT '订单编号',
+  `order_platform` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '订单平台: [1=安卓，2=苹果, 3=H5, 4=小程序]',
+  `pay_way` tinyint(1) unsigned NOT NULL DEFAULT '2' COMMENT '支付方式[2=微信支付，3=支付宝支付]',
+  `pay_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '支付状态[0=待支付，1=已支付]',
+  `pay_time` int(10) NOT NULL DEFAULT '0' COMMENT '支付时间',
+  `package_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '充值套餐',
+  `transaction_id` varchar(64) NOT NULL DEFAULT '' COMMENT '支付流水号',
+  `paid_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值金额',
+  `give_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '赠送金额',
+  `give_integral` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '赠送积分',
+  `give_growth` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '赠送成长值',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '充值订单表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='充值订单表';
 
 -- ----------------------------
 -- Table structure for wait_recharge_package
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_recharge_package`;
-CREATE TABLE `wait_recharge_package`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `money` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '充值金额',
-  `give_money` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '赠送金额',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '排序',
-  `is_show` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否显示: 0=否, 1=是',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除: 0=否, 1=是',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
+CREATE TABLE `wait_recharge_package` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `money` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '充值金额',
+  `give_money` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '赠送金额',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
+  `is_show` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否显示: 0=否, 1=是',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除: 0=否, 1=是',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
+  `delete_time` int(10) unsigned DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '充值套餐表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='充值套餐表';
 
 -- ----------------------------
 -- Table structure for wait_region
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_region`;
-CREATE TABLE `wait_region`  (
-  `id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '地区编号',
-  `parent_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '父级地区编码',
-  `level` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '等级[0=国家，1=省份，2=地级市，3=县区]',
-  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '名称',
-  `short` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '简称',
-  `city_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '地区编码',
-  `zip_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '邮政编码',
-  `gcj02_lng` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '纬度(火星坐标系)',
-  `gcj02_lat` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '经度(火星坐标系)',
-  `db09_lng` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '纬度(百度坐标系)',
-  `db09_lat` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '经度(百度坐标系)',
+CREATE TABLE `wait_region` (
+  `id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '地区编号',
+  `parent_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父级地区编码',
+  `level` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '等级[0=国家，1=省份，2=地级市，3=县区]',
+  `name` varchar(64) NOT NULL DEFAULT '' COMMENT '名称',
+  `short` varchar(64) NOT NULL DEFAULT '' COMMENT '简称',
+  `city_code` varchar(10) DEFAULT '' COMMENT '地区编码',
+  `zip_code` varchar(10) DEFAULT '' COMMENT '邮政编码',
+  `gcj02_lng` varchar(24) NOT NULL DEFAULT '' COMMENT '纬度(火星坐标系)',
+  `gcj02_lat` varchar(24) NOT NULL DEFAULT '' COMMENT '经度(火星坐标系)',
+  `db09_lng` varchar(64) NOT NULL DEFAULT '' COMMENT '纬度(百度坐标系)',
+  `db09_lat` varchar(64) NOT NULL DEFAULT '' COMMENT '经度(百度坐标系)',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '全国地区表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_seckill
--- ----------------------------
-DROP TABLE IF EXISTS `wait_seckill`;
-CREATE TABLE `wait_seckill`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `goods_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品ID',
-  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '活动名称',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '商品主图',
-  `banner` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品轮播',
-  `intro` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品简介',
-  `min_seckill_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '最低秒杀价',
-  `max_seckill_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '最高秒杀价',
-  `min_buy` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '每单起购数量，0=不限制',
-  `max_buy` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '每单限制购买数，0=不限制',
-  `total_stock` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '总库存,该库存下单不需要扣减',
-  `sales_volume` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '总销量,支付后增加拥有进度条',
-  `is_end` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '活动是否结束: 0=否，1=是',
-  `is_coupon` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否能用优惠券: 0=否，1=是',
-  `is_distribution` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否参与分销：0=否，1=是',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否禁用: 0=否, 1=是',
-  `start_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '活动开始时间',
-  `end_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '活动结束时间',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '秒杀活动表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_seckill_sku
--- ----------------------------
-DROP TABLE IF EXISTS `wait_seckill_sku`;
-CREATE TABLE `wait_seckill_sku`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `seckill_id` int(10) UNSIGNED NOT NULL COMMENT '活动ID',
-  `goods_id` int(10) UNSIGNED NOT NULL COMMENT '商品ID',
-  `sku_id` int(10) UNSIGNED NOT NULL COMMENT '规格ID',
-  `seckill_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '秒杀价格',
-  `seckill_stock` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '秒杀库存',
-  `sales_volume` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '秒杀销售量',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '秒杀规格表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='全国地区表';
 
 -- ----------------------------
 -- Table structure for wait_sign_record
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_sign_record`;
-CREATE TABLE `wait_sign_record`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
-  `days` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '连续签到天数',
-  `reward_integral` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '奖励积分',
-  `reward_growth` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '奖励成长值',
-  `is_end` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '最后1天[0=否, 1=是]',
-  `sign_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '签到时间',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
+CREATE TABLE `wait_sign_record` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `days` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '连续签到天数',
+  `reward_integral` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '奖励积分',
+  `reward_growth` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '奖励成长值',
+  `is_end` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '最后1天[0=否, 1=是]',
+  `sign_time` int(10) unsigned DEFAULT NULL COMMENT '签到时间',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '签到记录表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='签到记录表';
 
 -- ----------------------------
 -- Table structure for wait_sign_rule
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_sign_rule`;
-CREATE TABLE `wait_sign_rule`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `days` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '连续签到天数',
-  `give_integral` int(10) UNSIGNED NOT NULL COMMENT '赠送积分数量',
-  `give_growth` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '增成长值数量',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否, 1=是]',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
+CREATE TABLE `wait_sign_rule` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `days` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '连续签到天数',
+  `give_integral` int(10) unsigned NOT NULL COMMENT '赠送积分数量',
+  `give_growth` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '增成长值数量',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否, 1=是]',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
+  `delete_time` int(10) unsigned DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '签到规则表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='签到规则表';
 
 -- ----------------------------
 -- Table structure for wait_store
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_store`;
-CREATE TABLE `wait_store`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '门店名称',
-  `logo` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '门店logo',
-  `contacts` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '负责人名',
-  `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '联系电话',
-  `intro` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '门店简介',
-  `business_hours` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '营业时间',
-  `province_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '省ID',
-  `city_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '市ID',
-  `district_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '区ID',
-  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '详细地址',
-  `longitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '经度',
-  `latitude` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '纬度',
-  `sort` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '门店排序',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '门店状态: 0=停用，1=正常',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除: 0=否，1=是',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
+CREATE TABLE `wait_store` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '门店名称',
+  `logo` varchar(200) NOT NULL DEFAULT '' COMMENT '门店logo',
+  `contacts` varchar(20) NOT NULL DEFAULT '' COMMENT '负责人名',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '联系电话',
+  `intro` varchar(255) NOT NULL DEFAULT '' COMMENT '门店简介',
+  `business_hours` varchar(64) NOT NULL DEFAULT '' COMMENT '营业时间',
+  `province_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '省ID',
+  `city_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '市ID',
+  `district_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '区ID',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '详细地址',
+  `longitude` varchar(32) NOT NULL DEFAULT '' COMMENT '经度',
+  `latitude` varchar(32) NOT NULL DEFAULT '' COMMENT '纬度',
+  `sort` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '门店排序',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '门店状态: 0=停用，1=正常',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除: 0=否，1=是',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
+  `delete_time` int(10) unsigned DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '门店管理表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='门店管理表';
 
 -- ----------------------------
 -- Table structure for wait_store_clerk
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_store_clerk`;
-CREATE TABLE `wait_store_clerk`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `store_id` int(10) UNSIGNED NOT NULL COMMENT '门店ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `nickname` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '店员姓名',
-  `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '店员电话',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态: 0=禁用, 1=启用',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除: 0=否, 1=是',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
+CREATE TABLE `wait_store_clerk` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `store_id` int(10) unsigned NOT NULL COMMENT '门店ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `nickname` varchar(20) NOT NULL DEFAULT '' COMMENT '店员姓名',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '店员电话',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0=禁用, 1=启用',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除: 0=否, 1=是',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
+  `delete_time` int(10) unsigned DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '门店员工表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='门店员工表';
 
 -- ----------------------------
 -- Table structure for wait_store_verify
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_store_verify`;
-CREATE TABLE `wait_store_verify`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+CREATE TABLE `wait_store_verify` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `operate` tinyint(1) NOT NULL COMMENT '操作: 1=员工核销，2=后台核销',
-  `store_id` int(10) UNSIGNED NOT NULL COMMENT '门店ID',
-  `staff_id` int(10) UNSIGNED NOT NULL COMMENT '核销员ID，和operate字段对应',
-  `order_id` int(10) UNSIGNED NOT NULL COMMENT '订单ID',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
+  `store_id` int(10) unsigned NOT NULL COMMENT '门店ID',
+  `staff_id` int(10) unsigned NOT NULL COMMENT '核销员ID，和operate字段对应',
+  `order_id` int(10) unsigned NOT NULL COMMENT '订单ID',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '门店核销表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_team
--- ----------------------------
-DROP TABLE IF EXISTS `wait_team`;
-CREATE TABLE `wait_team`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `goods_id` int(10) NOT NULL COMMENT '商品ID',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '拼团名称',
-  `image` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商品主图',
-  `banner` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '商品轮播图',
-  `intro` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '拼团简介',
-  `people_num` tinyint(2) UNSIGNED NOT NULL DEFAULT 2 COMMENT '成团所需人数',
-  `min_buy` smallint(5) NOT NULL COMMENT '每单起购数量，0=不限制',
-  `max_buy` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '每单限制购买数，0=不限制',
-  `min_team_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '最低拼团价',
-  `max_team_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '最高拼团价',
-  `total_found_number` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '累计开团次数: 不论成功与否',
-  `total_join_number` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '累计参与次数: 不论成功与否',
-  `total_success_number` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '累计拼成功次数',
-  `click_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '浏览量',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '活动状态: 0=未开始，1=进行中，2=已结束',
-  `is_coupon` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否能用优惠券: 0=否，1=是',
-  `is_distribution` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否参与分销：0=否，1=是',
-  `is_automatic` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '虚拟成团: 0=否，1=是',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除: 0=否，1=是',
-  `start_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '活动开始时间',
-  `end_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '活动结束时间',
-  `effective_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '成团有效期, 单位: 分钟',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '删除时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_goods_id`(`goods_id`) USING BTREE COMMENT '商品ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '拼团活动表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_team_found
--- ----------------------------
-DROP TABLE IF EXISTS `wait_team_found`;
-CREATE TABLE `wait_team_found`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `team_id` int(10) UNSIGNED NOT NULL COMMENT '团活动ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '团长ID',
-  `people` smallint(5) UNSIGNED NOT NULL COMMENT '几人团',
-  `join` smallint(5) UNSIGNED NOT NULL COMMENT '几人参加',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '拼团状态：1=拼团中，2=拼团成功，3=拼团失败',
-  `snapshot` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '拼团商品快照Json',
-  `kaituan_time` int(10) UNSIGNED NOT NULL COMMENT '开团时间',
-  `invalid_time` int(10) UNSIGNED NOT NULL COMMENT '失效时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '拼团开团表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_team_join
--- ----------------------------
-DROP TABLE IF EXISTS `wait_team_join`;
-CREATE TABLE `wait_team_join`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `team_id` int(10) UNSIGNED NOT NULL COMMENT '拼团活动ID',
-  `found_id` int(10) UNSIGNED NOT NULL COMMENT '开团ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `order_id` int(10) NOT NULL COMMENT '订单ID',
-  `identity` tinyint(1) NOT NULL COMMENT '身份: 0=团员，1=团长',
-  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态: 1=待成团，2=拼团成功，3=拼团失败',
-  `snapshot` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '拼团商品快照Json',
-  `create_time` int(10) UNSIGNED NOT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '拼团参与表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for wait_team_sku
--- ----------------------------
-DROP TABLE IF EXISTS `wait_team_sku`;
-CREATE TABLE `wait_team_sku`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `team_id` int(10) UNSIGNED NOT NULL COMMENT '活动ID',
-  `goods_id` int(10) UNSIGNED NOT NULL COMMENT '商品ID',
-  `sku_id` int(10) UNSIGNED NOT NULL COMMENT '规格ID',
-  `team_price` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '拼团价格',
-  `team_stock` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '拼团库存',
-  `sales_volume` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '拼团销售量',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '拼团规格表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='门店核销表';
 
 -- ----------------------------
 -- Table structure for wait_user
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_user`;
-CREATE TABLE `wait_user`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `sn` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '用户编号',
-  `avatar` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '头像',
-  `nickname` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '昵称',
-  `mobile` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '手机号码',
-  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '登录密码',
-  `salt` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '加密盐',
-  `sex` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '性别[0=未知,1=男,2=女]',
-  `grade_id` int(10) UNSIGNED NOT NULL DEFAULT 1 COMMENT '会员等级',
-  `login_ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0.0.0.0' COMMENT '登录IP',
-  `login_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '登录时间',
-  `integral` int(10) NOT NULL DEFAULT 0 COMMENT '剩余积分',
-  `money` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT '剩余金额',
-  `earnings` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '佣金收益',
-  `growth_value` int(10) NOT NULL DEFAULT 0 COMMENT '成长值数',
-  `total_order_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '消费累计额度',
-  `total_recharge_amount` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '累计充值金额',
-  `first_leader` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '第一个上级',
-  `second_leader` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '第二个上级',
-  `third_leader` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '第三个上级',
-  `ancestor_relation` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '所有上级关系链',
-  `distribution_code` varchar(18) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '分销邀请码',
-  `distribution_level` int(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分销等级',
-  `distribution_freeze` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分销冻结[0=否，1=是]',
-  `is_distribution` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否是分销用户[0=否，1=是]',
-  `is_disable` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否禁用[0=否, 1=是]',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除[0=否, 1=是]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '修改时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `sn` varchar(32) NOT NULL DEFAULT '' COMMENT '用户编号',
+  `avatar` varchar(200) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '头像',
+  `nickname` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '昵称',
+  `mobile` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '手机号码',
+  `password` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '登录密码',
+  `salt` varchar(10) NOT NULL COMMENT '加密盐',
+  `sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '性别[0=未知,1=男,2=女]',
+  `grade_id` int(10) unsigned NOT NULL DEFAULT '1' COMMENT '会员等级',
+  `login_ip` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '0.0.0.0' COMMENT '登录IP',
+  `login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录时间',
+  `integral` int(10) NOT NULL DEFAULT '0' COMMENT '剩余积分',
+  `money` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '剩余金额',
+  `earnings` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '佣金收益',
+  `growth_value` int(10) NOT NULL DEFAULT '0' COMMENT '成长值数',
+  `total_order_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '消费累计额度',
+  `total_recharge_amount` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '累计充值金额',
+  `is_disable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否禁用[0=否, 1=是]',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除[0=否, 1=是]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户管理表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户管理表';
 
 -- ----------------------------
 -- Table structure for wait_user_address
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_user_address`;
-CREATE TABLE `wait_user_address`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `nickname` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '收货人',
-  `mobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '联系电话',
-  `province_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '省',
-  `city_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '市',
-  `district_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '区',
-  `address` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '详细地址',
-  `is_default` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否默认：0=否, 1=是',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除：0=否，1=是',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NULL DEFAULT NULL,
+CREATE TABLE `wait_user_address` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `nickname` varchar(20) NOT NULL DEFAULT '' COMMENT '收货人',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '联系电话',
+  `province_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '省',
+  `city_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '市',
+  `district_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '区',
+  `address` varchar(200) NOT NULL DEFAULT '' COMMENT '详细地址',
+  `is_default` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否默认：0=否, 1=是',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除：0=否，1=是',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
+  `delete_time` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户地址表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户地址表';
 
 -- ----------------------------
 -- Table structure for wait_user_auth
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_user_auth`;
-CREATE TABLE `wait_user_auth`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `user_id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `openid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'openid',
-  `unionid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT 'unionid',
-  `client` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '客户端[1=android, 2=ios, 3=h5,  4=微信小程序，5=支付宝小程序]',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
+CREATE TABLE `wait_user_auth` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` int(10) unsigned NOT NULL COMMENT '用户ID',
+  `openid` varchar(32) NOT NULL DEFAULT '' COMMENT 'openid',
+  `unionid` varchar(32) NOT NULL DEFAULT '' COMMENT 'unionid',
+  `client` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '客户端[1=android, 2=ios, 3=h5,  4=微信小程序，5=支付宝小程序]',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户授权表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户授权表';
 
 -- ----------------------------
 -- Table structure for wait_user_grade
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_user_grade`;
-CREATE TABLE `wait_user_grade`  (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '等级ID',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '等级名称',
-  `weight` int(11) UNSIGNED NOT NULL DEFAULT 1 COMMENT '等级权重[1-50]',
-  `icon` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '等级图标',
-  `background` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '等级背景',
-  `upgrade` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '升级条件',
-  `equity` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '等级权益[折扣率0-100]',
-  `is_disable` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否禁用[0=否, 1=是]',
-  `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除',
-  `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '更新时间',
-  `delete_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除时间',
+CREATE TABLE `wait_user_grade` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '等级ID',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '等级名称',
+  `weight` int(11) unsigned NOT NULL DEFAULT '1' COMMENT '等级权重[1-50]',
+  `icon` varchar(200) NOT NULL DEFAULT '' COMMENT '等级图标',
+  `background` varchar(200) NOT NULL DEFAULT '' COMMENT '等级背景',
+  `upgrade` text NOT NULL COMMENT '升级条件',
+  `equity` text NOT NULL COMMENT '等级权益[折扣率0-100]',
+  `is_disable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否禁用[0=否, 1=是]',
+  `is_delete` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户等级表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户等级表';
 
 -- ----------------------------
 -- Table structure for wait_user_token
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_user_token`;
-CREATE TABLE `wait_user_token`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+CREATE TABLE `wait_user_token` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `user_id` int(10) NOT NULL COMMENT '用户ID',
-  `token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密钥',
-  `client` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '客户端',
-  `expire_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '过期时间',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
+  `token` varchar(100) NOT NULL COMMENT '密钥',
+  `client` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '客户端',
+  `expire_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '过期时间',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户登录表';
 
 -- ----------------------------
 -- Table structure for wait_withdraw
 -- ----------------------------
 DROP TABLE IF EXISTS `wait_withdraw`;
-CREATE TABLE `wait_withdraw`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `user_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户ID',
-  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '审核员ID',
-  `type` tinyint(1) UNSIGNED NOT NULL COMMENT '提现方式[1=钱包余额, 2=微信零钱, 3=银行卡, 4=微信收款码, 5=支付宝收款码]',
-  `withdraw_sn` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提现编号',
-  `real_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '真实姓名',
-  `account` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提现账号',
-  `bank` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提现银行',
-  `subbank` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提现银行支行',
-  `money_qr_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '收款二维码',
-  `apply_money` decimal(8, 2) NOT NULL DEFAULT 0.00 COMMENT '申请提现金额',
-  `actual_money` decimal(8, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '实际到账金额(扣除手续费后)',
-  `service_charge` decimal(8, 2) UNSIGNED NOT NULL COMMENT '扣除的手续费',
-  `service_charge_ratio` float(5, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '手续费比例(%)',
-  `transfer_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '转账时间',
-  `transfer_voucher` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '转账凭证',
-  `transfer_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '转账备注',
-  `audit_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '审核备注',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '提现备注',
-  `status` tinyint(1) UNSIGNED NOT NULL COMMENT '提现状态[1=申请中, 2=提现中, 3=提现成功, 4=提现失败]',
-  `create_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-  `update_time` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
+CREATE TABLE `wait_withdraw` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `admin_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '审核员ID',
+  `type` tinyint(1) unsigned NOT NULL COMMENT '提现方式[1=钱包余额, 2=微信零钱, 3=银行卡, 4=微信收款码, 5=支付宝收款码]',
+  `withdraw_sn` varchar(255) NOT NULL DEFAULT '' COMMENT '提现编号',
+  `real_name` varchar(30) NOT NULL DEFAULT '' COMMENT '真实姓名',
+  `account` varchar(30) NOT NULL DEFAULT '' COMMENT '提现账号',
+  `bank` varchar(255) NOT NULL DEFAULT '' COMMENT '提现银行',
+  `subbank` varchar(255) NOT NULL DEFAULT '' COMMENT '提现银行支行',
+  `money_qr_code` varchar(255) NOT NULL DEFAULT '' COMMENT '收款二维码',
+  `apply_money` decimal(8,2) NOT NULL DEFAULT '0.00' COMMENT '申请提现金额',
+  `actual_money` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '实际到账金额(扣除手续费后)',
+  `service_charge` decimal(8,2) unsigned NOT NULL COMMENT '扣除的手续费',
+  `service_charge_ratio` float(5,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '手续费比例(%)',
+  `transfer_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '转账时间',
+  `transfer_voucher` varchar(255) NOT NULL DEFAULT '' COMMENT '转账凭证',
+  `transfer_remark` varchar(255) NOT NULL DEFAULT '' COMMENT '转账备注',
+  `audit_remark` varchar(255) NOT NULL DEFAULT '' COMMENT '审核备注',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '提现备注',
+  `status` tinyint(1) unsigned NOT NULL COMMENT '提现状态[1=申请中, 2=提现中, 3=提现成功, 4=提现失败]',
+  `create_time` int(10) unsigned DEFAULT NULL COMMENT '创建时间',
+  `update_time` int(10) unsigned DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户提现表' ROW_FORMAT = Dynamic;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户提现表';
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 
 -- ----------------------------
 -- INSERT
@@ -1412,7 +1204,6 @@ CREATE TABLE `wait_withdraw`  (
 BEGIN;
 INSERT INTO `wait_config_payment` VALUES (1, '余额支付', 'wallet', 'static/images/payment/wallet.png', 'static/images/payment/ic_balance.png', '使用帐户余额支付，只有注册会员才能使用', '', 100, 1, 1616848365);
 INSERT INTO `wait_config_payment` VALUES (2, '微信支付', 'mnp', 'static/images/payment/mnp.png', 'static/images/payment/ic_wechat.png', '使用微信端支付，支付后钱到微信商户平台', '', 100, 1, 1616848365);
-INSERT INTO `wait_config_payment` VALUES (3, '支付宝', 'alipay', 'static/images/payment/alipay.png', 'static/images/payment/ic_alipay.png', '使用支付宝支付，支付后钱到支付宝商户', '', 100, 0, 1616848365);
 COMMIT;
 
 BEGIN;
@@ -1423,25 +1214,20 @@ COMMIT;
 
 BEGIN;
 INSERT INTO `wait_config_sms` VALUES (1, '阿里云短信', 'Aliyun', 'static/images/service/aliyun.png', '阿里云短信服务（Short Message Service）', '', 100, 1, 1616848365);
-INSERT INTO `wait_config_sms` VALUES (2, '腾讯云短信', 'Tencent', 'static/images/service/tencent.png', '腾讯云短信服务（Short Message Service）', '', 100, 0, 1616848365);
 COMMIT;
 
 BEGIN;
 INSERT INTO `wait_crontab` VALUES (1, '关闭超时订单', 'order_close', '', '* * * * *', '', '', 2, '0', '0', 1651805822, 1625410746, 1651805822);
-INSERT INTO `wait_crontab` VALUES (2, '关闭超时拼团', 'team_close', '', '* * * * *', '', '', 2, '0', '0', 1651805822, 1640774565, 1651805822);
-INSERT INTO `wait_crontab` VALUES (3, '结算分销佣金', 'distribution_settle', '', '* * * * *', '', '', 2, '0', '0', 1651805822, 1641527789, 1651805822);
 COMMIT;
 
 BEGIN;
 INSERT INTO `wait_diy_me` VALUES (1, '我的钱包', '/static/images/diy/client/tools/tools_wallet.png', 0, 1, '10', 1, 0, 1650115132, 1650205171, 0);
 INSERT INTO `wait_diy_me` VALUES (2, '收货地址', '/static/images/diy/client/tools/tools_location.png', 0, 1, '15', 1, 0, 1650115152, 1650205191, 0);
 INSERT INTO `wait_diy_me` VALUES (3, '商品收藏', '/static/images/diy/client/tools/tools_collect.png', 0, 1, '11', 1, 0, 1650115225, 1650205203, 0);
-INSERT INTO `wait_diy_me` VALUES (4, '我的推广', '/static/images/diy/client/tools/tools_spread.png', 0, 1, '12', 1, 0, 1650115238, 1650205273, 0);
-INSERT INTO `wait_diy_me` VALUES (5, '我的优惠券', '/static/images/diy/client/tools/tools_coupon.png', 0, 1, '13', 1, 0, 1650115254, 1650205284, 0);
-INSERT INTO `wait_diy_me` VALUES (6, '联系客服', '/static/images/diy/client/tools/tools_service.png', 0, 1, '16', 1, 0, 1650115288, 1650206041, 0);
-INSERT INTO `wait_diy_me` VALUES (7, '商城资讯', '/static/images/diy/client/tools/tools_help.png', 0, 1, '17', 1, 0, 1650115321, 1650205322, 0);
-INSERT INTO `wait_diy_me` VALUES (8, '我的拼团', '/static/images/diy/client/tools/tools_team.png', 0, 1, '27', 1, 0, 1650251810, 1650251810, 0);
-INSERT INTO `wait_diy_me` VALUES (9, '订单核销', '/static/images/diy/client/tools/tools_store.png', 0, 1, '28', 1, 0, 1650288159, 1650288159, 0);
+INSERT INTO `wait_diy_me` VALUES (4, '我的优惠券', '/static/images/diy/client/tools/tools_coupon.png', 0, 1, '13', 1, 0, 1650115254, 1650205284, 0);
+INSERT INTO `wait_diy_me` VALUES (5, '联系客服', '/static/images/diy/client/tools/tools_service.png', 0, 1, '16', 1, 0, 1650115288, 1650206041, 0);
+INSERT INTO `wait_diy_me` VALUES (6, '商城资讯', '/static/images/diy/client/tools/tools_help.png', 0, 1, '17', 1, 0, 1650115321, 1650205322, 0);
+INSERT INTO `wait_diy_me` VALUES (7, '订单核销', '/static/images/diy/client/tools/tools_store.png', 0, 1, '28', 1, 0, 1650288159, 1650288159, 0);
 COMMIT;
 
 BEGIN;
@@ -1467,7 +1253,7 @@ INSERT INTO `wait_diy_order` VALUES (5, '退款/售后', 'static/images/diy/clie
 COMMIT;
 
 BEGIN;
-INSERT INTO `wait_diy_page` VALUES (1000, 10, 'WaitShop开源商城系统', '{\"page\":{\"type\":\"page\",\"name\":\"页面设置\",\"config\":{\"name\":\"WaitShop开源商城系统\",\"title\":\"开源商城系统\",\"shareTitle\":\"WaitShop开源商城系统\",\"titleTextColor\":\"white\",\"titleBackgroundColor\":\"#ff5058\"}},\"items\":[{\"name\":\"搜索框\",\"type\":\"search\",\"config\":{\"textAlign\":\"left\",\"searchStyle\":\"round\",\"textColor\":\"#999999\",\"background\":\"#ff5058\",\"inputBgColor\":\"#F4F4F4\",\"placeholder\":\"请输入关键字进行搜索\"}},{\"name\":\"图片轮播\",\"type\":\"banner\",\"config\":{\"mode\":\"rect\",\"type\":\"card\",\"effect3d\":\"0\",\"interval\":\"3800\",\"backdrop\":\"static\\/images\\/diy\\/client\\/index\\/banner00.png\"},\"data\":[{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/banner01.png\",\"linkUrl\":\"\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/banner02.png\",\"linkUrl\":\"\\/bundle\\/pages\\/article_detail\\/article_detail?id=1\"}]},{\"name\":\"导航组\",\"type\":\"navBar\",\"config\":{\"rowsNum\":\"5\",\"borderRadius\":\"6\",\"marginLeft\":\"10\",\"marginTop\":\"9\",\"background\":\"#FFFFFF\"},\"data\":[{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_seckill.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/seckill_activity\\/seckill_activity\",\"text\":\"限时秒杀\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_team.png\",\"imgName\":\"icon-2.jpg\",\"linkUrl\":\"\\/bundle\\/pages\\/team_activity\\/team_activity\",\"text\":\"超级拼团\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_coupon.png\",\"imgName\":\"icon-4.jpg\",\"linkUrl\":\"\\/bundle\\/pages\\/coupon_receive\\/coupon_receive\",\"text\":\"领券中心\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_collect.png\",\"imgName\":\"icon-3.jpg\",\"linkUrl\":\"\\/bundle\\/pages\\/user_collect\\/user_collect?login=true\",\"text\":\"我的收藏\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_article.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/article_list\\/article_list\",\"text\":\"新闻资讯\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_sign.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/user_sign\\/user_sign?login=true\",\"text\":\"每日签到\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_grade.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/user_grade\\/user_grade?login=true\",\"text\":\"会员中心\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_draw.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/luckly_wheel\\/luckly_wheel?login=true\",\"text\":\"积分抽奖\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_store.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/store_list\\/store_list?store=true\",\"text\":\"营业门店\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_goods.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list\",\"text\":\"全部商品\",\"color\":\"#666666\"}]},{\"name\":\"公告组\",\"type\":\"notice\",\"config\":{\"icon\":\"http:\\/\\/wait.fishbook.top\\/static\\/images\\/diy\\/notice\\/notice-01.png\",\"marginTop\":\"10\",\"marginAlign\":\"10\",\"borderRadius\":\"6\",\"background\":\"#ffffff\",\"textColor\":\"#000000\"},\"data\":[{\"title\":\"永远可以相信团结一心的中国队\",\"linkUrl\":\"\"},{\"title\":\"高亭宇夺冠后身披国旗仰天怒吼\",\"linkUrl\":\"\"}]},{\"name\":\"图片橱窗\",\"type\":\"window\",\"config\":{\"number\":\"4\",\"layout\":\"-1\",\"interval\":\"2\",\"padding\":\"6\",\"marginTop\":\"10\",\"marginLeft\":\"10\",\"borderRadius\":\"6\",\"background\":\"#ffffff\"},\"data\":[{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/layout01.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list?cid=1\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/layout02.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list?cid=2\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/layout03.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list?cid=3\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/layout04.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list?cid=4\"}]},{\"name\":\"拼团商品组\",\"type\":\"teamGoods\",\"config\":{\"source\":\"auto\",\"auto\":{\"goodsSort\":\"all\",\"showNum\":\"6\"},\"show\":{\"teamPrice\":\"1\",\"teamJoin\":\"1\",\"teamGoBtn\":\"1\"},\"icon\":\"static\\/images\\/diy\\/ic_group.gif\",\"marginLeft\":\"10\",\"marginTop\":\"9\",\"borderRadius\":\"6\",\"background\":\"#ffffff\"},\"data\":[]},{\"name\":\"图片组\",\"type\":\"image\",\"config\":{\"marginTop\":\"0\",\"marginLeft\":\"10\",\"paddingLeft\":\"44\",\"paddingTop\":\"0\",\"background\":\"#f3f3f3\"},\"data\":[{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/title01.png\",\"imgName\":\"image-1.jpg\",\"linkUrl\":\"\"}]},{\"name\":\"商品组\",\"type\":\"goods\",\"config\":{\"display\":\"list\",\"source\":\"auto\",\"auto\":{\"category\":\"0\",\"showNum\":\"6\",\"goodsSort\":\"all\"},\"show\":{\"goodsName\":true,\"goodsPrice\":true,\"linePrice\":true,\"goodsSales\":true},\"column\":\"2\",\"borderRadius\":\"6\",\"marginLeft\":\"10\",\"marginTop\":\"10\",\"background\":\"#F6F6F6\"}},{\"name\":\"辅助空白\",\"type\":\"blank\",\"config\":{\"height\":\"10\",\"background\":\"#f6f6f6\"}}]}', 0, 1633872543, 1651072948, 0);
+INSERT INTO `wait_diy_page` VALUES (1000, 10, 'WaitShop开源商城系统', '{\"page\":{\"type\":\"page\",\"name\":\"页面设置\",\"config\":{\"name\":\"WaitShop开源商城系统\",\"title\":\"开源商城系统\",\"shareTitle\":\"WaitShop开源商城系统\",\"titleTextColor\":\"white\",\"titleBackgroundColor\":\"#ff5058\"}},\"items\":[{\"name\":\"搜索框\",\"type\":\"search\",\"config\":{\"textAlign\":\"left\",\"searchStyle\":\"round\",\"textColor\":\"#999999\",\"background\":\"#ff5058\",\"inputBgColor\":\"#F4F4F4\",\"placeholder\":\"请输入关键字进行搜索\"}},{\"name\":\"图片轮播\",\"type\":\"banner\",\"config\":{\"mode\":\"rect\",\"type\":\"card\",\"effect3d\":\"0\",\"interval\":\"3800\",\"backdrop\":\"static\\/images\\/diy\\/client\\/index\\/banner00.png\"},\"data\":[{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/banner01.png\",\"linkUrl\":\"\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/banner02.png\",\"linkUrl\":\"\\/bundle\\/pages\\/article_detail\\/article_detail?id=1\"}]},{\"name\":\"导航组\",\"type\":\"navBar\",\"config\":{\"rowsNum\":\"5\",\"borderRadius\":\"6\",\"marginLeft\":\"10\",\"marginTop\":\"9\",\"background\":\"#FFFFFF\"},\"data\":[{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_article.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/article_list\\/article_list\",\"text\":\"新闻资讯\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_sign.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/user_sign\\/user_sign?login=true\",\"text\":\"每日签到\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_draw.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/luckly_wheel\\/luckly_wheel?login=true\",\"text\":\"积分抽奖\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_store.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/bundle\\/pages\\/store_list\\/store_list?store=true\",\"text\":\"营业门店\",\"color\":\"#666666\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/navbar_goods.png\",\"imgName\":\"icon-1.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list\",\"text\":\"全部商品\",\"color\":\"#666666\"}]},{\"name\":\"公告组\",\"type\":\"notice\",\"config\":{\"icon\":\"http:\\/\\/waitshopf2c.local\\/static\\/images\\/diy\\/notice\\/notice-01.png\",\"marginTop\":\"10\",\"marginAlign\":\"10\",\"borderRadius\":\"6\",\"background\":\"#ffffff\",\"textColor\":\"#000000\"},\"data\":[{\"title\":\"永远可以相信团结一心的中国队\",\"linkUrl\":\"\"},{\"title\":\"高亭宇夺冠后身披国旗仰天怒吼\",\"linkUrl\":\"\"}]},{\"name\":\"图片橱窗\",\"type\":\"window\",\"config\":{\"number\":\"4\",\"layout\":\"-1\",\"interval\":\"2\",\"padding\":\"6\",\"marginTop\":\"10\",\"marginLeft\":\"10\",\"borderRadius\":\"6\",\"background\":\"#ffffff\"},\"data\":[{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/layout01.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list?cid=1\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/layout02.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list?cid=2\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/layout03.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list?cid=3\"},{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/layout04.png\",\"linkUrl\":\"\\/pages\\/goods\\/list\\/list?cid=4\"}]},{\"name\":\"图片组\",\"type\":\"image\",\"config\":{\"marginTop\":\"0\",\"marginLeft\":\"10\",\"paddingLeft\":\"44\",\"paddingTop\":\"0\",\"background\":\"#f3f3f3\"},\"data\":[{\"imgUrl\":\"static\\/images\\/diy\\/client\\/index\\/title01.png\",\"imgName\":\"image-1.jpg\",\"linkUrl\":\"\"}]},{\"name\":\"商品组\",\"type\":\"goods\",\"config\":{\"display\":\"list\",\"source\":\"auto\",\"auto\":{\"category\":\"0\",\"showNum\":\"6\",\"goodsSort\":\"all\"},\"show\":{\"goodsName\":true,\"goodsPrice\":true,\"linePrice\":true,\"goodsSales\":true},\"column\":\"2\",\"borderRadius\":\"6\",\"marginLeft\":\"10\",\"marginTop\":\"10\",\"background\":\"#F6F6F6\"}},{\"name\":\"辅助空白\",\"type\":\"blank\",\"config\":{\"height\":\"10\",\"background\":\"#f6f6f6\"}}]}', 0, 1633872543, 1669566584, 0);
 COMMIT;
 
 BEGIN;
@@ -1531,10 +1317,246 @@ INSERT INTO `wait_region` VALUES (710601, 710600, 3, '东区', '东区', '03', '
 INSERT INTO `wait_region` VALUES (713338, 713300, 3, '林边乡', '林边', '08', '927', '120.515091', '22.434015', '120.521603', '22.439919'), (713339, 713300, 3, '南州乡', '南州', '08', '926', '120.509808', '22.490192', '120.516317', '22.496197'), (713340, 713300, 3, '佳冬乡', '佳冬', '08', '931', '120.551544', '22.417653', '120.558081', '22.423352'), (713341, 713300, 3, '琉球乡', '琉球', '08', '929', '120.369020', '22.342366', '120.375478', '22.348691'), (713342, 713300, 3, '车城乡', '车城', '08', '944', '120.710979', '22.072077', '120.717412', '22.078398'), (713343, 713300, 3, '满州乡', '满州', '08', '947', '120.838843', '22.020853', '120.845276', '22.027215'), (713344, 713300, 3, '枋山乡', '枋山', '08', '941', '120.656356', '22.260338', '120.662921', '22.265983'), (713345, 713300, 3, '三地门乡', '三地门', '08', '901', '120.654486', '22.713877', '120.661071', '22.719534'), (713346, 713300, 3, '雾台乡', '雾台', '08', '902', '120.732318', '22.744877', '120.738759', '22.751166'), (713347, 713300, 3, '玛家乡', '玛家', '08', '903', '120.644130', '22.706718', '120.650695', '22.712478'), (713348, 713300, 3, '泰武乡', '泰武', '08', '921', '120.632856', '22.591819', '120.639386', '22.597769'), (713349, 713300, 3, '来义乡', '来义', '08', '922', '120.633601', '22.525866', '120.640094', '22.531795'), (713350, 713300, 3, '春日乡', '春日', '08', '942', '120.628793', '22.370672', '120.635298', '22.376697'), (713351, 713300, 3, '狮子乡', '狮子', '08', '943', '120.704617', '22.201917', '120.711073', '22.208168'), (713352, 713300, 3, '牡丹乡', '牡丹', '08', '945', '120.770108', '22.125687', '120.776679', '22.131375'), (713400, 710000, 2, '台东县', '台东', '089', '9', '120.916000', '23.000000', '120.922529', '23.005754'), (713401, 713400, 3, '台东市', '台东', '089', '950', '121.145654', '22.756045', '121.152205', '22.761695'), (713421, 713400, 3, '成功镇', '成功', '089', '961', '121.379571', '23.100223', '121.38614', '23.105859'), (713422, 713400, 3, '关山镇', '关山', '089', '956', '121.163134', '23.047450', '121.169666', '23.053324'), (713423, 713400, 3, '卑南乡', '卑南', '089', '954', '121.083503', '22.786039', '121.089923', '22.792394'), (713424, 713400, 3, '鹿野乡', '鹿野', '089', '955', '121.135982', '22.913951', '121.142543', '22.919594'), (713425, 713400, 3, '池上乡', '池上', '089', '958', '121.215139', '23.122393', '121.221572', '23.128645'), (713426, 713400, 3, '东河乡', '东河', '089', '959', '121.300334', '22.969934', '121.306808', '22.976123'), (713427, 713400, 3, '长滨乡', '长滨', '089', '962', '121.451522', '23.315041', '121.457983', '23.321345'), (713428, 713400, 3, '太麻里乡', '太麻里', '089', '963', '121.007394', '22.615383', '121.013952', '22.621097'), (713429, 713400, 3, '大武乡', '大武', '089', '965', '120.889938', '22.339919', '120.896513', '22.345609'), (713430, 713400, 3, '绿岛乡', '绿岛', '089', '951', '121.492596', '22.661676', '121.499143', '22.667336'), (713431, 713400, 3, '海端乡', '海端', '089', '957', '121.172008', '23.101074', '121.1785', '23.107112'), (713432, 713400, 3, '延平乡', '延平', '089', '953', '121.084499', '22.902358', '121.090917', '22.908708'), (713433, 713400, 3, '金峰乡', '金峰', '089', '964', '120.971292', '22.595511', '120.977755', '22.601816'), (713434, 713400, 3, '达仁乡', '达仁', '089', '966', '120.884131', '22.294869', '120.890657', '22.300621'), (713435, 713400, 3, '兰屿乡', '兰屿', '089', '952', '121.532473', '22.056736', '121.538946', '22.06278'), (713500, 710000, 2, '花莲县', '花莲', '03', '9', '121.300000', '23.830000', '121.306454', '23.83618'), (713501, 713500, 3, '花莲市', '花莲', '03', '970', '121.606810', '23.982074', '121.61335', '23.98779'), (713521, 713500, 3, '凤林镇', '凤林', '03', '975', '121.451687', '23.744648', '121.458115', '23.750943'), (713522, 713500, 3, '玉里镇', '玉里', '03', '981', '121.316445', '23.336509', '121.32288', '23.342867'), (713523, 713500, 3, '新城乡', '新城', '03', '971', '121.640512', '24.128133', '121.647055', '24.133961'), (713524, 713500, 3, '吉安乡', '吉安', '03', '973', '121.568005', '23.961635', '121.574422', '23.967965'), (713525, 713500, 3, '寿丰乡', '寿丰', '03', '974', '121.508955', '23.870680', '121.51551', '23.876353'), (713526, 713500, 3, '光复乡', '光复', '03', '976', '121.423496', '23.669084', '121.42997', '23.675324'), (713527, 713500, 3, '丰滨乡', '丰滨', '03', '977', '121.518639', '23.597080', '121.525163', '23.602873'), (713528, 713500, 3, '瑞穗乡', '瑞穗', '03', '978', '121.375992', '23.496817', '121.382543', '23.502457'), (713529, 713500, 3, '富里乡', '富里', '03', '983', '121.250124', '23.179984', '121.256701', '23.185671'), (713530, 713500, 3, '秀林乡', '秀林', '03', '972', '121.620381', '24.116642', '121.62695', '24.122277'), (713531, 713500, 3, '万荣乡', '万荣', '03', '979', '121.407493', '23.715346', '121.413988', '23.721296'), (713532, 713500, 3, '卓溪乡', '卓溪', '03', '982', '121.303422', '23.346369', '121.30987', '23.352603'), (713600, 710000, 2, '澎湖县', '澎湖', '06', '8', '119.566417', '23.569733', '119.572981', '23.575463'), (713601, 713600, 3, '马公市', '马公', '06', '880', '119.566499', '23.565845', '119.573066', '23.571575'), (713621, 713600, 3, '湖西乡', '湖西', '06', '885', '119.659666', '23.583358', '119.666126', '23.589542'), (713622, 713600, 3, '白沙乡', '白沙', '06', '884', '119.597919', '23.666060', '119.60448', '23.671852'), (713623, 713600, 3, '西屿乡', '西屿', '06', '881', '119.506974', '23.600836', '119.513402', '23.607111'), (713624, 713600, 3, '望安乡', '望安', '06', '882', '119.500538', '23.357531', '119.506986', '23.363716'), (713625, 713600, 3, '七美乡', '七美', '06', '883', '119.423929', '23.206018', '119.43042', '23.212133'), (713700, 710000, 2, '金门县', '金门', '082', '8', '118.317089', '24.432706', '118.323504', '24.439054'), (713701, 713700, 3, '金城镇', '金城', '082', '893', '118.316667', '24.416667', '118.323098', '24.423017'), (713702, 713700, 3, '金湖镇', '金湖', '082', '891', '118.419743', '24.438633', '118.426191', '24.444803'), (713703, 713700, 3, '金沙镇', '金沙', '082', '890', '118.427993', '24.481109', '118.434435', '24.487397'), (713704, 713700, 3, '金宁乡', '金宁', '082', '892', '118.334506', '24.45672', '118.340934', '24.462974'), (713705, 713700, 3, '烈屿乡', '烈屿', '082', '894', '118.247255', '24.433102', '118.2538', '24.438821'), (713706, 713700, 3, '乌丘乡', '乌丘', '082', '896', '118.319578', '24.435038', '118.325991', '24.44139'), (713800, 710000, 2, '连江县', '连江', '0836', '2', '119.539704', '26.197364', '119.546182', '26.203552'), (713801, 713800, 3, '南竿乡', '南竿', '0836', '209', '119.944267', '26.144035', '119.950829', '26.149681'), (713802, 713800, 3, '北竿乡', '北竿', '0836', '210', '120.000572', '26.221983', '120.006991', '26.228342'), (713803, 713800, 3, '莒光乡', '莒光', '0836', '211', '119.940405', '25.976256', '119.946987', '25.981897'), (713804, 713800, 3, '东引乡', '东引', '0836', '212', '120.493955', '26.366164', '120.500377', '26.372429'), (810000, 100000, 1, '香港特别行政区', '香港', NULL, NULL, '114.173355', '22.320048', '114.179918', '22.325726'), (810100, 810000, 2, '香港岛', '香港岛', '00852', '999077', '114.177314', '22.266416', '114.183874', '22.272076'), (810101, 810100, 3, '中西区', '中西区', '00852', '999077', '114.154374', '22.281981', '114.160871', '22.2879'), (810102, 810100, 3, '湾仔区', '湾仔区', '00852', '999077', '114.182915', '22.276389', '114.189466', '22.282048'), (810103, 810100, 3, '东区', '东区', '00852', '999077', '114.255993', '22.262755', '114.262445', '22.268984'), (810104, 810100, 3, '南区', '南区', '00852', '999077', '114.174134', '22.24676', '114.18071', '22.252436'), (810200, 810000, 2, '九龙', '九龙', '00852', '999077', '114.17495', '22.327115', '114.181522', '22.332786'), (810201, 810200, 3, '油尖旺区', '油尖旺', '00852', '999077', '114.173332', '22.311704', '114.179887', '22.317381'), (810202, 810200, 3, '深水埗区', '深水埗', '00852', '999077', '114.16721', '22.328171', '114.173771', '22.333904'), (810203, 810200, 3, '九龙城区', '九龙城', '00852', '999077', '114.195053', '22.32673', '114.201607', '22.33249'), (810204, 810200, 3, '黄大仙区', '黄大仙', '00852', '999077', '114.19924', '22.336313', '114.205791', '22.342133'), (810205, 810200, 3, '观塘区', '观塘', '00852', '999077', '114.231268', '22.30943', '114.237698', '22.315735'), (810300, 810000, 2, '新界', '新界', '00852', '999077', '114.202408', '22.341766', '114.208952', '22.347637'), (810301, 810300, 3, '荃湾区', '荃湾', '00852', '999077', '114.122952', '22.370973', '114.129395', '22.377313'), (810302, 810300, 3, '屯门区', '屯门', '00852', '999077', '113.977416', '22.391047', '113.98388', '22.397174'), (810303, 810300, 3, '元朗区', '元朗', '00852', '999077', '114.039796', '22.443342', '114.046332', '22.449175'), (810304, 810300, 3, '北区', '北区', '00852', '999077', '114.148959', '22.494086', '114.155461', '22.500106'), (810305, 810300, 3, '大埔区', '大埔', '00852', '999077', '114.171743', '22.445653', '114.17831', '22.451343'), (810306, 810300, 3, '西贡区', '西贡', '00852', '999077', '114.27854', '22.37944', '114.28507', '22.385292'), (810307, 810300, 3, '沙田区', '沙田', '00852', '999077', '114.191941', '22.379294', '114.198496', '22.385016'), (810308, 810300, 3, '葵青区', '葵青', '00852', '999077', '114.13932', '22.363877', '114.145799', '22.370062'), (810309, 810300, 3, '离岛区', '离岛', '00852', '999077', '113.945842', '22.281508', '113.952388', '22.287179'), (820000, 100000, 1, '澳门特别行政区', '澳门', NULL, NULL, '113.54909', '22.198951', '113.555586', '22.204967'), (820100, 820000, 2, '澳门半岛', '澳门半岛', '00853', '999078', '113.549134', '22.198751', '113.55563', '22.204766'), (820101, 820100, 3, '花地玛堂区', '花地玛堂区', '00853', '999078', '113.552284', '22.208067', '113.5588', '22.214028'), (820102, 820100, 3, '圣安多尼堂区', '圣安多尼堂区', '00853', '999078', '113.564301', '22.12381', '113.570861', '22.129581'), (820103, 820100, 3, '大堂区', '大堂', '00853', '999078', '113.552971', '22.188359', '113.55947', '22.194304'), (820104, 820100, 3, '望德堂区', '望德堂区', '00853', '999078', '113.550568', '22.194081', '113.557064', '22.20007'), (820105, 820100, 3, '风顺堂区', '风顺堂区', '00853', '999078', '113.541928', '22.187368', '113.548389', '22.193505'), (820200, 820000, 2, '氹仔岛', '氹仔岛', '00853', '999078', '113.577669', '22.156838', '113.58422', '22.162497'), (820201, 820200, 3, '嘉模堂区', '嘉模堂区', '00853', '999078', '113.565303', '22.149029', '113.571842', '22.154783'), (820300, 820000, 2, '路环岛', '路环岛', '00853', '999078', '113.564857', '22.116226', '113.571422', '22.121991'), (820301, 820300, 3, '圣方济各堂区', '圣方济各堂区', '00853', '999078', '113.559954', '22.123486', '113.566502', '22.129319'), (900000, 100000, 1, '钓鱼岛', '钓鱼岛', NULL, NULL, '123.478088', '25.742385', '123.484509', '25.748753');
 COMMIT;
 
+-- ----------------------------
+-- Records of wait_admin_rule
+-- ----------------------------
 BEGIN;
-INSERT INTO `wait_admin_rule` VALUES (1, 0, '首页', 'iconfont icon-home', '', 1000, 1, 1646697600, 1646697600), (2, 1, '控制台', '', 'Index/console', 5, 0, 1646697600, 1646697600), (3, 1, '图表数据', '', 'Index/chart', 5, 0, 1646697600, 1646697600), (20, 0, '权限', 'iconfont icon-administrators', '', 1090, 1, 1646697600, 1646697600), (21, 20, '管理员', '', 'auth.Admin/lists', 100, 1, 1646697600, 1646697600), (22, 20, '角色管理', '', 'auth.Role/lists', 100, 1, 1646697600, 1646697600), (23, 20, '菜单管理', '', 'auth.Rule/lists', 100, 1, 1646697600, 1646697600), (24, 21, '管理员列表', '', 'auth.Admin/lists', 5, 0, 1646697600, 1646697600), (25, 21, '管理员新增', '', 'auth.Admin/add', 5, 0, 1646697600, 1646697600), (26, 21, '管理员编辑', '', 'auth.Admin/edit', 5, 0, 1646697600, 1646697600), (27, 21, '管理员删除', '', 'auth.Admin/del', 5, 0, 1646697600, 1646697600), (28, 21, '管理员查看', '', 'auth.Admin/info', 5, 0, 1646697600, 1646697600), (29, 22, '角色列表', '', 'auth.role/lists', 5, 0, 1646697600, 1646697600), (30, 22, '角色新增', '', 'auth.Role/add', 5, 0, 1646697600, 1646697600), (31, 22, '角色编辑', '', 'auth.Role/edit', 5, 0, 1646697600, 1646697600), (32, 22, '角色删除', '', 'auth.Role/del', 5, 0, 1646697600, 1646697600), (33, 23, '菜单列表', '', 'auth.menu/lists', 5, 0, 1646697600, 1646697600), (34, 23, '菜单新增', '', 'auth.Rule/add', 5, 0, 1646697600, 1646697600), (35, 23, '菜单编辑', '', 'auth.Rule/edit', 5, 0, 1646697600, 1646697600), (36, 23, '菜单删除', '', 'auth.Rule/del', 5, 0, 1646697600, 1646697600), (100, 0, '设置', 'iconfont icon-set', '', 1100, 1, 1646697600, 1646697600), (101, 100, '基础设置', '', 'setting.Basic/index', 100, 1, 1646697600, 1646697600), (102, 101, '基础配置页面', '', 'setting.Basic/index', 5, 0, 1646697600, 1646697600), (103, 101, '基础配置修改', '', 'setting.Basic/set', 5, 0, 1646697600, 1646697600), (105, 100, '渠道设置', '', 'setting.Wxapp/index', 100, 1, 1646697600, 1646697600), (106, 105, '渠道配置页面', '', 'setting.Wxapp/index', 5, 0, 1646697600, 1646697600), (107, 105, '渠道配置修改', '', 'setting.Wxapp/set', 5, 0, 1646697600, 1646697600), (110, 100, '交易设置', '', 'setting.Trade/index', 100, 1, 1646697600, 1646697600), (111, 110, '交易配置页面', '', 'setting.Trade/index', 5, 0, 1646697600, 1646697600), (112, 110, '交易配置修改', '', 'setting.Trade/set', 5, 0, 1646697600, 1646697600), (115, 100, '支付设置', '', 'setting.Payment/lists', 100, 1, 1646697600, 1646697600), (116, 115, '支付配置页面', '', 'setting.Payment/lists', 5, 0, 1646697600, 1646697600), (117, 115, '支付配置修改', '', 'setting.Payment/set', 5, 0, 1646697600, 1646697600), (120, 100, '存储设置', '', 'setting.Storage/index', 100, 1, 1646697600, 1646697600), (121, 120, '存储配置页面', '', 'setting.Storage/index', 5, 0, 1646697600, 1646697600), (122, 121, '存储配置修改', '', 'setting.Storage/set', 5, 0, 1646697600, 1646697600), (125, 100, '短信设置', '', 'setting.Sms/lists', 100, 1, 1646697600, 1646697600), (126, 125, '短信配置页面', '', 'setting.Sms/lists', 5, 0, 1646697600, 1646697600), (127, 125, '短信配置修改', '', 'setting.Sms/set', 5, 0, 1646697600, 1646697600), (130, 100, '提现设置', '', 'setting.Withdraw/index', 100, 1, 1646697600, 1646697600), (131, 130, '提现配置页面', '', 'setting.Withdraw/index', 5, 0, 1646697600, 1646697600), (132, 130, '提现配置修改', '', 'setting.Withdraw/set', 5, 0, 1646697600, 1646697600), (135, 100, '客服设置', '', 'setting.Service/index', 100, 1, 1646697600, 1646697600), (136, 135, '客服配置页面', '', 'setting.Service/index', 5, 0, 1646697600, 1646697600), (137, 135, '客服配置修改', '', 'setting.Service/set', 5, 0, 1646697600, 1646697600), (140, 100, '运费模板', '', 'setting.Freight/lists', 100, 1, 1646697600, 1646697600), (141, 140, '运费模板列表', '', 'setting.Freight/lists', 5, 0, 1646697600, 1646697600), (142, 140, '运费模板新增', '', 'setting.Freight/add', 5, 0, 1646697600, 1646697600), (143, 140, '运费模板编辑', '', 'setting.Freight/edit', 5, 0, 1646697600, 1646697600), (144, 140, '运费模板删除', '', 'setting.Freight/del', 5, 0, 1646697600, 1646697600), (145, 140, '运费配送地区', '', 'setting.Freight/region', 5, 0, 1646697600, 1646697600), (150, 100, '物流公司', '', 'setting.Express/lists', 100, 1, 1646697600, 1646697600), (151, 150, '物流公司页面', '', 'setting.Express/lists', 5, 0, 1646697600, 1646697600), (152, 150, '物流公司排序', '', 'setting.Express/sort', 5, 0, 1646697600, 1646697600), (155, 100, '物流查询', '', 'setting.Logistics/index', 100, 1, 1646697600, 1646697600), (156, 155, '物流查询配置页面', '', 'setting.Logistics/index', 5, 0, 1646697600, 1646697600), (157, 155, '物流查询配置修改', '', 'setting.Logistics/set', 5, 0, 1646697600, 1646697600), (160, 100, '消息通知', '', 'setting.Notice/lists', 100, 1, 1646697600, 1646697600), (161, 160, '消息通知配置页面', '', 'setting.Notice/lists', 5, 0, 1646697600, 1646697600), (162, 160, '消息通知配置修改', '', 'setting.Notice/set', 5, 0, 1646697600, 1646697600), (165, 100, '政策协议', '', 'setting.Policy/index', 100, 1, 1646697600, 1646697600), (166, 165, '政策协议配置页面', '', 'setting.Policy/index', 5, 0, 1646697600, 1646697600), (167, 165, '政策协议配置修改', '', 'setting.Policy/set', 5, 0, 1646697600, 1646697600), (200, 0, '系统', 'layui-icon layui-icon-util', '', 1110, 1, 1646697600, 1646697600), (201, 200, '系统缓存', '', 'system.Clear/index', 100, 1, 1646697600, 1646697600), (202, 201, '系统缓存页面', '', 'system.Clear/index', 5, 0, 1646697600, 1646697600), (203, 201, '系统缓存清除', '', 'system.Clear/clear', 5, 0, 1646697600, 1646697600), (205, 200, '计划任务', '', 'system.Crontab/lists', 100, 1, 1646697600, 1646697600), (206, 205, '计划任务列表', '', 'system.Crontab/lists', 5, 0, 1646697600, 1646697600), (207, 205, '计划任务新增', '', 'system.Crontab/add', 5, 0, 1646697600, 1646697600), (208, 205, '计划任务编辑', '', 'system.Crontab/edit', 5, 0, 1646697600, 1646697600), (209, 205, '计划任务删除', '', 'system.Crontab/del', 5, 0, 1646697600, 1646697600), (210, 205, '计划任务停止', '', 'system.Crontab/stop', 5, 0, 1646697600, 1646697600), (211, 205, '计划任务运行', '', 'system.Crontab/run', 5, 0, 1646697600, 1646697600), (300, 0, '内容', 'layui-icon layui-icon-read', '', 1040, 1, 1646697600, 1646697600), (301, 300, '文章管理', '', 'content.Article/lists', 100, 1, 1646697600, 1646697600), (302, 300, '文章分类', '', 'content.ArticleCategory/lists', 100, 1, 1646697600, 1646697600), (303, 301, '文章列表', '', 'content.Article/lists', 5, 0, 1646697600, 1646697600), (304, 301, '文章新增', '', 'content.Article/add', 5, 0, 1646697600, 1646697600), (305, 301, '文章编辑', '', 'content.Article/edit', 5, 0, 1646697600, 1646697600), (306, 301, '文章删除', '', 'content.Article/del', 5, 0, 1646697600, 1646697600), (307, 302, '分类列表', '', 'content.ArticleCategory/lists', 5, 0, 1646697600, 1646697600), (308, 302, '分类新增', '', 'content.ArticleCategory/add', 5, 0, 1646697600, 1646697600), (309, 302, '分类编辑', '', 'content.ArticleCategory/edit', 5, 0, 1646697600, 1646697600), (310, 302, '分类删除', '', 'content.ArticleCategory/del', 5, 0, 1646697600, 1646697600), (400, 0, '装修', 'iconfont icon-box', '', 1070, 1, 1646697600, 1650981644), (401, 400, '页面设计', '', 'diy.Page/lists', 100, 1, 1646697600, 1646697600), (402, 400, '分类模板', '', 'diy.Category/index', 100, 1, 1646697600, 1646697600), (403, 400, '我的功能', '', 'diy.Me/lists', 100, 1, 1646697600, 1646697600), (404, 400, '订单导航', '', 'diy.Order/lists', 100, 1, 1646697600, 1646697600), (405, 400, '底部导航', '', 'diy.Nav/lists', 100, 1, 1646697600, 1646697600), (406, 400, '风格装饰', '', 'diy.Style/index', 100, 1, 1646697600, 1646697600), (407, 400, '页面链接', '', 'diy.Page/link', 100, 1, 1646697600, 1646697600), (420, 401, '页面列表', '', 'diy.Page/lists', 5, 0, 1646697600, 1646697600), (421, 401, '页面新增', '', 'diy.Page/add', 5, 0, 1646697600, 1646697600), (422, 401, '页面编辑', '', 'diy.Page/edit', 5, 0, 1646697600, 1646697600), (423, 401, '页面删除', '', 'diy.Page/del', 5, 0, 1646697600, 1646697600), (425, 401, '设为首页', '', 'diy.Page/setHome', 5, 0, 1646697600, 1646697600), (426, 402, '模板页面', '', 'diy.Category/index', 5, 0, 1646697600, 1646697600), (427, 402, '模板切换', '', 'diy.Category/set', 5, 0, 1646697600, 1646697600), (430, 406, '风格装饰页面', '', 'diy.Style/index', 5, 0, 1646697600, 1646697600), (431, 406, '风格装饰修改', '', 'diy.Style/set', 5, 0, 1646697600, 1646697600), (1000, 0, '用户', 'iconfont icon-user', '', 1030, 1, 1646697600, 1646697600), (1001, 1000, '用户管理', '', 'user.User/lists', 100, 1, 1646697600, 1646697600), (1002, 1000, '等级管理', '', 'user.Grade/lists', 100, 1, 1646697600, 1646697600), (1003, 1001, '用户列表', '', 'user.User/lists', 5, 0, 1646697600, 1646697600), (1004, 1001, '用户资料', '', 'user.User/info', 5, 0, 1646697600, 1646697600), (1005, 1001, '充值金额', '', 'user.User/recharge', 5, 0, 1646697600, 1646697600), (1006, 1001, '调整等级', '', 'user.User/grade', 5, 0, 1646697600, 1646697600), (1007, 1002, '等级列表', '', 'user.Grade/lists', 5, 0, 1646697600, 1646697600), (1008, 1002, '等级新增', '', 'user.Grade/add', 5, 0, 1646697600, 1646697600), (1009, 1002, '等级编辑', '', 'user.Grade/edit', 5, 0, 1646697600, 1646697600), (1010, 1002, '等级删除', '', 'user.Grade/del', 5, 0, 1646697600, 1646697600), (2000, 0, '商品', 'iconfont icon-goods', '', 1010, 1, 1646697600, 1646697600), (2001, 2000, '商品管理', '', 'goods.Goods/lists', 100, 1, 1646697600, 1646697600), (2002, 2000, '商品分类', '', 'goods.Category/lists', 100, 1, 1646697600, 1646697600), (2003, 2000, '品牌管理', '', 'goods.Brand/lists', 100, 1, 1646697600, 1646697600), (2004, 2000, '供应商家', '', 'goods.Supplier/lists', 100, 1, 1646697600, 1646697600), (2005, 2000, '商品评论', '', 'goods.Comment/lists', 100, 1, 1646697600, 1646697600), (2006, 2001, '商品列表', '', 'goods.Goods/lists', 5, 0, 1646697600, 1646697600), (2007, 2001, '商品新增', '', 'goods.Goods/add', 5, 0, 1646697600, 1646697600), (2008, 2001, '商品编辑', '', 'goods.Goods/edit', 5, 0, 1646697600, 1646697600), (2009, 2001, '商品删除', '', 'goods.Goods/del', 5, 0, 1646697600, 1646697600), (2010, 2001, '商品状态', '', 'goods.Goods/switchStatus', 5, 0, 1646697600, 1646697600), (2011, 2001, '商品上架', '', 'goods.Goods/upperOrLower', 5, 0, 1646697600, 1646697600), (2012, 2001, '加入仓库', '', 'goods.Goods/addWarehouse', 5, 0, 1646697600, 1646697600), (2013, 2002, '分类列表', '', 'goods.Category/lists', 5, 0, 1646697600, 1646697600), (2014, 2002, '分类新增', '', 'goods.Category/add', 5, 0, 1646697600, 1646697600), (2015, 2002, '分类编辑', '', 'goods.Category/edit', 5, 0, 1646697600, 1646697600), (2016, 2002, '分类删除', '', 'goods.Category/del', 5, 0, 1646697600, 1646697600), (2017, 2002, '分类状态', '', 'goods.Category/switchStatus', 5, 0, 1646697600, 1646697600), (2018, 2003, '品牌列表', '', 'goods.Brand/lists', 5, 0, 1646697600, 1646697600), (2019, 2003, '品牌新增', '', 'goods.Brand/add', 5, 0, 1646697600, 1646697600), (2020, 2003, '品牌编辑', '', 'goods.Brand/edit', 5, 0, 1646697600, 1646697600);
-INSERT INTO `wait_admin_rule` VALUES (2021, 2003, '品牌删除', '', 'goods.Brand/del', 5, 0, 1646697600, 1646697600), (2022, 2003, '品牌状态', '', 'goods.Brand/switchStatus', 5, 0, 1646697600, 1646697600), (2023, 2004, '供应商列表', '', 'goods.Supplier/lists', 5, 0, 1646697600, 1646697600), (2024, 2004, '供应商新增', '', 'goods.Supplier/add', 5, 0, 1646697600, 1646697600), (2025, 2004, '供应商编辑', '', 'goods.Supplier/edit', 5, 0, 1646697600, 1646697600), (2026, 2004, '供应商删除', '', 'goods.Supplier/del', 5, 0, 1646697600, 1646697600), (2027, 2005, '评论列表', '', 'goods.Comment/lists', 5, 0, 1646697600, 1646697600), (2028, 2005, '评论回复', '', 'goods.Comment/reply', 5, 0, 1646697600, 1646697600), (2030, 2005, '评论删除', '', 'goods.Comment/del', 5, 0, 1646697600, 1646697600), (2039, 2005, '评论隐藏', '', 'goods.Comment/hide', 5, 0, 1646697600, 1646697600), (3000, 0, '订单', 'iconfont icon-order', '', 1020, 1, 1646697600, 1646697600), (3001, 3000, '订单管理', '', 'order.Order/lists', 100, 1, 1646697600, 1646697600), (3002, 3000, '售后管理', '', 'order.AfterSale/lists', 100, 1, 1646697600, 1646697600), (3003, 3001, '订单列表', '', 'order.Order/lists', 5, 0, 1646697600, 1646697600), (3004, 3001, '订单详情', '', 'order.Order/detail', 5, 0, 1646697600, 1646697600), (3005, 3001, '订单取消', '', 'order.Order/cancel', 5, 0, 1646697600, 1646697600), (3006, 3001, '订单关闭', '', 'order.Order/close', 5, 0, 1646697600, 1646697600), (3007, 3001, '订单发货', '', 'order.Order/deliver', 5, 0, 1646697600, 1646697600), (3008, 3001, '订单核销', '', 'order.Order/pickUp', 5, 0, 1646697600, 1646697600), (3009, 3002, '售后列表', '', 'order.AfterSale/lists', 5, 0, 1646697600, 1646697600), (3010, 3002, '售后详情', '', 'order.AfterSale/detail', 5, 0, 1646697600, 1646697600), (3011, 3002, '同意申请', '', 'order.AfterSale/agree', 5, 0, 1646697600, 1646697600), (3012, 3002, '拒绝申请', '', 'order.AfterSale/refuse', 5, 0, 1646697600, 1646697600), (3013, 3002, '确认收货', '', 'order.AfterSale/takeGoods', 5, 0, 1646697600, 1646697600), (3014, 3002, '拒绝收货', '', 'order.AfterSale/refuseGoods', 5, 0, 1646697600, 1646697600), (3015, 3002, '确认退款', '', 'order.AfterSale/confirmRefund', 5, 0, 1646697600, 1646697600), (4000, 0, '财务', 'iconfont icon-wallet', '', 1080, 1, 1646697600, 1646697600), (4001, 4000, '提现记录', '', 'finance.Withdraw/lists', 100, 1, 1646697600, 1646697600), (4002, 4000, '佣金记录', '', 'finance.Logs/commission', 100, 1, 1646697600, 1646697600), (4003, 4000, '资金流水', '', 'finance.Logs/wallet', 100, 1, 1646697600, 1646697600), (4004, 4000, '积分流水', '', 'finance.Logs/integral', 100, 1, 1646697600, 1646697600), (4005, 4000, '成长流水', '', 'finance.Logs/growth', 100, 1, 1646697600, 1646697600), (5000, 0, '营销', 'iconfont icon-marketing', '', 1060, 1, 1646697600, 1650981635), (5001, 5000, '优惠券', '', 'addons.Coupon/lists', 100, 1, 1646697600, 1646697600), (5002, 5000, '广告管理', '', 'addons.Ad/lists', 100, 1, 1646697600, 1646697600), (5003, 5000, '积分奖励', '', 'addons.Integral/index', 100, 1, 1646697600, 1646697600), (5004, 5000, '赠送奖励', '', 'addons.Reward/index', 100, 1, 1646697600, 1646697600), (5005, 5000, '每日签到', '', 'addons.Sign/lists', 100, 1, 1646697600, 1646697600), (5006, 5000, '限时秒杀', '', 'addons.Seckill/lists', 100, 1, 1646697600, 1646697600), (5007, 5000, '分销中心', '', '', 100, 1, 1646697600, 1646697600), (5008, 5000, '拼团活动', '', '', 100, 1, 1646697600, 1646697600), (5009, 5000, '会员充值', '', '', 100, 1, 1646697600, 1646697600), (5010, 5000, '幸运抽奖', '', '', 100, 1, 1646697600, 1646697600), (5011, 5001, '优惠券列表', '', 'addons.Coupon/add', 5, 0, 1646697600, 1646697600), (5012, 5001, '优惠券新增', '', 'addons.Coupon/add', 5, 0, 1646697600, 1646697600), (5013, 5001, '优惠券编辑', '', 'addons.Coupon/edit', 5, 0, 1646697600, 1646697600), (5014, 5001, '优惠券删除', '', 'addons.Coupon/del', 5, 0, 1646697600, 1646697600), (5015, 5001, '优惠券发布', '', 'addons.Coupon/publish', 5, 0, 1646697600, 1646697600), (5016, 5001, '优惠券关闭', '', 'addons.Coupon/close', 5, 0, 1646697600, 1646697600), (5201, 5002, '广告列表', '', 'addons.Ad/lists', 5, 0, 1646697600, 1646697600), (5202, 5002, '广告新增', '', 'addons.Ad/add', 5, 0, 1646697600, 1646697600), (5203, 5002, '广告编辑', '', 'addons.Ad/edit', 5, 0, 1646697600, 1646697600), (5204, 5002, '广告删除', '', 'addons.Ad/del', 5, 0, 1646697600, 1646697600), (5301, 5003, '奖励配置', '', 'addons.Integral/index', 5, 0, 1646697600, 1646697600), (5302, 5003, '设置奖励', '', 'addons.Integral/set', 5, 0, 1646697600, 1646697600), (5303, 5004, '赠送配置', '', 'addons.Reward/index', 5, 0, 1646697600, 1646697600), (5304, 5004, '设置赠送', '', 'addons.Reward/set', 5, 0, 1646697600, 1646697600), (5401, 5005, '签到配置', '', 'addons.Sign/lists', 5, 0, 1646697600, 1646697600), (5402, 5005, '签到新增', '', 'addons.Sign/add', 5, 0, 1646697600, 1646697600), (5403, 5005, '签到编辑', '', 'addons.Sign/edit', 5, 0, 1646697600, 1646697600), (5404, 5005, '签到删除', '', 'addons.Sign/del', 5, 0, 1646697600, 1646697600), (5405, 5005, '签到记录', '', 'addons.Sign/record', 5, 0, 1646697600, 1646697600), (5406, 5005, '配置修改', '', 'addons.Sign/setting', 5, 0, 1646697600, 1646697600), (5501, 5006, '秒杀列表', '', 'addons.Seckill/lists', 5, 0, 1646697600, 1646697600), (5502, 5006, '秒杀查看', '', 'addons.Seckill/view', 5, 0, 1646697600, 1646697600), (5503, 5006, '秒杀新增', '', 'addons.Seckill/add', 5, 0, 1646697600, 1646697600), (5504, 5006, '秒杀编辑', '', 'addons.Seckill/edit', 5, 0, 1646697600, 1646697600), (5505, 5006, '秒杀删除', '', 'addons.Seckill/del', 5, 0, 1646697600, 1646697600), (5506, 5006, '秒杀结束', '', 'addons.Seckill/end', 5, 0, 1646697600, 1646697600), (5601, 5007, '分销会员', '', 'addons.distribution.DistributionMember/lists', 100, 1, 1646697600, 1646697600), (5602, 5007, '分销申请', '', 'addons.distribution.DistributionApply/lists', 100, 1, 1646697600, 1646697600), (5603, 5007, '分销设置', '', 'addons.distribution.DistributionSetting/index', 100, 1, 1646697600, 1646697600), (5604, 5007, '分销商品', '', 'addons.distribution.DistributionGoods/lists', 100, 1, 1646697600, 1646697600), (5605, 5601, '分销会员列表', '', 'addons.distribution.DistributionMember/lists', 5, 0, 1646697600, 1646697600), (5606, 5601, '分销会员粉丝', '', 'addons.distribution.DistributionMember/fans', 5, 0, 1646697600, 1646697600), (5607, 5601, '分销会员详情', '', 'addons.distribution.DistributionMember/detail', 5, 0, 1646697600, 1646697600), (5608, 5601, '分销会员佣金', '', 'addons.distribution.DistributionMember/commission', 5, 0, 1646697600, 1646697600), (5609, 5601, '分销会员冻结', '', 'addons.distribution.DistributionMember/freeze', 5, 0, 1646697600, 1646697600), (5610, 5601, '分销会员解冻', '', 'addons.distribution.DistributionMember/thaw', 5, 0, 1646697600, 1646697600), (5611, 5601, '分销会员新增', '', 'addons.distribution.DistributionMember/add', 5, 0, 1646697600, 1646697600), (5612, 5601, '分销会员更新', '', 'addons.distribution.DistributionMember/updateLeader', 5, 0, 1646697600, 1646697600), (5613, 5602, '分销申请列表', '', 'addons.distribution.DistributionApply/lists', 5, 0, 1646697600, 1646697600), (5614, 5602, '分销申请审核', '', 'addons.distribution.DistributionApply/audit', 5, 0, 1646697600, 1646697600), (5615, 5603, '分销配置页面', '', 'addons.distribution.DistributionSetting/index', 5, 0, 1646697600, 1646697600), (5616, 5603, '分销配置修改', '', 'addons.distribution.DistributionSetting/set', 5, 0, 1646697600, 1646697600), (5617, 5604, '分销商品列表', '', 'addons.distribution.DistributionGoods/lists', 5, 0, 1646697600, 1646697600), (5618, 5604, '分销商品新增', '', 'addons.distribution.DistributionGoods/add', 5, 0, 1646697600, 1646697600), (5619, 5604, '分销商品编辑', '', 'addons.distribution.DistributionGoods/edit', 5, 0, 1646697600, 1646697600), (5620, 5604, '分销商品删除', '', 'addons.distribution.DistributionGoods/del', 5, 0, 1646697600, 1646697600), (5701, 5008, '拼团商品', '', 'addons.team.TeamActivity/lists', 100, 1, 1646697600, 1646697600), (5702, 5008, '拼团记录', '', 'addons.team.TeamFound/lists', 100, 1, 1646697600, 1646697600), (5703, 5701, '拼团活动列表', '', 'addons.team.TeamActivity/lists', 5, 0, 1646697600, 1646697600), (5704, 5701, '拼团活动新增', '', 'addons.team.TeamActivity/add', 5, 0, 1646697600, 1646697600), (5705, 5701, '拼团活动编辑', '', 'addons.team.TeamActivity/edit', 5, 0, 1646697600, 1646697600), (5706, 5701, '拼团活动删除', '', 'addons.team.TeamActivity/del', 5, 0, 1646697600, 1646697600), (5707, 5701, '拼团活动结束', '', 'addons.team.TeamActivity/end', 5, 0, 1646697600, 1646697600), (5708, 5701, '拼团活动记录', '', 'addons.team.TeamActivity/found', 5, 0, 1646697600, 1646697600), (5709, 5702, '参团列表', '', 'addons.team.TeamFound/lists', 5, 0, 1646697600, 1646697600), (5710, 5702, '参团记录', '', 'addons.team.TeamFound/join', 5, 0, 1646697600, 1646697600), (5711, 5702, '团的详情', '', 'addons.team.TeamFound/detail', 5, 0, 1646697600, 1646697600);
-INSERT INTO `wait_admin_rule` VALUES (5801, 5009, '充值配置', '', 'addons.Recharge/configure', 100, 1, 1646697600, 1646697600), (5802, 5009, '充值套餐', '', 'addons.Recharge/packageList', 100, 1, 1646697600, 1646697600), (5803, 5009, '充值订单', '', 'addons.Recharge/order', 100, 1, 1646697600, 1646697600), (5804, 5801, '充值配置页面', '', 'addons.Recharge/configure', 100, 5, 1646697600, 1646697600), (5805, 5801, '充值配置修改', '', 'addons.Recharge/setting', 100, 5, 1646697600, 1646697600), (5806, 5802, '充值套餐列表', '', 'addons.Recharge/packageList', 100, 5, 1646697600, 1646697600), (5807, 5802, '充值套餐新增', '', 'addons.Recharge/packageAdd', 100, 5, 1646697600, 1646697600), (5808, 5802, '充值套餐编辑', '', 'addons.Recharge/packageEdit', 100, 5, 1646697600, 1646697600), (5809, 5802, '充值套餐删除', '', 'addons.Recharge/packageDel', 100, 5, 1646697600, 1646697600), (5901, 5010, '抽奖记录', '', 'addons.Lottery/record', 100, 1, 1646697600, 1646697600), (5902, 5010, '抽奖奖品', '', 'addons.Lottery/lists', 100, 1, 1646697600, 1646697600), (5903, 5010, '抽奖设置', '', 'addons.Lottery/configure', 100, 1, 1646697600, 1646697600), (5904, 5902, '奖品列表', '', 'addons.Lottery/lists', 5, 0, 1646697600, 1646697600), (5905, 5902, '奖品编辑', '', 'addons.Lottery/edit', 5, 0, 1646697600, 1646697600), (5906, 5903, '抽奖配置页面', '', 'addons.Lottery/configure', 5, 0, 1646697600, 1646697600), (5907, 5903, '抽奖配置修改', '', 'addons.Lottery/setting', 5, 0, 1646697600, 1646697600), (7000, 0, '门店', 'iconfont icon-store', '', 1050, 1, 1646697600, 1646697600), (7001, 7000, '门店管理', '', 'store.Store/lists', 100, 1, 1646697600, 1646697600), (7002, 7000, '员工管理', '', 'store.Clerk/lists', 100, 1, 1646697600, 1646697600), (7003, 7000, '核销记录', '', 'store.Verify/lists', 100, 1, 1646697600, 1646697600), (7004, 7001, '门店列表', '', 'store.Store/lists', 5, 0, 1646697600, 1646697600), (7005, 7001, '门店新增', '', 'store.Store/add', 5, 0, 1646697600, 1646697600), (7006, 7001, '门店编辑', '', 'store.Store/edit', 5, 0, 1646697600, 1646697600), (7007, 7001, '门店删除', '', 'store.Store/del', 5, 0, 1646697600, 1646697600), (7008, 7001, '门店停用', '', 'store.Store/stop', 5, 0, 1646697600, 1646697600), (7009, 7001, '门店启用', '', 'store.Store/start', 5, 0, 1646697600, 1646697600), (7010, 7002, '员工列表', '', 'store.Clerk/lists', 5, 0, 1646697600, 1646697600), (7011, 7002, '员工新增', '', 'store.Clerk/add', 5, 0, 1646697600, 1646697600), (7012, 7002, '员工编辑', '', 'store.Clerk/edit', 5, 0, 1646697600, 1646697600), (7013, 7002, '员工移除', '', 'store.Clerk/del', 5, 0, 1646697600, 1646697600), (7014, 7002, '员工停用', '', 'store.Clerk/stop', 5, 0, 1646697600, 1646697600), (7015, 7002, '员工启用', '', 'store.Clerk/start', 5, 0, 1646697600, 1646697600), (7016, 7003, '核销列表', '', 'store.Verify/lists', 5, 0, 1646697600, 1646697600), (7017, 7003, '核销详情', '', 'store.Verify/detail', 5, 0, 1646697600, 1646697600), (7500, 200, '资源管理', '', '', 100, 0, 1646697600, 1649903110), (7501, 7500, '文件列表', '', 'File/lists', 5, 0, 1646697600, 1646697600), (7502, 7500, '文件命名', '', 'File/rename', 5, 0, 1646697600, 1646697600), (7503, 7500, '文件删除', '', 'File/recycle', 5, 0, 1646697600, 1646697600), (7504, 7500, '文件移动', '', 'File/move', 5, 0, 1646697600, 1646697600), (7505, 7500, '分组新建', '', 'File/addGroup', 5, 0, 1646697600, 1646697600), (7506, 7500, '分组编辑', '', 'File/editGroup', 5, 0, 1646697600, 1646697600), (7507, 7500, '分组删除', '', 'File/delGroup', 5, 0, 1646697600, 1646697600), (7700, 200, '上传管理', '', '', 100, 0, 1646697600, 1646697600), (7701, 7700, '上传图片', '', 'Upload/image', 5, 0, 1646697600, 1646697600), (7702, 7700, '上传视频', '', 'Upload/video', 5, 0, 1646697600, 1646697600), (7703, 7700, '上传证书', '', 'Upload/pem', 5, 0, 1646697600, 1646697600), (7704, 7700, '上传其它', '', 'Upload/other', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1, 0, '首页', 'iconfont icon-home', '', 1000, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2, 1, '控制台', '', 'Index/console', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3, 1, '图表数据', '', 'Index/chart', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (20, 0, '权限', 'iconfont icon-administrators', '', 1090, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (21, 20, '管理员', '', 'auth.Admin/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (22, 20, '角色管理', '', 'auth.Role/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (23, 20, '菜单管理', '', 'auth.Rule/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (24, 21, '管理员列表', '', 'auth.Admin/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (25, 21, '管理员新增', '', 'auth.Admin/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (26, 21, '管理员编辑', '', 'auth.Admin/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (27, 21, '管理员删除', '', 'auth.Admin/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (28, 21, '管理员查看', '', 'auth.Admin/info', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (29, 22, '角色列表', '', 'auth.role/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (30, 22, '角色新增', '', 'auth.Role/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (31, 22, '角色编辑', '', 'auth.Role/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (32, 22, '角色删除', '', 'auth.Role/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (33, 23, '菜单列表', '', 'auth.menu/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (34, 23, '菜单新增', '', 'auth.Rule/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (35, 23, '菜单编辑', '', 'auth.Rule/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (36, 23, '菜单删除', '', 'auth.Rule/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (100, 0, '设置', 'iconfont icon-set', '', 1100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (101, 100, '基础设置', '', 'setting.Basic/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (102, 101, '基础配置页面', '', 'setting.Basic/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (103, 101, '基础配置修改', '', 'setting.Basic/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (105, 100, '渠道设置', '', 'setting.Wxapp/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (106, 105, '渠道配置页面', '', 'setting.Wxapp/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (107, 105, '渠道配置修改', '', 'setting.Wxapp/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (110, 100, '交易设置', '', 'setting.Trade/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (111, 110, '交易配置页面', '', 'setting.Trade/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (112, 110, '交易配置修改', '', 'setting.Trade/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (115, 100, '支付设置', '', 'setting.Payment/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (116, 115, '支付配置页面', '', 'setting.Payment/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (117, 115, '支付配置修改', '', 'setting.Payment/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (120, 100, '存储设置', '', 'setting.Storage/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (121, 120, '存储配置页面', '', 'setting.Storage/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (122, 121, '存储配置修改', '', 'setting.Storage/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (125, 100, '短信设置', '', 'setting.Sms/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (126, 125, '短信配置页面', '', 'setting.Sms/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (127, 125, '短信配置修改', '', 'setting.Sms/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (135, 100, '客服设置', '', 'setting.Service/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (136, 135, '客服配置页面', '', 'setting.Service/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (137, 135, '客服配置修改', '', 'setting.Service/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (140, 100, '运费模板', '', 'setting.Freight/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (141, 140, '运费模板列表', '', 'setting.Freight/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (142, 140, '运费模板新增', '', 'setting.Freight/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (143, 140, '运费模板编辑', '', 'setting.Freight/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (144, 140, '运费模板删除', '', 'setting.Freight/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (145, 140, '运费配送地区', '', 'setting.Freight/region', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (150, 100, '物流公司', '', 'setting.Express/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (151, 150, '物流公司页面', '', 'setting.Express/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (152, 150, '物流公司排序', '', 'setting.Express/sort', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (155, 100, '物流查询', '', 'setting.Logistics/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (156, 155, '物流查询配置页面', '', 'setting.Logistics/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (157, 155, '物流查询配置修改', '', 'setting.Logistics/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (160, 100, '消息通知', '', 'setting.Notice/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (161, 160, '消息通知配置页面', '', 'setting.Notice/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (162, 160, '消息通知配置修改', '', 'setting.Notice/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (165, 100, '政策协议', '', 'setting.Policy/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (166, 165, '政策协议配置页面', '', 'setting.Policy/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (167, 165, '政策协议配置修改', '', 'setting.Policy/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (200, 0, '系统', 'layui-icon layui-icon-util', '', 1110, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (201, 200, '系统缓存', '', 'system.Clear/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (202, 201, '系统缓存页面', '', 'system.Clear/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (203, 201, '系统缓存清除', '', 'system.Clear/clear', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (205, 200, '计划任务', '', 'system.Crontab/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (206, 205, '计划任务列表', '', 'system.Crontab/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (207, 205, '计划任务新增', '', 'system.Crontab/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (208, 205, '计划任务编辑', '', 'system.Crontab/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (209, 205, '计划任务删除', '', 'system.Crontab/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (210, 205, '计划任务停止', '', 'system.Crontab/stop', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (211, 205, '计划任务运行', '', 'system.Crontab/run', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (300, 0, '内容', 'layui-icon layui-icon-read', '', 1040, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (301, 300, '文章管理', '', 'content.Article/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (302, 300, '文章分类', '', 'content.ArticleCategory/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (303, 301, '文章列表', '', 'content.Article/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (304, 301, '文章新增', '', 'content.Article/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (305, 301, '文章编辑', '', 'content.Article/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (306, 301, '文章删除', '', 'content.Article/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (307, 302, '分类列表', '', 'content.ArticleCategory/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (308, 302, '分类新增', '', 'content.ArticleCategory/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (309, 302, '分类编辑', '', 'content.ArticleCategory/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (310, 302, '分类删除', '', 'content.ArticleCategory/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (400, 0, '装修', 'iconfont icon-box', '', 1070, 1, 1646697600, 1650981644);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (401, 400, '页面设计', '', 'diy.Page/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (402, 400, '分类模板', '', 'diy.Category/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (403, 400, '我的功能', '', 'diy.Me/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (404, 400, '订单导航', '', 'diy.Order/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (405, 400, '底部导航', '', 'diy.Nav/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (406, 400, '风格装饰', '', 'diy.Style/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (407, 400, '页面链接', '', 'diy.Page/link', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (420, 401, '页面列表', '', 'diy.Page/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (421, 401, '页面新增', '', 'diy.Page/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (422, 401, '页面编辑', '', 'diy.Page/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (423, 401, '页面删除', '', 'diy.Page/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (425, 401, '设为首页', '', 'diy.Page/setHome', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (426, 402, '模板页面', '', 'diy.Category/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (427, 402, '模板切换', '', 'diy.Category/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (430, 406, '风格装饰页面', '', 'diy.Style/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (431, 406, '风格装饰修改', '', 'diy.Style/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1000, 0, '用户', 'iconfont icon-user', '', 1030, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1001, 1000, '用户管理', '', 'user.User/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1002, 1000, '等级管理', '', 'user.Grade/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1003, 1001, '用户列表', '', 'user.User/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1004, 1001, '用户资料', '', 'user.User/info', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1005, 1001, '充值金额', '', 'user.User/recharge', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1006, 1001, '调整等级', '', 'user.User/grade', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1007, 1002, '等级列表', '', 'user.Grade/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1008, 1002, '等级新增', '', 'user.Grade/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1009, 1002, '等级编辑', '', 'user.Grade/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (1010, 1002, '等级删除', '', 'user.Grade/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2000, 0, '商品', 'iconfont icon-goods', '', 1010, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2001, 2000, '商品管理', '', 'goods.Goods/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2002, 2000, '商品分类', '', 'goods.Category/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2003, 2000, '品牌管理', '', 'goods.Brand/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2004, 2000, '供应商家', '', 'goods.Supplier/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2005, 2000, '商品评论', '', 'goods.Comment/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2006, 2001, '商品列表', '', 'goods.Goods/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2007, 2001, '商品新增', '', 'goods.Goods/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2008, 2001, '商品编辑', '', 'goods.Goods/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2009, 2001, '商品删除', '', 'goods.Goods/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2010, 2001, '商品状态', '', 'goods.Goods/switchStatus', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2011, 2001, '商品上架', '', 'goods.Goods/upperOrLower', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2012, 2001, '加入仓库', '', 'goods.Goods/addWarehouse', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2013, 2002, '分类列表', '', 'goods.Category/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2014, 2002, '分类新增', '', 'goods.Category/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2015, 2002, '分类编辑', '', 'goods.Category/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2016, 2002, '分类删除', '', 'goods.Category/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2017, 2002, '分类状态', '', 'goods.Category/switchStatus', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2018, 2003, '品牌列表', '', 'goods.Brand/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2019, 2003, '品牌新增', '', 'goods.Brand/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2020, 2003, '品牌编辑', '', 'goods.Brand/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2021, 2003, '品牌删除', '', 'goods.Brand/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2022, 2003, '品牌状态', '', 'goods.Brand/switchStatus', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2023, 2004, '供应商列表', '', 'goods.Supplier/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2024, 2004, '供应商新增', '', 'goods.Supplier/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2025, 2004, '供应商编辑', '', 'goods.Supplier/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2026, 2004, '供应商删除', '', 'goods.Supplier/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2027, 2005, '评论列表', '', 'goods.Comment/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2028, 2005, '评论回复', '', 'goods.Comment/reply', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2030, 2005, '评论删除', '', 'goods.Comment/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (2039, 2005, '评论隐藏', '', 'goods.Comment/hide', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3000, 0, '订单', 'iconfont icon-order', '', 1020, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3001, 3000, '订单管理', '', 'order.Order/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3002, 3000, '售后管理', '', 'order.AfterSale/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3003, 3001, '订单列表', '', 'order.Order/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3004, 3001, '订单详情', '', 'order.Order/detail', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3005, 3001, '订单取消', '', 'order.Order/cancel', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3006, 3001, '订单关闭', '', 'order.Order/close', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3007, 3001, '订单发货', '', 'order.Order/deliver', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3008, 3001, '订单核销', '', 'order.Order/pickUp', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3009, 3002, '售后列表', '', 'order.AfterSale/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3010, 3002, '售后详情', '', 'order.AfterSale/detail', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3011, 3002, '同意申请', '', 'order.AfterSale/agree', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3012, 3002, '拒绝申请', '', 'order.AfterSale/refuse', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3013, 3002, '确认收货', '', 'order.AfterSale/takeGoods', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3014, 3002, '拒绝收货', '', 'order.AfterSale/refuseGoods', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (3015, 3002, '确认退款', '', 'order.AfterSale/confirmRefund', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (4000, 0, '财务', 'iconfont icon-wallet', '', 1080, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (4003, 4000, '资金流水', '', 'finance.Logs/wallet', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (4004, 4000, '积分流水', '', 'finance.Logs/integral', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (4005, 4000, '成长流水', '', 'finance.Logs/growth', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5000, 0, '营销', 'iconfont icon-marketing', '', 1060, 1, 1646697600, 1650981635);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5001, 5000, '优惠券', '', 'addons.Coupon/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5002, 5000, '广告管理', '', 'addons.Ad/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5003, 5000, '积分奖励', '', 'addons.Integral/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5004, 5000, '赠送奖励', '', 'addons.Reward/index', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5005, 5000, '每日签到', '', 'addons.Sign/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5009, 5000, '会员充值', '', '', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5010, 5000, '幸运抽奖', '', '', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5011, 5001, '优惠券列表', '', 'addons.Coupon/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5012, 5001, '优惠券新增', '', 'addons.Coupon/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5013, 5001, '优惠券编辑', '', 'addons.Coupon/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5014, 5001, '优惠券删除', '', 'addons.Coupon/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5015, 5001, '优惠券发布', '', 'addons.Coupon/publish', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5016, 5001, '优惠券关闭', '', 'addons.Coupon/close', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5201, 5002, '广告列表', '', 'addons.Ad/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5202, 5002, '广告新增', '', 'addons.Ad/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5203, 5002, '广告编辑', '', 'addons.Ad/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5204, 5002, '广告删除', '', 'addons.Ad/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5301, 5003, '奖励配置', '', 'addons.Integral/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5302, 5003, '设置奖励', '', 'addons.Integral/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5303, 5004, '赠送配置', '', 'addons.Reward/index', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5304, 5004, '设置赠送', '', 'addons.Reward/set', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5401, 5005, '签到配置', '', 'addons.Sign/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5402, 5005, '签到新增', '', 'addons.Sign/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5403, 5005, '签到编辑', '', 'addons.Sign/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5404, 5005, '签到删除', '', 'addons.Sign/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5405, 5005, '签到记录', '', 'addons.Sign/record', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5406, 5005, '配置修改', '', 'addons.Sign/setting', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5801, 5009, '充值配置', '', 'addons.Recharge/configure', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5802, 5009, '充值套餐', '', 'addons.Recharge/packageList', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5803, 5009, '充值订单', '', 'addons.Recharge/order', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5804, 5801, '充值配置页面', '', 'addons.Recharge/configure', 100, 5, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5805, 5801, '充值配置修改', '', 'addons.Recharge/setting', 100, 5, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5806, 5802, '充值套餐列表', '', 'addons.Recharge/packageList', 100, 5, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5807, 5802, '充值套餐新增', '', 'addons.Recharge/packageAdd', 100, 5, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5808, 5802, '充值套餐编辑', '', 'addons.Recharge/packageEdit', 100, 5, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5809, 5802, '充值套餐删除', '', 'addons.Recharge/packageDel', 100, 5, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5901, 5010, '抽奖记录', '', 'addons.Lottery/record', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5902, 5010, '抽奖奖品', '', 'addons.Lottery/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5903, 5010, '抽奖设置', '', 'addons.Lottery/configure', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5904, 5902, '奖品列表', '', 'addons.Lottery/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5905, 5902, '奖品编辑', '', 'addons.Lottery/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5906, 5903, '抽奖配置页面', '', 'addons.Lottery/configure', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (5907, 5903, '抽奖配置修改', '', 'addons.Lottery/setting', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7000, 0, '门店', 'iconfont icon-store', '', 1050, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7001, 7000, '门店管理', '', 'store.Store/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7002, 7000, '员工管理', '', 'store.Clerk/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7003, 7000, '核销记录', '', 'store.Verify/lists', 100, 1, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7004, 7001, '门店列表', '', 'store.Store/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7005, 7001, '门店新增', '', 'store.Store/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7006, 7001, '门店编辑', '', 'store.Store/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7007, 7001, '门店删除', '', 'store.Store/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7008, 7001, '门店停用', '', 'store.Store/stop', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7009, 7001, '门店启用', '', 'store.Store/start', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7010, 7002, '员工列表', '', 'store.Clerk/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7011, 7002, '员工新增', '', 'store.Clerk/add', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7012, 7002, '员工编辑', '', 'store.Clerk/edit', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7013, 7002, '员工移除', '', 'store.Clerk/del', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7014, 7002, '员工停用', '', 'store.Clerk/stop', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7015, 7002, '员工启用', '', 'store.Clerk/start', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7016, 7003, '核销列表', '', 'store.Verify/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7017, 7003, '核销详情', '', 'store.Verify/detail', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7500, 200, '资源管理', '', '', 100, 0, 1646697600, 1649903110);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7501, 7500, '文件列表', '', 'File/lists', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7502, 7500, '文件命名', '', 'File/rename', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7503, 7500, '文件删除', '', 'File/recycle', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7504, 7500, '文件移动', '', 'File/move', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7505, 7500, '分组新建', '', 'File/addGroup', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7506, 7500, '分组编辑', '', 'File/editGroup', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7507, 7500, '分组删除', '', 'File/delGroup', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7700, 200, '上传管理', '', '', 100, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7701, 7700, '上传图片', '', 'Upload/image', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7702, 7700, '上传视频', '', 'Upload/video', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7703, 7700, '上传证书', '', 'Upload/pem', 5, 0, 1646697600, 1646697600);
+INSERT INTO `wait_admin_rule` (`id`, `pid`, `title`, `icon`, `uri`, `sort`, `is_menu`, `create_time`, `update_time`) VALUES (7704, 7700, '上传其它', '', 'Upload/other', 5, 0, 1646697600, 1646697600);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

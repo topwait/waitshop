@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -46,19 +46,6 @@ class StorageLogic extends Logic
                     'access_key' => '',
                     'secret_key' => '',
                     'domain'     => ''
-                ],
-                'aliyun' => [
-                    'bucket'            => '',
-                    'access_key_id'     => '',
-                    'access_key_secret' => '',
-                    'domain'            => ''
-                ],
-                'qcloud' => [
-                    'bucket'     => '',
-                    'region'     => '',
-                    'secret_id'  => '',
-                    'secret_key' => '',
-                    'domain'     => ''
                 ]
             )
         ]);
@@ -83,19 +70,6 @@ class StorageLogic extends Logic
                         'access_key' => $post['qiniu_ak'],
                         'secret_key' => $post['qiniu_sk'],
                         'domain'     => $post['qiniu_domain']
-                    ],
-                    'aliyun' => [
-                        'bucket'            => $post['aliyun_bucket'],
-                        'access_key_id'     => $post['aliyun_ak'],
-                        'access_key_secret' => $post['aliyun_sk'],
-                        'domain'            => $post['aliyun_domain']
-                    ],
-                    'qcloud' => [
-                        'bucket'     => $post['qcloud_bucket'],
-                        'region'     => $post['qcloud_region'],
-                        'secret_id'  => $post['qcloud_ak'],
-                        'secret_key' => $post['qcloud_sk'],
-                        'domain'     => $post['qcloud_domain']
                     ]
                 )
             ]);

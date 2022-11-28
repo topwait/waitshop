@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -37,30 +37,24 @@ class Share extends Api
      * @author windy
      * @return Json
      */
-    public function poster()
+    public function poster(): Json
     {
         (new RequestValidate())->isGet();
 
+        $type = $this->getData('type') ?? '';
         $result = false;
-        switch ($this->getData('type')??'') {
+        switch ($type) {
             case 'user':
-                $url = $this->getData('url');
+                $url = trim($this->getData('url'));
                 $result = ShareLogic::userPoster($this->userId, $this->client, $url);
                 break;
             case 'goods':
-                $gid = $this->getData('id');
-                $url = $this->getData('url');
-                $result = ShareLogic::goodsPoster($gid, $this->userId, $this->client, $url);
-                break;
             case 'team':
-                $tid = $this->getData('id');
-                $url = $this->getData('url');
-                $result = ShareLogic::teamPoster($tid, $this->userId, $this->client, $url);
-                break;
             case 'seckill':
-                $tid = $this->getData('id');
-                $url = $this->getData('url');
-                $result = ShareLogic::seckillPoster($tid, $this->userId, $this->client, $url);
+                $gid = intval($this->getData('id'));
+                $url = trim($this->getData('url'));
+                $result = ShareLogic::goodsPoster($type, $gid, $this->userId, $this->client, $url);
+                break;
         }
 
         if ($result === false) {

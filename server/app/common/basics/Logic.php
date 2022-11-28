@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -18,6 +18,8 @@
 namespace app\common\basics;
 
 
+use app\common\model\auth\Admin;
+
 /**
  * 逻辑层基类
  * Class Logic
@@ -25,6 +27,8 @@ namespace app\common\basics;
  */
 abstract class Logic
 {
+    private static $model;
+
     /**
      * 错误信息
      * @var string
@@ -78,9 +82,40 @@ abstract class Logic
     }
 
     /**
-     * 设置搜索条件
+     * 事务开启
      *
+     * @author windy
+     */
+    public static function dbStartTrans(): void
+    {
+        self::$model = new Admin();
+        self::$model->startTrans();
+    }
+
+    /**
+     * 事务提交
+     *
+     * @author windy
+     */
+    public static function dbCommit(): void
+    {
+        self::$model->commit();
+    }
+
+    /**
+     * 事务回滚
+     *
+     * @author windy
+     */
+    public static function dbRollback(): void
+    {
+        self::$model->rollback();
+    }
+
+    /**
+     * 设置搜索条件
      * PS: 参数名@字段名: user@U.sn
+     *
      * @author windy
      * @param array $search
      * @return array
@@ -104,12 +139,12 @@ abstract class Logic
                 case 'in':
                     foreach ($whereFields as $whereField) {
                         $paramsName = strpos($whereField, '@') ? explode('@', $whereField) : $whereField;
-                        $key = is_array($paramsName) ? $paramsName[0] : $paramsName; //参数的名称
-                        $val = is_array($paramsName) ? $paramsName[1] : $whereField; //字段的名称
-                        if (!isset($params[$key]) || (empty($params[$key]) && !is_numeric($params[$key]))) {
+                        $key   = is_array($paramsName) ? $paramsName[0] : $paramsName; //参数的名称
+                        $field = is_array($paramsName) ? $paramsName[1] : $whereField; //字段的名称
+                        if (!isset($params[$key]) || empty($params[$key])) {
                             continue;
                         }
-                        $where[] = [$val, $whereType, $params[$key]];
+                        $where[] = [$field, $whereType, $params[$key]];
                     }
                     break;
                 case '%like%':
@@ -117,7 +152,7 @@ abstract class Logic
                         $paramsName = strpos($whereField, '@') ? explode('@', $whereField) : $whereField;
                         $key = is_array($paramsName) ? $paramsName[0] : $paramsName;
                         $val = is_array($paramsName) ? $paramsName[1] : $whereField;
-                        if (!isset($params[$key]) || (empty($params[$key]) && !is_numeric($params[$key]))) {
+                        if (empty($params[$key])) {
                             continue;
                         }
                         $where[] = [$val, 'like', '%' . $params[$key] . '%'];
@@ -128,7 +163,7 @@ abstract class Logic
                         $paramsName = strpos($whereField, '@') ? explode('@', $whereField) : $whereField;
                         $key = is_array($paramsName) ? $paramsName[0] : $paramsName;
                         $val = is_array($paramsName) ? $paramsName[1] : $whereField;
-                        if (!isset($params[$key]) || (empty($params[$key]) && !is_numeric($params[$key]))) {
+                        if (!isset($params[$key]) || (empty($params[$key]))) {
                             continue;
                         }
                         $where[] = [$val, 'like', '%' . $params[$key]];
@@ -139,7 +174,7 @@ abstract class Logic
                         $paramsName = strpos($whereField, '@') ? explode('@', $whereField) : $whereField;
                         $key = is_array($paramsName) ? $paramsName[0] : $paramsName;
                         $val = is_array($paramsName) ? $paramsName[1] : $whereField;
-                        if (!isset($params[$key]) || (empty($params[$key]) && !is_numeric($params[$key]))) {
+                        if (empty($params[$key] || !isset($params[$key]))) {
                             continue;
                         }
                         $where[] = [$val, 'like', $params[$key]];
@@ -158,7 +193,7 @@ abstract class Logic
                     break;
                 case 'datetime':
                     foreach ($whereFields as $whereField) {
-                        $paramsName = strpos($whereField, '@') ? explode('@', $whereField) : $whereField;
+                        $paramsName = !strpos($whereField, '@') ? $whereField : explode('@', $whereField);
                         $key = is_array($paramsName) ? $paramsName[0] : $paramsName;
                         $val = is_array($paramsName) ? $paramsName[1] : $whereField;
                         if (!isset($params[$key]) || empty($params[$key])) {
@@ -178,8 +213,8 @@ abstract class Logic
                         $value = $whereFields[$params['keyword_type']];
                         switch ($value[0]) {
                             case '=':case '<>':case '>':case '>=':case '<':case '<=':case 'in':
-                                $where[] = [$value[1], $value[0], $params['keyword']];
-                                break;
+                            $where[] = [$value[1], $value[0], $params['keyword']];
+                            break;
                             case '%like%':
                                 $where[] = [$value[1], 'like', '%' . $params['keyword'] . '%'];
                                 break;

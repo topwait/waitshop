@@ -72,6 +72,16 @@ body,a,dl,dt,dd,li,img { cursor: url('../images/cursor.cur'), auto !important; }
 .tpl-header > .layui-layout-left.develop-sidebar { left: 120px; }
 .tpl-side-shrink .tpl-sidebar.develop-sidebar { display: block; }
 
+/** 过场动画 **/
+.wait-loading {position: absolute; display: block; width: 100%; height: 100%; top: 0; left: 0; right: 0; bottom: 0; z-index: 1970000; background-color: #f5f7f9;}
+.wait-loading .close { animation: close 1s; -webkit-animation: ball-loader-close 1s; animation-fill-mode: forwards; }
+.wait-loading .ball-loader {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
+.wait-loading .ball-loader>span { display: inline-block; background-color: #4aca85;}
+.wait-loading .ball-loader>span:nth-child(2) {-webkit-animation-delay: .1s; animation-delay: .1s;}
+.wait-loading .ball-loader>span:nth-child(3) {-webkit-animation-delay: .15s; animation-delay: .15s;}
+.wait-loading .ball-loader>span:nth-child(4) {-webkit-animation-delay: .2s; animation-delay: .2s;}
+.wait-loading .ball-loader>span {width: 20px; height: 20px; margin: 0 3px; border-radius: 50%; transform: scale(0); -ms-transform: scale(0); -webkit-transform: scale(0); animation: ball-loader-load 1s ease-in-out infinite; -webkit-animation:1s ball-loader-load ease-in-out infinite;}
+
 /** 小屏幕 **/
 @media screen and (max-width: 768px){
     /*主框架部分*/
@@ -87,6 +97,24 @@ body,a,dl,dt,dd,li,img { cursor: url('../images/cursor.cur'), auto !important; }
     .layui-form-item .layui-input-inline { margin-left: 0; }
     .layui-card .layui-card-header { padding: 5px; }
     .layui-tab-title.layui-tab-more { z-index: 1000; background: #FFF; }
+}
+
+/** 过场加载动画 **/
+@-webkit-keyframes ball-loader-load {
+    0% {transform:scale(0); -webkit-transform:scale(0);}
+    50% {transform:scale(1); -webkit-transform:scale(1);}
+    100% {transform:scale(0); -webkit-transform:scale(0);}
+}
+
+@keyframes ball-loader-load {
+    0% {transform:scale(0); -webkit-transform:scale(0);}
+    50% {transform:scale(1); -webkit-transform:scale(1);}
+    100% {transform:scale(0); -webkit-transform:scale(0);}
+}
+
+@keyframes ball-loader-close {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }
 
 

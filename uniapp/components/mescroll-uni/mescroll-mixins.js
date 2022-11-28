@@ -28,7 +28,6 @@ const MescrollMixin = {
 	methods: {
 		// mescroll组件初始化的回调,可获取到mescroll对象
 		mescrollInit(mescroll) {
-			console.log(mescroll)
 			this.mescroll = mescroll;
 			this.mescrollInitByRef(); // 兼容字节跳动小程序
 		},

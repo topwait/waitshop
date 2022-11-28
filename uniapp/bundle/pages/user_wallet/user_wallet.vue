@@ -19,22 +19,6 @@
 			</view>
 		</view>
 		
-		<!-- 佣金部件 -->
-		<view class="index-reward-widget">
-			<view class="reward-item">
-				<view class="reward-item__type">可提现</view>
-				<view class="reward-item__price">{{  wallet.earnings }}</view>
-				<view class="reward-item__tips">已解锁</view>
-				<view class="reward-item__btn" @click="$toPage('/bundle/pages/withdraw_apply/withdraw_apply?login=true')">立即提现</view>
-			</view>
-			<view class="reward-item">
-				<view class="reward-item__type">待返佣</view>
-				<view class="reward-item__price">{{  wallet.stayUnlock }}</view>
-				<view class="reward-item__tips">待解锁</view>
-				<view class="reward-item__btn" @click="$toPage('/bundle/pages/distribution_order/distribution_order?login=true&tab=1')">查看记录</view>
-			</view>
-		</view>
-		
 		<!-- 助手部件 -->
 		<view class="index-helper-widget">
 			<view class="helper-item" @click="$toPage('/bundle/pages/recharge_index/recharge_index?login=true')">
@@ -64,7 +48,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -141,49 +125,7 @@
 			}
 		}
 	}
-	
-	// 佣金部件
-	.index-reward-widget {
-		display: flex;
-		justify-content: space-between;
-		margin: 30rpx 20rpx;
-		padding: 20rpx;
-		border-radius: 20rpx;
-		box-shadow: 0 0 5rpx #EEEEEE;
-		background-color: #FFFFFF;
-		.reward-item {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			width: 50%;
-			&:first-child { 
-				border-right: 1px solid rgba($color: #EEEEEE, $alpha: 0.5); 
-			}
-			.reward-item__type {
-				font-size: 26rpx;
-				color: #000000;
-				padding-top: 20rpx;
-			}
-			.reward-item__price {
-				font-size: 32rpx;
-				font-weight: bold;
-				padding: 20rpx;
-			}
-			.reward-item__tips {
-				font-size: 24rpx;
-				color: #999999;
-			}
-			.reward-item__btn {
-				color: #FFFFFF;
-				font-size: 24rpx;
-				border-radius: 30rpx;
-				padding: 10rpx 20rpx;
-				margin: 20rpx 0;
-				background-color: #FF5058;
-			}
-		}
-	}
-	
+
 	// 助手部件
 	.index-helper-widget {
 		display: flex;

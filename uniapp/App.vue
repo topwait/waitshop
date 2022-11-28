@@ -1,6 +1,7 @@
 <script>
-	import {mapMutations, mapActions} from 'vuex'
-	import {strToParams, setTabBar, tabBarList, silentLogin} from '@/utils/tools'
+	import {mapMutations} from 'vuex'
+	import {setTabBar, tabBarList, silentLogin} from '@/utils/tools'
+	
 	export default {
 		globalData: {
 			navHeight: ""
@@ -13,28 +14,15 @@
 			this.getSystemInfo()
 		},
 		onShow: function(options) {
-			this.bindInviteCode(options)
 			//#ifdef MP
 				silentLogin()
 			// #endif
 		},
 		onHide: function() {
-			console.log('App Hide')
+
 		},
 		methods: {
 			...mapMutations(['SET_CONFIG']),
-			/**
-			 * 绑定邀请关系
-			 */
-			bindInviteCode(options) {
-				if(!options.query) return 
-				let invite_code = options.query.invite_code || strToParams(decodeURIComponent(options.query.scene)).invite_code
-				if (invite_code) {
-					let param = {code: invite_code}
-					this.$u.api.apiDistributionCode(param)
-				}
-			},
-			
 			/**
 			 * 系统信息
 			 */

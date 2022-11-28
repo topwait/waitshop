@@ -4,7 +4,7 @@ import {isClient, toLogin} from '@/utils/tools.js'
 const install = (Vue, vm) => {
 	// 参数配置
 	Vue.prototype.$u.http.setConfig({
-		baseUrl: baseURL,
+		baseUrl: 'http://waitshopf2c.local/api',
 		loadingText: '努力加载中~',
 		loadingTime: 5000
 	});
@@ -19,7 +19,7 @@ const install = (Vue, vm) => {
 	
 	// 响应拦截配置
 	Vue.prototype.$u.http.interceptor.response = (res) => {
-		if (res.code === 1009) {
+		if (res.code === 1008 || res.code === 1009) {
 			toLogin()
 		}
 		

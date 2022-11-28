@@ -5,7 +5,7 @@
 		<wait-loading v-if="isFirstLoading"></wait-loading>
 		
 		<!-- 用户信息部件 -->
-		<view class="u-margin-tb-10 u-bg-white">
+		<view class="u-margin-tb-10">
 			<u-cell-group>
 				<u-cell-item title="头像" @click="onUploadAvatar">
 					<view style="position: absolute; right: 74rpx; bottom: 20rpx;">
@@ -50,13 +50,11 @@
 		</view>
 		
 		<!-- 系统信息部件 -->
-		<view class="u-margin-tb-10 u-bg-white">
-			<u-cell-group>
-				<u-cell-item title="服务协议" @click="$toPage('/bundle/pages/user_policy/user_policy?type=service')"></u-cell-item>
-				<u-cell-item title="隐私政策" @click="$toPage('/bundle/pages/user_policy/user_policy?type=privacy')"></u-cell-item>
-				<u-cell-item title="系统版本" :arrow="false">v{{userInfo.version}}</u-cell-item>
-			</u-cell-group>
-		</view>
+		<u-cell-group>
+			<u-cell-item title="服务协议" @click="$toPage('/bundle/pages/user_policy/user_policy?type=service')"></u-cell-item>
+			<u-cell-item title="隐私政策" @click="$toPage('/bundle/pages/user_policy/user_policy?type=privacy')"></u-cell-item>
+			<u-cell-item title="系统版本" :arrow="false">v{{userInfo.version}}</u-cell-item>
+		</u-cell-group>
 		
 		<!-- 弹窗部件 -->
 		<u-popup v-model="showPopup" mode="center" border-radius="12" :closeable="true">
@@ -74,7 +72,7 @@
 			</view>
 			<view class="popup-form-widget" v-if="form.type==='mobile'">
 				<view class="title">更换手机号</view>
-				<view class="form">
+				<view class="form"> 
 					<u-field :value="userInfo.mobile" label="原手机号"></u-field>
 					<u-field v-model="form.mobile" label="新手机号" placeholder="请输入新的手机号"></u-field>
 					<u-field v-model="form.code" label="验证码" placeholder="请输入">
@@ -136,7 +134,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -290,13 +288,15 @@
 				    content: '您确定要退出登录吗？',
 					confirmColor: '#FF5058',
 				    success: function (res) {
-						that.LOGOUT()
-						that.$showSuccess('退出成功')
-						setTimeout(function(){
-							uni.switchTab({
-								url: '/pages/index/index'
-							})
-						}, 800)
+						if (res.confirm) {
+							that.LOGOUT()
+							that.$showSuccess('退出成功')
+							setTimeout(function(){
+								uni.switchTab({
+									url: '/pages/index/index'
+								})
+							}, 800)
+						}
 				    }
 				})
 			},

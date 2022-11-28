@@ -37,7 +37,9 @@
 				<view v-if="isLogin">
 					<text v-if="userInfo.lackGrowthValue !== -1">距离升级还差{{userInfo.lackGrowthValue}}</text>
 					<text v-else>当前已是最高级会员</text>
-					<u-icon name="arrow-right" size="26" color="#999"></u-icon>
+					<!-- #ifndef APP-PLUS -->
+					<u-icon name="arrow-right" size="26" color="#999999"></u-icon>
+					<!-- #endif -->
 				</view>
 			</view>
 		</view>
@@ -115,7 +117,7 @@
 			...mapState(['isLogin'])
 		},
 		onShow() {
-			// #ifndef MP-WEIXIN
+			// #ifndef MP-WEIXIN || APP-PLUS
 				this.isWeixin = isWeixin()
 			//#endif
 			this.getUserDesign()
@@ -124,7 +126,6 @@
 			}
 		},
 		methods: {
-			
 			/**
 			 * 获取装修设计
 			 */

@@ -58,6 +58,8 @@
 
         // 监听提交登录
         form.on('submit(loginSubmit)', function(data) {
+            let that = this;
+            wait.locking(that);
             rememberPass();
             wait.ajax({
                 url: "{:url('Login/checkLogin')}",
@@ -66,9 +68,11 @@
             }).then((res) => {
                 if (res.code === 0) {
                     layer.msg(res.msg, {icon: 1, time: 1000}, function () {
+                        wait.unlock(that);
                         location.href = "/admin.html"
                     });
                 } else {
+                    wait.unlock(that);
                     layer.msg(res.msg, {icon: 2, time: 1000});
                     $(".login-captcha").trigger("click");
                 }

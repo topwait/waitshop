@@ -2,7 +2,6 @@ import {isWeixin} from '@/utils/tools.js'
 
 export function wxpay(opt) {
 	//#ifdef  H5
-	
 	return isWeixin()
 		? wechath5.wxPay(opt.url)
 		: location.href = opt.url

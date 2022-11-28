@@ -9,7 +9,7 @@
 			<view class="index-collect-wdiget">
 				<view class="collect-item" v-for="(item, index) in collectList" :key="index" 
 					@click="$toPage('/pages/goods/detail/detail?goods_id='+item.goods_id)">
-					<u-image width="160rpx" height="160rpx" :lazy-load="true" :src="item.image"></u-image>
+					<u-image width="160rpx" height="160rpx" :lazy-load="true" :src="item.image||''"  style="flex-shrink: 0;"></u-image>
 					<view class="product-info">
 						<view class="u-font-md u-color-normal u-line-2">{{item.name}}</view>
 						<view class="u-flex u-row-between">
@@ -33,7 +33,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售

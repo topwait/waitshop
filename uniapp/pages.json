@@ -211,6 +211,15 @@
                 "navigationBarTitleText": ""
             }
         }
+        ,{
+            "path" : "pages/custom/index",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"subPackages": [{
 		"root": "bundle",
@@ -276,33 +285,6 @@
 			        "navigationBarTitleText": "每日签到",
 			        "navigationBarTextStyle": "white",
 			        "navigationBarBackgroundColor": "#FF5058"
-			    }
-			},
-			{
-			    "path" : "pages/withdraw_apply/withdraw_apply",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "佣金提现",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/withdraw_record/withdraw_record",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "提现记录",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/withdraw_result/withdraw_result",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "提现详细",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
 			    }
 			},
 			{
@@ -386,42 +368,6 @@
 			        "navigationBarBackgroundColor": "#FFFFFF"
 			    }
 			},
-			{
-			    "path" : "pages/distribution_index/distribution_index",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "我的推广",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/distribution_fans/distribution_fans",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "我的粉丝",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/distribution_order/distribution_order",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "推广订单",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/distribution_record/distribution_record",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "佣金明细",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
             {
                 "path" : "pages/recharge_index/recharge_index",
                 "style" :                                                                                    
@@ -440,60 +386,6 @@
                     "navigationBarBackgroundColor": "#FFFFFF"
                 }
             },
-			{
-			    "path" : "pages/team_activity/team_activity",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "拼团活动",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/team_detail/team_detail",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "拼团详细",
-			       "navigationBarTextStyle": "black",
-			       "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/team_record/team_record",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "拼团记录",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/team_buy/team_buy",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "确认订单",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/seckill_activity/seckill_activity",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "秒杀活动",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
-			{
-			    "path" : "pages/seckill_detail/seckill_detail",
-			    "style" :                                                                                    
-			    {
-			        "navigationBarTitleText": "秒杀详情",
-			        "navigationBarTextStyle": "black",
-			        "navigationBarBackgroundColor": "#FFFFFF"
-			    }
-			},
 			{
 			    "path" : "pages/customer_service/customer_service",
 			    "style" :                                                                                    
@@ -546,9 +438,6 @@
 		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
-		"app-plus": {
-			"titleNView": false
-		},
 		"h5": {
 			"navigationStyle": "custom"
 		}

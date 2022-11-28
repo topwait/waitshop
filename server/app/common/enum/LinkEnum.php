@@ -4,7 +4,7 @@
 // +----------------------------------------------------------------------
 // | 欢迎阅读学习程序代码
 // | gitee:   https://gitee.com/wafts/WaitShop
-// | github:  https://github.com/miniWorlds/waitshop
+// | github:  https://github.com/topwait/waitshop
 // | 官方网站: https://www.waitshop.cn
 // +----------------------------------------------------------------------
 // | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -40,9 +40,6 @@ class LinkEnum
     const PROFIT_DETAIL    = 22; // 收益明细
     const EVERYDAY_SIGN    = 23; // 每日签到
     const LUCK_DRAW        = 24; // 幸运抽奖
-    const SECKILL_ACTIVITY = 25; // 秒杀活动
-    const TEAM_ACTIVITY    = 26; // 拼团活动
-    const TEAM_RECORD      = 27; // 拼团记录
     const WRITE_OFF        = 28; // 核销订单
 
 
@@ -115,18 +112,6 @@ class LinkEnum
             self::LUCK_DRAW => [
                 'name'  => '幸运抽奖',
                 'link'  => '/bundle/pages/luckly_wheel/luckly_wheel?login=true',
-            ],
-            self::SECKILL_ACTIVITY => [
-                'name'  => '秒杀活动',
-                'link'  => '/bundle/pages/seckill_activity/seckill_activity',
-            ],
-            self::TEAM_ACTIVITY => [
-                'name'  => '拼团活动',
-                'link'  => '/bundle/pages/team_activity/team_activity',
-            ],
-            self::TEAM_RECORD => [
-                'name'  => '拼团记录',
-                'link'  => '/bundle/pages/team_record/team_record?login=true',
             ],
             self::WRITE_OFF => [
                 'name'  => '核销订单',

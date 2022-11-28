@@ -95,7 +95,7 @@
 	// +----------------------------------------------------------------------
 	// | 欢迎阅读学习程序代码
 	// | gitee:   https://gitee.com/wafts/WaitShop
-	// | github:  https://github.com/miniWorlds/waitshop
+	// | github:  https://github.com/topwait/waitshop
 	// | 官方网站: https://www.waitshop.cn
 	// +----------------------------------------------------------------------
 	// | 禁止对本系统程序代码以任何目的、任何形式再次发布或出售
@@ -107,6 +107,7 @@
 	// +----------------------------------------------------------------------
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins"
 	import MescrollBody from "@/components/mescroll-uni/mescroll-body"
+	import {wxpay} from '@/utils/payment'
 	export default {
 		mixins: [MescrollMixin],
 		components: {MescrollBody},
@@ -306,26 +307,29 @@
 						client: 6,
 						pay_way: payWayType,
 						order_id: orderId
-					}).then(result => {
-						console.log(result)
-						switch(result.code) {
+					}).then(({ code, msg, data }) => {
+						switch(code) {
 							case 1:
-								that.$showToast(result.msg)
+								that.$showToast(msg)
 								break;
 							case 2100: //余额支付
 								uni.redirectTo({
-									url: '/pages/order/pay_results/pay_results?id='+that.orderId
+									url: '/pages/order/pay_results/pay_results?id='+orderId
 								})
 								break;
 							case 2200: //微信支付
 								wxpay(data).then(res => {
 									uni.redirectTo({
-										url: '/pages/order/pay_results/pay_results?id='+that.orderId
+										url: '/pages/order/pay_results/pay_results?id='+orderId
 									})
 								})
 								break;
 							case 2300: //支付宝支付
-								// alipay(data).then(res => {})
+								alipay(data).then(res => {
+									uni.redirectTo({
+										url: '/pages/order/pay_results/pay_results?id='+orderId
+									})
+								})
 								break;
 						}
 					})

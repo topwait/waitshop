@@ -53,6 +53,7 @@
                     area: ["500px", "450px"],
                     success: function (layero, index) {
                         layero.layui.form.on("submit(addForm)", function(data){
+                            wait.locking(this);
                             if (!data.field.selected_icon) {
                                 return layer.msg("请选择选中图标");
                             }
@@ -65,6 +66,7 @@
                                 type: "POST",
                                 data: data.field
                             }).then((res) => {
+                                wait.unlock(this);
                                 if (res.code === 0) {
                                     layer.msg(res.msg, {icon: 1, time: 1000});
                                     table.reload("wait-table-lists");
